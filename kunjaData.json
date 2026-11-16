@@ -1,0 +1,46 @@
+{
+  "siteConfig": {
+    "name": "Kunja Homestay Eco Resort",
+    "tagline": "A Quiet Home in Bolpur, Santiniketan",
+    "location": "Bolpur, Santiniketan, Birbhum, West Bengal",
+    "recognition": {
+      "isRecognized": true,
+      "authority": "Department of Tourism, Government of West Bengal",
+      "badgeText": "Officially Recognized by the Department of Tourism, Government of West Bengal",
+      "shortBadge": "Govt. of West Bengal Recognized Homestay",
+      "plaqueImage": "assets/images/photo_57.jpeg"
+    },
+    "features": {
+      "enableAvailabilityCalendar": false,
+      "enableRoomSelection": false,
+      "enablePhotoSharing": true,
+      "enableGuestReviewSubmission": true
+    }
+  },
+  "contact": {
+    "phoneDisplay": "+91 90646 29141",
+    "phoneHref": "tel:+919064629141",
+    "whatsappNumber": "919064629141",
+    "whatsappDirectUrl": "https://wa.me/919064629141",
+    "googleMapsUrl": "https://www.google.com/maps/place/Kunja+Homestay+Eco+Resort/@23.6760972,87.678792,17z",
+    "coordinates": {
+      "latitude": 23.6760972,
+      "longitude": 87.678792
+    },
+    "address": "Kunja Homestay Eco Resort, Bolpur, Santiniketan, Birbhum, West Bengal",
+    "directions": [
+      {
+        "from": "Bolpur Shantiniketan Railway Station",
+        "details": "Easily reachable by local e-rickshaw (toto) or cab—a short, scenic ride through Bolpur town."
+      },
+      {
+        "from": "Prantik Railway Station",
+        "details": "Just a brief toto ride away, convenient for trains arriving from Howrah and Sealdah."
+      },
+      {
+        "from": "By Road",
+        "details": "Smooth highway access via NH-19 / Panagarh–Morgram route toward Bolpur, with direct pin navigation on Google Maps."
+      }
+    ]
+  }
+}

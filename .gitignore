@@ -1,0 +1,21 @@
+# Ignore OS files
+Thumbs.db
+.DS_Store
+
+# Node modules (if any)
+node_modules/
+
+# Python caches
+__pycache__/
+*.pyc
+
+# Build artifacts
+dist/
+build/
+
+# IDE files
+.idea/
+.vscode/
+
+# Logs
+*.log
