@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build artifacts
+dist/
+build/
+.next/
+.vercel/
+
+# Environment files
+.env*
+!.env.example
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Python caches
+__pycache__/
+*.pyc
+
+# IDE files
+.idea/
+.vscode/
+
+# Logs
+*.log
