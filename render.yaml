@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: kunja-homestay
+    runtime: static
+    buildCommand: npm run build
+    staticPublishPath: .
