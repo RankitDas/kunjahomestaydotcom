@@ -17,14 +17,14 @@
   <meta property="og:url" content="https://kunjahomestay.com/">
   <meta property="og:title" content="Kunja Homestay — Govt. Recognized Homestay in Bolpur, Santiniketan">
   <meta property="og:description" content="Slow mornings, red earth, and warm family hospitality in Santiniketan. Officially recognized by the Department of Tourism, Government of West Bengal.">
-  <meta property="og:image" content="assets/images/photo_34.jpeg">
+  <meta property="og:image" content="images/kunja-34.jpeg">
 
   <!-- Twitter Card -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://kunjahomestay.com/">
   <meta property="twitter:title" content="Kunja Homestay — Govt. Recognized Homestay in Bolpur, Santiniketan">
   <meta property="twitter:description" content="Slow mornings, red earth, and peaceful family hospitality in Santiniketan.">
-  <meta property="twitter:image" content="assets/images/photo_34.jpeg">
+  <meta property="twitter:image" content="images/kunja-34.jpeg">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
@@ -43,7 +43,7 @@
     "@context": "https://schema.org",
     "@type": "LodgingBusiness",
     "name": "Kunja Homestay Eco Resort",
-    "image": "assets/images/photo_34.jpeg",
+    "image": "images/kunja-34.jpeg",
     "@id": "https://kunjahomestay.com",
     "url": "https://kunjahomestay.com",
     "telephone": "+919064629141",
@@ -90,23 +90,25 @@
 
   <!-- Official Government Recognition Banner -->
   <aside class="gov-announcement-bar" aria-label="Official Government Recognition">
-    <div class="gov-announcement-content">
+    <div class="container gov-announcement-content">
       <div class="gov-pill">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <span>Department of Tourism, Government of West Bengal Recognized</span>
+        <span class="gov-text-desktop">Department of Tourism, Government of West Bengal Recognized</span>
+        <span class="gov-text-mobile">Govt. of West Bengal Recognized</span>
       </div>
-      <div>
-        <span class="gov-details-link" onclick="openModal('govtPlaqueModal')">View Official Government Recognition Plaque →</span>
+      <div class="gov-link-wrapper">
+        <span class="gov-details-link gov-link-desktop" onclick="openModal('govtPlaqueModal')">View Official Government Recognition Plaque →</span>
+        <span class="gov-details-link gov-link-mobile" onclick="openModal('govtPlaqueModal')">View Plaque →</span>
       </div>
     </div>
   </aside>
 
   <!-- Site Header -->
   <header class="site-header">
-    <div class="header-container">
+    <div class="container header-container">
       <a href="#home" class="site-logo">
         <span class="brand-title">Kunja</span>
-        <span class="brand-subtitle">Homestay • Bolpur, Santiniketan</span>
+        <span class="brand-subtitle">HOMESTAY • BOLPUR, SANTINIKETAN</span>
       </a>
 
       <!-- Desktop Navigation -->
@@ -114,8 +116,8 @@
         <a href="#home">Home</a>
         <a href="#spaces">Our Spaces</a>
         <a href="#moments">Joyful Moments</a>
-        <a href="#story">The Santiniketan Story</a>
-        <a href="#reviews">Guest Reviews</a>
+        <a href="#story">Our Story</a>
+        <a href="#reviews">Reviews</a>
         <a href="#inquire">Location & Inquire</a>
       </nav>
 
@@ -124,7 +126,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
           <span>Govt. Recognized</span>
         </button>
-        <a href="#inquire" class="btn btn-terracotta" style="padding: 0.6rem 1.15rem; font-size: 0.85rem;">Inquire</a>
+        <a href="#inquire" class="btn btn-terracotta btn-nav-inquire">Inquire</a>
         
         <button class="mobile-menu-btn" onclick="toggleMobileDrawer()" aria-label="Open Navigation">
           <span></span>
@@ -138,24 +140,24 @@
   <!-- Mobile Drawer -->
   <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="toggleMobileDrawer()"></div>
   <aside class="mobile-drawer" id="mobileDrawer" aria-label="Mobile Navigation Drawer">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--color-border-subtle);">
       <div>
         <span class="brand-title" style="font-size: 1.5rem;">Kunja</span>
-        <span class="brand-subtitle">Bolpur, Santiniketan</span>
+        <span class="brand-subtitle">HOMESTAY • BOLPUR, SANTINIKETAN</span>
       </div>
       <button class="modal-close-trigger" onclick="toggleMobileDrawer()" aria-label="Close menu">✕</button>
     </div>
-    <nav style="display:flex; flex-direction:column; gap:1.35rem;">
-      <a href="#home" onclick="toggleMobileDrawer()" style="font-family:var(--font-serif); font-size:1.35rem; color:var(--color-forest);">Home</a>
-      <a href="#spaces" onclick="toggleMobileDrawer()" style="font-family:var(--font-serif); font-size:1.35rem; color:var(--color-forest);">Our Spaces</a>
-      <a href="#moments" onclick="toggleMobileDrawer()" style="font-family:var(--font-serif); font-size:1.35rem; color:var(--color-forest);">Joyful Moments</a>
-      <a href="#story" onclick="toggleMobileDrawer()" style="font-family:var(--font-serif); font-size:1.35rem; color:var(--color-forest);">The Santiniketan Story</a>
-      <a href="#reviews" onclick="toggleMobileDrawer()" style="font-family:var(--font-serif); font-size:1.35rem; color:var(--color-forest);">Guest Reviews</a>
-      <a href="#inquire" onclick="toggleMobileDrawer()" style="font-family:var(--font-serif); font-size:1.35rem; color:var(--color-forest);">Location & Inquire</a>
+    <nav class="mobile-nav-links">
+      <a href="#home" onclick="toggleMobileDrawer()">Home</a>
+      <a href="#spaces" onclick="toggleMobileDrawer()">Our Spaces</a>
+      <a href="#moments" onclick="toggleMobileDrawer()">Joyful Moments</a>
+      <a href="#story" onclick="toggleMobileDrawer()">Our Story</a>
+      <a href="#reviews" onclick="toggleMobileDrawer()">Reviews</a>
+      <a href="#inquire" onclick="toggleMobileDrawer()">Location & Inquire</a>
     </nav>
-    <div style="margin-top:auto; padding-top:2rem;">
-      <a href="tel:+919064629141" class="btn btn-forest" style="width:100%; margin-bottom:0.75rem;">📞 Call +91 90646 29141</a>
-      <button class="btn btn-whatsapp" style="width:100%;" onclick="triggerDirectWhatsApp()">💬 WhatsApp Chat</button>
+    <div style="margin-top:auto; padding-top:1.5rem; display:flex; flex-direction:column; gap:0.75rem;">
+      <a href="tel:+919064629141" class="btn btn-forest" style="width:100%; min-height: 48px; justify-content: center;">📞 Call +91 90646 29141</a>
+      <button class="btn btn-whatsapp" style="width:100%; min-height: 48px; justify-content: center;" onclick="triggerDirectWhatsApp()">💬 WhatsApp Chat</button>
     </div>
   </aside>
 
@@ -172,7 +174,7 @@
               Leave behind hurried schedules for the quiet lanes of Bolpur. At Kunja Homestay, days unfold at an easy pace—with fresh garden air, morning tea, home-cooked Bengali meals, and the warmth of a real family home.
             </p>
 
-            <div style="display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+            <div class="hero-cta-group">
               <a href="#spaces" class="btn btn-terracotta">
                 Explore Our Spaces
               </a>
@@ -191,7 +193,7 @@
           <!-- Hero Main Photograph from Real Assets -->
           <div class="reveal-on-scroll">
             <div class="hero-main-card">
-              <img src="assets/images/photo_34.jpeg" alt="Kunja Homestay courtyard at night with warm lights and garden lawn" loading="eager">
+              <img src="images/kunja-34.jpeg" alt="Kunja Homestay courtyard at night with warm lights and garden lawn" loading="eager">
               <div class="hero-overlay-tag">
                 <strong>Kunja Homestay Courtyard</strong> • Evening ambiance under the quiet Bolpur sky
               </div>
@@ -299,14 +301,14 @@
           <!-- Editorial Photo Mosaic -->
           <div class="story-mosaic reveal-on-scroll">
             <div class="story-mosaic-item" style="aspect-ratio: 4/5;">
-              <img src="assets/images/photo_56.jpeg" alt="Lush potted plants and courtyard stone walkway at Kunja Homestay">
+              <img src="images/kunja-56.jpeg" alt="Lush potted plants and courtyard stone walkway at Kunja Homestay">
             </div>
             <div style="display: flex; flex-direction: column; gap: 1rem;">
               <div class="story-mosaic-item" style="aspect-ratio: 1/1;">
-                <img src="assets/images/photo_58.jpeg" alt="Authentic Bengali home-cooked meal served at Kunja Homestay">
+                <img src="images/kunja-58.jpeg" alt="Authentic Bengali home-cooked meal served at Kunja Homestay">
               </div>
               <div class="story-mosaic-item" style="aspect-ratio: 1/1;">
-                <img src="assets/images/photo_35.jpeg" alt="Young guests smiling happily outdoors in the garden">
+                <img src="images/kunja-35.jpeg" alt="Young guests smiling happily outdoors in the garden">
               </div>
             </div>
           </div>
@@ -538,10 +540,10 @@
 
   <!-- Mobile Sticky Bottom Action Bar -->
   <aside class="mobile-sticky-action-bar" aria-label="Mobile Direct Actions">
-    <a href="tel:+919064629141" class="btn btn-outline" style="border-color: var(--color-forest); font-size: 0.82rem; padding: 0.65rem 0.5rem;">
-      📞 Call (+91 90646 29141)
+    <a href="tel:+919064629141" class="mobile-sticky-btn mobile-call-btn">
+      📞 Call Host
     </a>
-    <button class="btn btn-whatsapp" onclick="triggerDirectWhatsApp()" style="font-size: 0.82rem; padding: 0.65rem 0.5rem;">
+    <button class="mobile-sticky-btn mobile-wa-btn" onclick="scrollToInquiry(event)">
       💬 WhatsApp Inquire
     </button>
   </aside>
@@ -554,7 +556,7 @@
       <button class="lightbox-close-btn" onclick="closeLightbox()" aria-label="Close Lightbox">✕</button>
       
       <div class="lightbox-media">
-        <img id="lightboxImage" src="" alt="Kunja Homestay photo">
+        <img id="lightboxImage" src="images/kunja-34.jpeg" alt="Kunja Homestay photo" loading="eager">
       </div>
 
       <div class="lightbox-info">
@@ -563,21 +565,24 @@
         <p id="lightboxCaption" style="font-size: 0.92rem; color: var(--color-text-muted); line-height: 1.65;">Caption</p>
 
         <div class="share-action-box">
-          <div style="font-size: 0.76rem; text-transform: uppercase; font-weight: 700; color: var(--color-terracotta); letter-spacing: 0.08em;">
+          <div style="font-size: 0.76rem; text-transform: uppercase; font-weight: 700; color: var(--color-terracotta); letter-spacing: 0.08em; margin-bottom: 0.6rem;">
             Share this photo:
           </div>
           <div class="share-btns-row">
-            <button class="share-btn-pill" onclick="shareCurrentPhoto()">
-              📲 Web Share API
+            <button class="share-btn-pill share-btn-whatsapp" onclick="shareWhatsApp()">
+              💬 WhatsApp
             </button>
-            <button class="share-btn-pill" onclick="shareWhatsApp()">
-              💬 Share to WhatsApp
+            <button class="share-btn-pill share-btn-sms" onclick="shareSMS()">
+              ✉️ Message / SMS
             </button>
-            <button class="share-btn-pill" onclick="shareFacebook()">
+            <button class="share-btn-pill share-btn-facebook" onclick="shareFacebook()">
               🌐 Facebook
             </button>
-            <button class="share-btn-pill" onclick="copyShareLink()">
+            <button class="share-btn-pill share-btn-copy" id="copyShareBtn" onclick="copyShareLink()">
               🔗 Copy Link
+            </button>
+            <button class="share-btn-pill share-btn-native" id="nativeShareBtn" onclick="shareCurrentPhoto()" style="display: none;">
+              📲 More Apps
             </button>
           </div>
         </div>
@@ -598,7 +603,7 @@
       </p>
 
       <div class="govt-plaque-showcase">
-        <img src="assets/images/photo_57.jpeg" alt="Department of Tourism Government of West Bengal official Homestay Recognition Plaque at Kunja Homestay">
+        <img src="images/kunja-57.jpeg" alt="Department of Tourism Government of West Bengal official Homestay Recognition Plaque at Kunja Homestay">
         <div style="font-size: 0.78rem; color: var(--color-text-muted); margin-top: 0.6rem; font-style: italic;">
           Official Department of Tourism, Govt. of West Bengal Plaque displayed at Kunja Homestay entrance.
         </div>

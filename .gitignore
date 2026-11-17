@@ -1,17 +1,23 @@
-# Ignore OS files
-Thumbs.db
-.DS_Store
-
-# Node modules (if any)
+# Dependencies
 node_modules/
-
-# Python caches
-__pycache__/
-*.pyc
 
 # Build artifacts
 dist/
 build/
+.next/
+.vercel/
+
+# Environment files
+.env*
+!.env.example
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Python caches
+__pycache__/
+*.pyc
 
 # IDE files
 .idea/

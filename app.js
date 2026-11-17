@@ -1,7 +1,7 @@
 /**
  * Kunja Homestay — Bolpur, Santiniketan
  * Client-Side State, Dynamic Rendering & Interactive Handlers
- * All photography loaded directly from real local assets (/assets/images/)
+ * Photography is served from the root images/ directory.
  */
 
 const kunjaData = {
@@ -14,7 +14,7 @@ const kunjaData = {
       authority: "Department of Tourism, Government of West Bengal",
       badgeText: "Officially Recognized by the Department of Tourism, Government of West Bengal",
       shortBadge: "Govt. of West Bengal Recognized Homestay",
-      plaqueImage: "assets/images/photo_57.jpeg"
+      plaqueImage: "images/kunja-57.jpeg"
     },
     features: {
       enableAvailabilityCalendar: false,
@@ -64,10 +64,10 @@ const kunjaData = {
         "Peaceful garden access"
       ],
       images: [
-        "assets/images/photo_10.jpeg",
-        "assets/images/photo_11.jpeg",
-        "assets/images/photo_13.jpeg",
-        "assets/images/photo_14.jpeg"
+        "images/kunja-10.jpeg",
+        "images/kunja-11.jpeg",
+        "images/kunja-13.jpeg",
+        "images/kunja-14.jpeg"
       ]
     },
     {
@@ -82,12 +82,12 @@ const kunjaData = {
         "Home-cooked meal options"
       ],
       images: [
-        "assets/images/photo_20.jpeg",
-        "assets/images/photo_22.jpeg",
-        "assets/images/photo_23.jpeg",
-        "assets/images/photo_24.jpeg",
-        "assets/images/photo_26.jpeg",
-        "assets/images/photo_15.jpeg"
+        "images/kunja-20.jpeg",
+        "images/kunja-22.jpeg",
+        "images/kunja-23.jpeg",
+        "images/kunja-24.jpeg",
+        "images/kunja-26.jpeg",
+        "images/kunja-15.jpeg"
       ]
     },
     {
@@ -102,12 +102,12 @@ const kunjaData = {
         "Freshly cooked homely meals"
       ],
       images: [
-        "assets/images/photo_30.jpeg",
-        "assets/images/photo_42.jpeg",
-        "assets/images/photo_51.jpeg",
-        "assets/images/photo_55.jpeg",
-        "assets/images/photo_43.jpeg",
-        "assets/images/photo_27.jpeg"
+        "images/kunja-30.jpeg",
+        "images/kunja-42.jpeg",
+        "images/kunja-51.jpeg",
+        "images/kunja-55.jpeg",
+        "images/kunja-43.jpeg",
+        "images/kunja-27.jpeg"
       ]
     },
     {
@@ -122,12 +122,12 @@ const kunjaData = {
         "Easy access to dining & garden"
       ],
       images: [
-        "assets/images/photo_37.jpeg",
-        "assets/images/photo_38.jpeg",
-        "assets/images/photo_41.jpeg",
-        "assets/images/photo_44.jpeg",
-        "assets/images/photo_48.jpeg",
-        "assets/images/photo_54.jpeg"
+        "images/kunja-37.jpeg",
+        "images/kunja-38.jpeg",
+        "images/kunja-41.jpeg",
+        "images/kunja-44.jpeg",
+        "images/kunja-48.jpeg",
+        "images/kunja-54.jpeg"
       ]
     }
   ],
@@ -138,84 +138,84 @@ const kunjaData = {
       category: "ambiance",
       title: "Golden night ambiance in the open courtyard",
       caption: "Kunja Homestay glowing warmly under the evening sky with garden umbrellas and bonfire lawn.",
-      image: "assets/images/photo_34.jpeg"
+      image: "images/kunja-34.jpeg"
     },
     {
       id: "gal-02",
       category: "gatherings",
       title: "Weekend smiles and family gatherings",
       caption: "Guests gathered under our front entrance lodge sign, enjoying unhurried conversations.",
-      image: "assets/images/photo_36.jpeg"
+      image: "images/kunja-36.jpeg"
     },
     {
       id: "gal-03",
       category: "rooms",
       title: "Traditional Santiniketan Kantha folk art bedspread",
       caption: "Handcrafted tribal musician motifs adorning the comfortable beds in the Garden Wing.",
-      image: "assets/images/photo_37.jpeg"
+      image: "images/kunja-37.jpeg"
     },
     {
       id: "gal-04",
       category: "ambiance",
       title: "Courtyard stone path and blooming flower pots",
       caption: "Lush potted marigolds, petunias, and green foliage lining the pathway in the morning sun.",
-      image: "assets/images/photo_56.jpeg"
+      image: "images/kunja-56.jpeg"
     },
     {
       id: "gal-05",
       category: "gatherings",
       title: "Happy family moments on the garden lawn",
       caption: "Multigenerational travelers pausing for a cheerful photograph during morning tea.",
-      image: "assets/images/photo_17.jpeg"
+      image: "images/kunja-17.jpeg"
     },
     {
       id: "gal-06",
       category: "gatherings",
       title: "Warm smiles by the garden petunias",
       caption: "A joyful guest enjoying the peaceful floral courtyard in traditional attire.",
-      image: "assets/images/photo_60.jpeg"
+      image: "images/kunja-60.jpeg"
     },
     {
       id: "gal-07",
       category: "ambiance",
       title: "Authentic home-cooked Bengali thali feast",
       caption: "Freshly prepared rice, comforting dal, and seasonal vegetables served hot at our dining table.",
-      image: "assets/images/photo_58.jpeg"
+      image: "images/kunja-58.jpeg"
     },
     {
       id: "gal-08",
       category: "rooms",
       title: "Sunlit room with morning garden breeze",
       caption: "Natural daylight pouring into the Verandah suite, equipped with an electric kettle and tea station.",
-      image: "assets/images/photo_20.jpeg"
+      image: "images/kunja-20.jpeg"
     },
     {
       id: "gal-09",
       category: "gatherings",
       title: "Gentle courtyard visitors & pet companions",
       caption: "Guest relaxing peacefully in an outdoor garden chair holding friendly pet rabbits.",
-      image: "assets/images/photo_64.jpeg"
+      image: "images/kunja-64.jpeg"
     },
     {
       id: "gal-10",
       category: "ambiance",
       title: "Bright magenta Bougainvillea blossoms",
       caption: "Colorful flora blooming all year round along the courtyard garden borders.",
-      image: "assets/images/photo_01.jpeg"
+      image: "images/kunja-01.jpeg"
     },
     {
       id: "gal-11",
       category: "rooms",
       title: "Clean and spacious family room layout",
       caption: "Multi-bed sleeping arrangements ideal for families visiting Bolpur together.",
-      image: "assets/images/photo_30.jpeg"
+      image: "images/kunja-30.jpeg"
     },
     {
       id: "gal-12",
       category: "gatherings",
       title: "Group travelers arriving in Santiniketan",
       caption: "Happy guests pausing for a photo beside their traveler van before exploring Khoai.",
-      image: "assets/images/photo_21.jpeg"
+      image: "images/kunja-21.jpeg"
     }
   ],
 
@@ -257,6 +257,9 @@ document.addEventListener("DOMContentLoaded", () => {
   renderGallery("all");
   renderReviews();
   setupObserver();
+  initRoomSwipes();
+  checkUrlParams();
+  setupModalBackdropCloses();
 });
 
 // Render Rooms & Spaces (No booking buttons, no room selector)
@@ -301,6 +304,31 @@ window.cycleRoomPhoto = function(roomId, direction) {
   images[nextIndex].classList.add("active");
 };
 
+// Touch swipe handler for room carousels on Android mobile
+function initRoomSwipes() {
+  document.querySelectorAll(".room-carousel").forEach(carousel => {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const roomId = carousel.getAttribute("data-room-id");
+
+    carousel.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    carousel.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 40) {
+        if (diff > 0) {
+          cycleRoomPhoto(roomId, 1);
+        } else {
+          cycleRoomPhoto(roomId, -1);
+        }
+      }
+    }, { passive: true });
+  });
+}
+
 // Render Filterable Gallery
 function renderGallery(category = "all") {
   const container = document.getElementById("galleryGrid");
@@ -342,27 +370,41 @@ window.openLightbox = function(photoId) {
 
   currentLightboxPhoto = photo;
   const modal = document.getElementById("lightboxModal");
-  document.getElementById("lightboxImage").src = photo.image;
-  document.getElementById("lightboxImage").alt = photo.title;
+  const imgEl = document.getElementById("lightboxImage");
+
+  imgEl.src = photo.image;
+  imgEl.alt = photo.title;
   document.getElementById("lightboxCategory").textContent = photo.category.toUpperCase();
   document.getElementById("lightboxTitle").textContent = photo.title;
   document.getElementById("lightboxCaption").textContent = photo.caption;
+
+  const nativeBtn = document.getElementById("nativeShareBtn");
+  if (nativeBtn) {
+    if (navigator.share) {
+      nativeBtn.style.display = "inline-flex";
+    } else {
+      nativeBtn.style.display = "none";
+    }
+  }
 
   modal.classList.add("active");
   document.body.style.overflow = "hidden";
 };
 
 window.closeLightbox = function() {
-  document.getElementById("lightboxModal").classList.remove("active");
+  const modal = document.getElementById("lightboxModal");
+  if (modal) modal.classList.remove("active");
   document.body.style.overflow = "";
 };
 
+// Social Share: Native / More Apps
 window.shareCurrentPhoto = async function() {
   if (!currentLightboxPhoto) return;
+  const pageUrl = window.location.href.split("?")[0].split("#")[0] + `?moment=${currentLightboxPhoto.id}#moments`;
   const shareData = {
-    title: `${currentLightboxPhoto.title} | Kunja Homestay, Bolpur, Santiniketan`,
-    text: `Take a look at this cozy moment from Kunja Homestay in Santiniketan: "${currentLightboxPhoto.title}"`,
-    url: window.location.href.split("#")[0] + `?moment=${currentLightboxPhoto.id}#gallery`
+    title: `${currentLightboxPhoto.title} | Kunja Homestay, Bolpur`,
+    text: `Take a look at this peaceful moment from Kunja Homestay in Santiniketan: "${currentLightboxPhoto.title}"`,
+    url: pageUrl
   };
 
   if (navigator.share) {
@@ -377,28 +419,73 @@ window.shareCurrentPhoto = async function() {
   }
 };
 
+// Social Share: WhatsApp
 window.shareWhatsApp = function() {
   if (!currentLightboxPhoto) return;
-  const url = encodeURIComponent(window.location.href.split("#")[0] + `?moment=${currentLightboxPhoto.id}#gallery`);
-  const text = encodeURIComponent(`Take a look at this peaceful moment from Kunja Homestay, Bolpur (Govt. of West Bengal Recognized): ${currentLightboxPhoto.title} `);
-  window.open(`https://api.whatsapp.com/send?text=${text}%20${url}`, "_blank");
+  const pageUrl = window.location.href.split("?")[0].split("#")[0] + `?moment=${currentLightboxPhoto.id}#moments`;
+  const text = encodeURIComponent(`Take a look at this photo from Kunja Homestay, Bolpur (Govt. of West Bengal Recognized): "${currentLightboxPhoto.title}"\n${pageUrl}`);
+  window.open(`https://api.whatsapp.com/send?text=${text}`, "_blank");
 };
 
+// Social Share: SMS / Native Message
+window.shareSMS = function() {
+  if (!currentLightboxPhoto) return;
+  const pageUrl = window.location.href.split("?")[0].split("#")[0] + `?moment=${currentLightboxPhoto.id}#moments`;
+  const text = encodeURIComponent(`Take a look at this photo from Kunja Homestay, Bolpur: "${currentLightboxPhoto.title}" — ${pageUrl}`);
+  window.location.href = `sms:?body=${text}`;
+};
+
+// Social Share: Facebook
 window.shareFacebook = function() {
   if (!currentLightboxPhoto) return;
-  const url = encodeURIComponent(window.location.href.split("#")[0] + `?moment=${currentLightboxPhoto.id}#gallery`);
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, "_blank");
+  const pageUrl = encodeURIComponent(window.location.href.split("?")[0].split("#")[0] + `?moment=${currentLightboxPhoto.id}#moments`);
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`, "_blank");
 };
 
+// Social Share: Copy Link with 2-second "Copied!" feedback
 window.copyShareLink = function() {
   if (!currentLightboxPhoto) return;
-  const url = window.location.href.split("#")[0] + `?moment=${currentLightboxPhoto.id}#gallery`;
-  navigator.clipboard.writeText(url).then(() => {
+  const pageUrl = window.location.href.split("?")[0].split("#")[0] + `?moment=${currentLightboxPhoto.id}#moments`;
+  const copyBtn = document.getElementById("copyShareBtn");
+
+  const setCopiedState = () => {
+    if (copyBtn) {
+      const origHtml = copyBtn.innerHTML;
+      copyBtn.innerHTML = "✓ Copied!";
+      copyBtn.classList.add("copied");
+      setTimeout(() => {
+        copyBtn.innerHTML = origHtml;
+        copyBtn.classList.remove("copied");
+      }, 2000);
+    }
     showToast("Link copied to clipboard!");
-  }).catch(() => {
-    showToast("Link: " + url);
-  });
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(pageUrl).then(setCopiedState).catch(() => {
+      fallbackCopy(pageUrl, setCopiedState);
+    });
+  } else {
+    fallbackCopy(pageUrl, setCopiedState);
+  }
 };
+
+function fallbackCopy(text, callback) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.opacity = "0";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand("copy");
+    if (callback) callback();
+  } catch (err) {
+    showToast("Link: " + text);
+  }
+  document.body.removeChild(ta);
+}
 
 // Render Reviews
 function renderReviews() {
@@ -466,7 +553,7 @@ window.submitGuestMemory = function(e) {
     category: "gatherings",
     title: title,
     caption: `${caption} (Shared by ${author || "Guest"})`,
-    image: imgUrl || "assets/images/photo_16.jpeg"
+    image: imgUrl || "images/kunja-16.jpeg"
   };
 
   kunjaData.gallery.unshift(newMoment);
@@ -504,6 +591,21 @@ window.triggerDirectWhatsApp = function() {
   window.open(`https://wa.me/919064629141?text=${msg}`, "_blank");
 };
 
+// Scroll smoothly to WhatsApp Inquiry section from sticky bar
+window.scrollToInquiry = function(e) {
+  if (e) e.preventDefault();
+  const inqSec = document.getElementById("inquire");
+  if (inqSec) {
+    inqSec.scrollIntoView({ behavior: "smooth" });
+    const firstInput = document.getElementById("inqGuestName");
+    if (firstInput) {
+      setTimeout(() => firstInput.focus(), 650);
+    }
+  } else {
+    window.open("https://wa.me/919064629141", "_blank");
+  }
+};
+
 // Modal helpers
 window.openModal = function(modalId) {
   const modal = document.getElementById(modalId);
@@ -524,8 +626,9 @@ window.closeModal = function(modalId) {
 window.toggleMobileDrawer = function() {
   const drawer = document.getElementById("mobileDrawer");
   const overlay = document.getElementById("mobileDrawerOverlay");
-  const isOpen = drawer.classList.contains("open");
+  if (!drawer || !overlay) return;
 
+  const isOpen = drawer.classList.contains("open");
   if (isOpen) {
     drawer.classList.remove("open");
     overlay.classList.remove("open");
@@ -536,6 +639,46 @@ window.toggleMobileDrawer = function() {
     document.body.style.overflow = "hidden";
   }
 };
+
+// Setup Backdrop & Keyboard Click Closes
+function setupModalBackdropCloses() {
+  const modals = ["lightboxModal", "govtPlaqueModal", "memoryModal", "reviewModal"];
+  modals.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("click", (e) => {
+        if (e.target === el) {
+          if (id === "lightboxModal") closeLightbox();
+          else closeModal(id);
+        }
+      });
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeLightbox();
+      closeModal("govtPlaqueModal");
+      closeModal("memoryModal");
+      closeModal("reviewModal");
+      const drawer = document.getElementById("mobileDrawer");
+      if (drawer && drawer.classList.contains("open")) {
+        toggleMobileDrawer();
+      }
+    }
+  });
+}
+
+// Auto-open moment from URL if query param ?moment=ID exists
+function checkUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const momentId = params.get("moment");
+  if (momentId) {
+    setTimeout(() => {
+      openLightbox(momentId);
+    }, 450);
+  }
+}
 
 // Toast notification
 function showToast(message) {

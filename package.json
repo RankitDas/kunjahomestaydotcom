@@ -1,0 +1,18 @@
+{
+  "name": "kunjahomestaydotcom",
+  "version": "1.0.0",
+  "description": "Kunja Homestay — Authentic rural homestay in Bolpur, Santiniketan recognized by Govt. of West Bengal Department of Tourism",
+  "scripts": {
+    "start": "python -m http.server 8080",
+    "verify": "node verify-images.js",
+    "build": "npm run verify && node build-check.js"
+  },
+  "keywords": [
+    "kunja-homestay",
+    "santiniketan",
+    "bolpur",
+    "west-bengal-tourism"
+  ],
+  "author": "Kunja Homestay",
+  "license": "ISC"
+}
