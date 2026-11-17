@@ -97,7 +97,7 @@ try {
     imgCount++;
     // Normalize leading slash to check local existence
     let checkPath = imgPath.startsWith('/') ? imgPath.slice(1) : imgPath;
-    let exists = fs.existsSync(checkPath) || fs.existsSync(path.join('public', checkPath));
+    let exists = fs.existsSync(checkPath);
     assert(exists, `Referenced asset exists: ${imgPath}`);
   }
   console.log(`  ℹ Verified ${imgCount} static image references in index.html`);
@@ -105,12 +105,12 @@ try {
   assert(false, `index.html validation error: ${e.message}`);
 }
 
-// 6. Verify Images in public/images
-console.log('\n🖼 Step 6: Validating public/images directory...');
-const publicImagesDir = path.join(__dirname, 'public', 'images');
-assert(fs.existsSync(publicImagesDir), 'public/images directory exists');
-const publicImages = fs.readdirSync(publicImagesDir).filter(f => f.endsWith('.jpeg'));
-assert(publicImages.length === 64, `public/images contains all 64 bundled homestay photographs (found ${publicImages.length})`);
+// 6. Verify Images in images/ directory
+console.log('\n🖼 Step 6: Validating images/ directory...');
+const imagesDir = path.join(__dirname, 'images');
+assert(fs.existsSync(imagesDir), 'images directory exists');
+const rootImages = fs.readdirSync(imagesDir).filter(f => f.endsWith('.jpeg'));
+assert(rootImages.length === 64, `images contains all 64 bundled homestay photographs (found ${rootImages.length})`);
 
 // 7. Verify Room Occupancy Badges & Gallery Data
 console.log('\n👥 Step 7: Validating Room Occupancy & Gallery in app.js...');

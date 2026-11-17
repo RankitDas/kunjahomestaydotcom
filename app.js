@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupModalBackdropCloses();
 });
 
-// Resilient Image Fallback: Automatically falls back between /images/, public/images/, and assets/images/
+// Resilient Image Fallback: Automatically falls back between /images/ and images/
 function initImageResilience() {
   document.addEventListener("error", (e) => {
     if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === "img") {
@@ -271,17 +271,10 @@ function initImageResilience() {
       const src = img.getAttribute("src") || img.src;
       if (!img.dataset.fallbackCount) {
         img.dataset.fallbackCount = "1";
-        if (src.includes("/images/")) {
-          img.src = src.replace("/images/", "public/images/");
-        } else if (src.includes("public/images/")) {
-          img.src = src.replace("public/images/", "images/");
-        }
-      } else if (img.dataset.fallbackCount === "1") {
-        img.dataset.fallbackCount = "2";
-        if (img.src.includes("public/images/")) {
-          img.src = img.src.replace("public/images/", "assets/images/");
-        } else if (img.src.includes("images/")) {
-          img.src = img.src.replace("images/", "assets/images/");
+        if (src.startsWith("/images/")) {
+          img.src = src.replace("/images/", "images/");
+        } else if (src.startsWith("images/")) {
+          img.src = "/" + src;
         }
       }
     }
