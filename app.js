@@ -1,7 +1,7 @@
 /**
  * Kunja Homestay — Bolpur, Santiniketan
  * Client-Side State, Dynamic Rendering & Interactive Handlers
- * All photography loaded directly from bundled public assets (/public/images/)
+ * All photography loaded directly from /images/ (mapped via vercel.json rewrite)
  */
 
 const kunjaData = {
@@ -14,7 +14,7 @@ const kunjaData = {
       authority: "Department of Tourism, Government of West Bengal",
       badgeText: "Officially Recognized by the Department of Tourism, Government of West Bengal",
       shortBadge: "Govt. of West Bengal Recognized Homestay",
-      plaqueImage: "public/images/photo_57.jpeg"
+      plaqueImage: "/images/photo_57.jpeg"
     },
     features: {
       enableAvailabilityCalendar: false,
@@ -64,10 +64,10 @@ const kunjaData = {
         "Peaceful garden access"
       ],
       images: [
-        "public/images/photo_10.jpeg",
-        "public/images/photo_11.jpeg",
-        "public/images/photo_13.jpeg",
-        "public/images/photo_14.jpeg"
+        "/images/photo_10.jpeg",
+        "/images/photo_11.jpeg",
+        "/images/photo_13.jpeg",
+        "/images/photo_14.jpeg"
       ]
     },
     {
@@ -82,12 +82,12 @@ const kunjaData = {
         "Home-cooked meal options"
       ],
       images: [
-        "public/images/photo_20.jpeg",
-        "public/images/photo_22.jpeg",
-        "public/images/photo_23.jpeg",
-        "public/images/photo_24.jpeg",
-        "public/images/photo_26.jpeg",
-        "public/images/photo_15.jpeg"
+        "/images/photo_20.jpeg",
+        "/images/photo_22.jpeg",
+        "/images/photo_23.jpeg",
+        "/images/photo_24.jpeg",
+        "/images/photo_26.jpeg",
+        "/images/photo_15.jpeg"
       ]
     },
     {
@@ -102,12 +102,12 @@ const kunjaData = {
         "Freshly cooked homely meals"
       ],
       images: [
-        "public/images/photo_30.jpeg",
-        "public/images/photo_42.jpeg",
-        "public/images/photo_51.jpeg",
-        "public/images/photo_55.jpeg",
-        "public/images/photo_43.jpeg",
-        "public/images/photo_27.jpeg"
+        "/images/photo_30.jpeg",
+        "/images/photo_42.jpeg",
+        "/images/photo_51.jpeg",
+        "/images/photo_55.jpeg",
+        "/images/photo_43.jpeg",
+        "/images/photo_27.jpeg"
       ]
     },
     {
@@ -122,12 +122,12 @@ const kunjaData = {
         "Easy access to dining & garden"
       ],
       images: [
-        "public/images/photo_37.jpeg",
-        "public/images/photo_38.jpeg",
-        "public/images/photo_41.jpeg",
-        "public/images/photo_44.jpeg",
-        "public/images/photo_48.jpeg",
-        "public/images/photo_54.jpeg"
+        "/images/photo_37.jpeg",
+        "/images/photo_38.jpeg",
+        "/images/photo_41.jpeg",
+        "/images/photo_44.jpeg",
+        "/images/photo_48.jpeg",
+        "/images/photo_54.jpeg"
       ]
     }
   ],
@@ -138,84 +138,84 @@ const kunjaData = {
       category: "ambiance",
       title: "Golden night ambiance in the open courtyard",
       caption: "Kunja Homestay glowing warmly under the evening sky with garden umbrellas and bonfire lawn.",
-      image: "public/images/photo_34.jpeg"
+      image: "/images/photo_34.jpeg"
     },
     {
       id: "gal-02",
       category: "gatherings",
       title: "Weekend smiles and family gatherings",
       caption: "Guests gathered under our front entrance lodge sign, enjoying unhurried conversations.",
-      image: "public/images/photo_36.jpeg"
+      image: "/images/photo_36.jpeg"
     },
     {
       id: "gal-03",
       category: "rooms",
       title: "Traditional Santiniketan Kantha folk art bedspread",
       caption: "Handcrafted tribal musician motifs adorning the comfortable beds in the Garden Wing.",
-      image: "public/images/photo_37.jpeg"
+      image: "/images/photo_37.jpeg"
     },
     {
       id: "gal-04",
       category: "ambiance",
       title: "Courtyard stone path and blooming flower pots",
       caption: "Lush potted marigolds, petunias, and green foliage lining the pathway in the morning sun.",
-      image: "public/images/photo_56.jpeg"
+      image: "/images/photo_56.jpeg"
     },
     {
       id: "gal-05",
       category: "gatherings",
       title: "Happy family moments on the garden lawn",
       caption: "Multigenerational travelers pausing for a cheerful photograph during morning tea.",
-      image: "public/images/photo_17.jpeg"
+      image: "/images/photo_17.jpeg"
     },
     {
       id: "gal-06",
       category: "gatherings",
       title: "Warm smiles by the garden petunias",
       caption: "A joyful guest enjoying the peaceful floral courtyard in traditional attire.",
-      image: "public/images/photo_60.jpeg"
+      image: "/images/photo_60.jpeg"
     },
     {
       id: "gal-07",
       category: "ambiance",
       title: "Authentic home-cooked Bengali thali feast",
       caption: "Freshly prepared rice, comforting dal, and seasonal vegetables served hot at our dining table.",
-      image: "public/images/photo_58.jpeg"
+      image: "/images/photo_58.jpeg"
     },
     {
       id: "gal-08",
       category: "rooms",
       title: "Sunlit room with morning garden breeze",
       caption: "Natural daylight pouring into the Verandah suite, equipped with an electric kettle and tea station.",
-      image: "public/images/photo_20.jpeg"
+      image: "/images/photo_20.jpeg"
     },
     {
       id: "gal-09",
       category: "gatherings",
       title: "Gentle courtyard visitors & pet companions",
       caption: "Guest relaxing peacefully in an outdoor garden chair holding friendly pet rabbits.",
-      image: "public/images/photo_64.jpeg"
+      image: "/images/photo_64.jpeg"
     },
     {
       id: "gal-10",
       category: "ambiance",
       title: "Bright magenta Bougainvillea blossoms",
       caption: "Colorful flora blooming all year round along the courtyard garden borders.",
-      image: "public/images/photo_01.jpeg"
+      image: "/images/photo_01.jpeg"
     },
     {
       id: "gal-11",
       category: "rooms",
       title: "Clean and spacious family room layout",
       caption: "Multi-bed sleeping arrangements ideal for families visiting Bolpur together.",
-      image: "public/images/photo_30.jpeg"
+      image: "/images/photo_30.jpeg"
     },
     {
       id: "gal-12",
       category: "gatherings",
       title: "Group travelers arriving in Santiniketan",
       caption: "Happy guests pausing for a photo beside their traveler van before exploring Khoai.",
-      image: "public/images/photo_21.jpeg"
+      image: "/images/photo_21.jpeg"
     }
   ],
 
@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupModalBackdropCloses();
 });
 
-// Resilient Image Fallback: Automatically falls back between public/images, images, and assets/images
+// Resilient Image Fallback: Automatically falls back between /images/, public/images/, and assets/images/
 function initImageResilience() {
   document.addEventListener("error", (e) => {
     if (e.target && e.target.tagName && e.target.tagName.toLowerCase() === "img") {
@@ -271,16 +271,16 @@ function initImageResilience() {
       const src = img.getAttribute("src") || img.src;
       if (!img.dataset.fallbackCount) {
         img.dataset.fallbackCount = "1";
-        if (src.includes("public/images/")) {
-          img.src = src.replace("public/images/", "images/");
-        } else if (src.includes("assets/images/")) {
-          img.src = src.replace("assets/images/", "public/images/");
-        } else if (src.includes("/images/")) {
+        if (src.includes("/images/")) {
           img.src = src.replace("/images/", "public/images/");
+        } else if (src.includes("public/images/")) {
+          img.src = src.replace("public/images/", "images/");
         }
       } else if (img.dataset.fallbackCount === "1") {
         img.dataset.fallbackCount = "2";
-        if (img.src.includes("images/")) {
+        if (img.src.includes("public/images/")) {
+          img.src = img.src.replace("public/images/", "assets/images/");
+        } else if (img.src.includes("images/")) {
           img.src = img.src.replace("images/", "assets/images/");
         }
       }
@@ -579,7 +579,7 @@ window.submitGuestMemory = function(e) {
     category: "gatherings",
     title: title,
     caption: `${caption} (Shared by ${author || "Guest"})`,
-    image: imgUrl || "public/images/photo_16.jpeg"
+    image: imgUrl || "/images/photo_16.jpeg"
   };
 
   kunjaData.gallery.unshift(newMoment);

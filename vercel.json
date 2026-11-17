@@ -2,6 +2,10 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/images/:path*",
+      "destination": "/public/images/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

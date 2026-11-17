@@ -92,10 +92,13 @@ try {
   let match;
   let imgCount = 0;
   while ((match = imgRegex.exec(htmlContent)) !== null) {
-    const imgPath = match[1];
+    let imgPath = match[1];
     if (imgPath.startsWith('http') || imgPath.startsWith('data:')) continue;
     imgCount++;
-    assert(fs.existsSync(imgPath), `Referenced asset exists: ${imgPath}`);
+    // Normalize leading slash to check local existence
+    let checkPath = imgPath.startsWith('/') ? imgPath.slice(1) : imgPath;
+    let exists = fs.existsSync(checkPath) || fs.existsSync(path.join('public', checkPath));
+    assert(exists, `Referenced asset exists: ${imgPath}`);
   }
   console.log(`  ℹ Verified ${imgCount} static image references in index.html`);
 } catch (e) {
@@ -114,7 +117,7 @@ console.log('\n👥 Step 7: Validating Room Occupancy & Gallery in app.js...');
 const jsCode = fs.readFileSync('app.js', 'utf8');
 assert(jsCode.includes('"Perfect for 2 people"'), 'Includes "Perfect for 2 people" occupancy badge');
 assert(jsCode.includes('"Perfect for family"'), 'Includes "Perfect for family" occupancy badge');
-assert(jsCode.includes('public/images/photo_36.jpeg'), 'Weekend smiles gallery photo points to public/images/photo_36.jpeg');
+assert(jsCode.includes('/images/photo_36.jpeg'), 'Weekend smiles gallery photo points to /images/photo_36.jpeg');
 
 console.log('\n--------------------------------------------------');
 if (errors === 0) {
