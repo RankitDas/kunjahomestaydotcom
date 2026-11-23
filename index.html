@@ -88,20 +88,21 @@
 </head>
 <body>
 
-  <!-- Official Government Recognition Banner -->
-  <aside class="gov-announcement-bar" aria-label="Official Government Recognition">
-    <div class="container gov-announcement-content">
-      <div class="gov-pill">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <span class="gov-text-desktop">Department of Tourism, Government of West Bengal Recognized</span>
-        <span class="gov-text-mobile">Govt. of West Bengal Recognized</span>
+  <!-- 1. Center-Screen Maintenance / Notice Popup Modal (Initial Load) -->
+  <div class="base-modal notice-center-modal" id="noticeCenterModal" role="dialog" aria-modal="true" aria-label="Homestay Announcement" style="display: none;">
+    <div class="base-modal-content notice-modal-box">
+      <div class="notice-modal-badge">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="centerNoticeBadgeTitle">Important Notice</span>
       </div>
-      <div class="gov-link-wrapper">
-        <span class="gov-details-link gov-link-desktop" onclick="openModal('govtPlaqueModal')">View Official Government Recognition Plaque →</span>
-        <span class="gov-details-link gov-link-mobile" onclick="openModal('govtPlaqueModal')">View Plaque →</span>
+      <h3 class="notice-modal-title" id="centerNoticeTitle">Seasonal Homestay Announcement</h3>
+      <p class="notice-modal-msg" id="centerNoticeMessage"></p>
+      <div id="centerNoticeDates" class="notice-modal-dates"></div>
+      <div class="notice-modal-action">
+        <button class="btn btn-terracotta" onclick="dismissCenterNotice()">Acknowledge & Continue →</button>
       </div>
     </div>
-  </aside>
+  </div>
 
   <!-- Site Header -->
   <header class="site-header">
@@ -137,6 +138,18 @@
     </div>
   </header>
 
+  <!-- 2. Top Notice Banner (Right below Navbar) -->
+  <aside id="homestayNoticeBanner" class="homestay-notice-banner" style="display: none;" aria-label="Homestay Announcement">
+    <div class="container homestay-notice-content">
+      <div class="notice-badge">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <strong id="noticeBannerTitle">Homestay Notice</strong>
+      </div>
+      <p id="noticeBannerMessage" class="notice-message"></p>
+      <div id="noticeBannerDates" class="notice-dates" style="display: none;"></div>
+    </div>
+  </aside>
+
   <!-- Mobile Drawer -->
   <div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="toggleMobileDrawer()"></div>
   <aside class="mobile-drawer" id="mobileDrawer" aria-label="Mobile Navigation Drawer">
@@ -170,6 +183,13 @@
           <div class="reveal-on-scroll">
             <span class="eyebrow">Bolpur, Santiniketan • Rural Homestay</span>
             <h1 class="headline-hero">Slow Mornings, Red Earth, and a Home Waiting in Santiniketan.</h1>
+            
+            <!-- Fooding & Lodging Pill Highlight -->
+            <div class="fooding-lodging-badge">
+              <span class="badge-icon">🍲 🛏️</span>
+              <span><strong>Offers Fooding & Lodging:</strong> Authentic Bengali Home-Cooked Meals & Peaceful Homestay Rooms</span>
+            </div>
+
             <p class="lead-text" style="margin-top: 1.25rem;">
               Leave behind hurried schedules for the quiet lanes of Bolpur. At Kunja Homestay, days unfold at an easy pace—with fresh garden air, morning tea, home-cooked Bengali meals, and the warmth of a real family home.
             </p>
@@ -217,10 +237,20 @@
         
         <div style="text-align: center; max-width: 680px; margin: 0 auto 2.5rem;" class="reveal-on-scroll">
           <span class="eyebrow">Rest & Quiet</span>
-          <h2 class="headline-section">Our Rooms & Spaces</h2>
+          <h2 class="headline-section">Our Spaces & Properties</h2>
           <p class="lead-text" style="margin: 0 auto;">
-            Clean, sunlit rooms dressed in traditional Santiniketan Kantha and folk textiles, designed for unhurried rest after a day exploring the Khoai.
+            Choose between our two distinct Santiniketan properties—our central Courtyard residence and our peaceful Garden Retreat—each dressed in traditional Kantha and folk textiles with attached clean baths.
           </p>
+        </div>
+
+        <!-- Two Properties Interactive Showcase -->
+        <div class="properties-showcase-grid reveal-on-scroll" id="propertiesShowcase">
+          <!-- Rendered dynamically via app.js -->
+        </div>
+
+        <!-- Property Filter Pill Tabs -->
+        <div class="property-filter-nav reveal-on-scroll" id="propertyFilterNav">
+          <!-- Rendered dynamically via app.js -->
         </div>
 
         <!-- Dynamic Rooms Grid -->
@@ -292,6 +322,7 @@
             </p>
 
             <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+              <span class="room-highlight-pill" style="padding: 0.45rem 0.85rem; background:#FFF7ED; border-color:#FDBA74; font-weight:600; color:#9A3412;">🍲 Complete Fooding & Lodging</span>
               <span class="room-highlight-pill" style="padding: 0.45rem 0.85rem;">🌿 Red Laterite Khoai Walks</span>
               <span class="room-highlight-pill" style="padding: 0.45rem 0.85rem;">🍲 Fresh Home-Cooked Bengali Thali</span>
               <span class="room-highlight-pill" style="padding: 0.45rem 0.85rem;">🎨 Visva-Bharati & Sonajhuri Proximity</span>
@@ -346,6 +377,28 @@
         <!-- Dynamic Reviews Grid -->
         <div id="reviewsGrid" class="reviews-grid reveal-on-scroll">
           <!-- Rendered dynamically via app.js -->
+        </div>
+
+        <!-- Google Review Invitation Card + QR Code -->
+        <div class="google-review-invite-card reveal-on-scroll" id="googleReviewCard">
+          <div class="google-review-info">
+            <span class="review-star-badge">★★★★★ 5.0 on Google</span>
+            <h3 class="google-review-title">Loved Your Stay at Kunja Homestay?</h3>
+            <p class="google-review-text">
+              Your genuine impressions help fellow travelers discover peaceful, home-like hospitality in Santiniketan. Share your experience with a quick review and rating on Google!
+            </p>
+            <a href="https://www.google.com/travel/search?gsas=1&ts=CAESABorCg0SCwoJL20vMDcxcmo5EhoSFAoHCOoPEAsYHBIHCOoPEAsYHRgBMgIIACoHCgU6A0lOUg&qs=MidDaGtJbktYTXJ2XzR5ZGdtR2cwdlp5OHhNV2hrZURFeFl6UXhFQUVIAA&ap=MAC6AQdyZXZpZXdz&sa=X&hl=en-IN&gl=in&g2lb=4965990%2C72471280%2C72573224%2C72686036%2C72803964%2C72882230%2C73064764%2C121529350%2C121608706%2C121921501%2C121951222%2C122035346%2C122078727%2C122093076%2C122097177%2C122134888%2C122147525%2C122275263%2C122275264" 
+               id="googleReviewLink" 
+               class="btn btn-terracotta btn-google-review" 
+               target="_blank" 
+               rel="noopener noreferrer">
+              Rate Us on Google ★
+            </a>
+          </div>
+          <div class="google-review-qr-col">
+            <div id="googleReviewQr" class="google-review-qr-box" title="Scan to Rate Kunja Homestay on Google"></div>
+            <span class="qr-scan-label">Scan to Rate on Google</span>
+          </div>
         </div>
 
       </div>
@@ -478,6 +531,18 @@
     </section>
   </main>
 
+  <!-- 3. End-of-Website Notice Banner (Right above footer) -->
+  <aside id="homestayNoticeBannerBottom" class="homestay-notice-banner homestay-notice-banner-bottom" style="display: none;" aria-label="Homestay Announcement">
+    <div class="container homestay-notice-content">
+      <div class="notice-badge">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <strong id="noticeBannerBottomTitle">Homestay Notice</strong>
+      </div>
+      <p id="noticeBannerBottomMessage" class="notice-message"></p>
+      <div id="noticeBannerBottomDates" class="notice-dates" style="display: none;"></div>
+    </div>
+  </aside>
+
   <!-- Site Footer -->
   <footer class="site-footer">
     <div class="container">
@@ -603,9 +668,9 @@
       </p>
 
       <div class="govt-plaque-showcase">
-        <img src="images/kunja-57.jpeg" alt="Department of Tourism Government of West Bengal official Homestay Recognition Plaque at Kunja Homestay">
+        <img id="govtCertificateImg" src="images/certificates/kunja-57.jpeg" alt="Department of Tourism Government of West Bengal official Homestay Recognition Certificate & Plaque at Kunja Homestay" class="govt-certificate-img">
         <div style="font-size: 0.78rem; color: var(--color-text-muted); margin-top: 0.6rem; font-style: italic;">
-          Official Department of Tourism, Govt. of West Bengal Plaque displayed at Kunja Homestay entrance.
+          Official Department of Tourism, Govt. of West Bengal Certificate & Plaque recognized under the Homestay Promotion Scheme.
         </div>
       </div>
 
@@ -693,7 +758,10 @@
     </div>
   </div>
 
+  <!-- QRCode.js library for high-clarity client-side QR generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
   <!-- Client Script -->
-  <script src="app.js"></script>
+  <script src="app.js?v=20261123b"></script>
 </body>
 </html>

@@ -4,14 +4,31 @@ const path = require('node:path');
 
 const root = __dirname;
 const imageDir = path.join(root, 'images');
-const files = fs.readdirSync(imageDir);
+
+function getFilesRecursively(dir) {
+  let results = [];
+  const list = fs.readdirSync(dir);
+  list.forEach(file => {
+    const fullPath = path.join(dir, file);
+    const stat = fs.statSync(fullPath);
+    if (stat && stat.isDirectory()) {
+      results = results.concat(getFilesRecursively(fullPath));
+    } else {
+      results.push(path.relative(imageDir, fullPath).replace(/\\/g, '/'));
+    }
+  });
+  return results;
+}
+
+const files = getFilesRecursively(imageDir);
 const exactNames = new Set(files);
 const allowedExtension = /\.(?:jpg|jpeg|png|webp)$/;
 const errors = [];
 
-if (files.length !== 64) errors.push(`Expected 64 files in images/, found ${files.length}`);
+if (files.length < 64) errors.push(`Expected at least 64 files in images/, found ${files.length}`);
 for (const name of files) {
-  if (!allowedExtension.test(name) || name !== name.toLowerCase() || !/^kunja-\d{2}\.(?:jpg|jpeg|png|webp)$/.test(name)) {
+  const base = path.basename(name);
+  if (!allowedExtension.test(base) || base !== base.toLowerCase() || !/^kunja-[a-z0-9._-]+\.(?:jpg|jpeg|png|webp)$/.test(base)) {
     errors.push(`Invalid image filename: ${name}`);
   }
 }

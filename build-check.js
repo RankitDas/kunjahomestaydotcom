@@ -23,10 +23,35 @@ function assert(condition, message) {
 
 // 1. Core Project Files Check
 console.log('📦 Step 1: Checking Core Files...');
-const requiredFiles = ['index.html', 'style.css', 'app.js', 'kunjaData.json'];
+const requiredFiles = [
+  'index.html',
+  'style.css',
+  'app.js',
+  'kunjaData.json',
+  'kunja-desk.html',
+  'admin.js',
+  '.htaccess',
+  'robots.txt',
+  'sitemap.xml',
+  'api/config.php',
+  'api/auth.php',
+  'api/save-content.php',
+  'api/upload-image.php',
+  'api/sync-folders.php'
+];
 requiredFiles.forEach(file => {
   assert(fs.existsSync(file), `File ${file} exists`);
 });
+
+// Check that kunja-desk.html has noindex and zero public links in index.html / app.js
+const adminHtml = fs.readFileSync('kunja-desk.html', 'utf8');
+assert(adminHtml.includes('name="robots" content="noindex, nofollow"'), 'kunja-desk.html has noindex, nofollow meta tag');
+const indexHtmlContent = fs.readFileSync('index.html', 'utf8');
+assert(!indexHtmlContent.includes('kunja-desk'), 'index.html contains zero links or references to kunja-desk');
+const appJsContent = fs.readFileSync('app.js', 'utf8');
+assert(!appJsContent.includes('kunja-desk'), 'app.js contains zero links or references to kunja-desk');
+const sitemapContent = fs.readFileSync('sitemap.xml', 'utf8');
+assert(!sitemapContent.includes('kunja-desk'), 'sitemap.xml contains zero links or references to kunja-desk');
 
 // 2. Validate JSON Syntax
 console.log('\n📄 Step 2: Validating kunjaData.json...');
@@ -110,7 +135,7 @@ console.log('\n🖼 Step 6: Validating images/ directory...');
 const imagesDir = path.join(__dirname, 'images');
 assert(fs.existsSync(imagesDir), 'images directory exists');
 const rootImages = fs.readdirSync(imagesDir).filter(f => /\.(?:jpg|jpeg|png|webp)$/.test(f));
-assert(rootImages.length === 64, `images contains all 64 bundled homestay photographs (found ${rootImages.length})`);
+assert(rootImages.length >= 64, `images contains at least 64 bundled homestay photographs (found ${rootImages.length})`);
 
 // 7. Verify Room Occupancy Badges & Gallery Data
 console.log('\n👥 Step 7: Validating Room Occupancy & Gallery in app.js...');

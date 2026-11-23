@@ -8,14 +8,17 @@
       "authority": "Department of Tourism, Government of West Bengal",
       "badgeText": "Officially Recognized by the Department of Tourism, Government of West Bengal",
       "shortBadge": "Govt. of West Bengal Recognized Homestay",
-      "plaqueImage": "images/kunja-57.jpeg"
+      "plaqueImage": "images/kunja-57.jpeg",
+      "certificateImage": "images/certificates/kunja-whatsapp-image-2026--47d71b.jpeg"
     },
     "features": {
       "enableAvailabilityCalendar": false,
       "enableRoomSelection": false,
       "enablePhotoSharing": true,
       "enableGuestReviewSubmission": true
-    }
+    },
+    "offersFoodingAndLodging": true,
+    "foodingAndLodgingTagline": "Offers Fooding & Lodging — Authentic Home-Cooked Bengali Meals & Peaceful Homestay Rooms"
   },
   "contact": {
     "phoneDisplay": "+91 90646 29141",
@@ -41,6 +44,555 @@
         "from": "By Road",
         "details": "Smooth highway access via NH-19 / Panagarh–Morgram route toward Bolpur, with direct pin navigation on Google Maps."
       }
-    ]
-  }
+    ],
+    "googleReviewUrl": "https://www.google.com/travel/search?gsas=1&ts=CAESABorCg0SCwoJL20vMDcxcmo5EhoSFAoHCOoPEAsYHBIHCOoPEAsYHRgBMgIIACoHCgU6A0lOUg&qs=MidDaGtJbktYTXJ2XzR5ZGdtR2cwdlp5OHhNV2hrZURFeFl6UXhFQUVIAA&ap=MAC6AQdyZXZpZXdz&sa=X&hl=en-IN&gl=in&g2lb=4965990%2C72471280%2C72573224%2C72686036%2C72803964%2C72882230%2C73064764%2C121529350%2C121608706%2C121921501%2C121951222%2C122035346%2C122078727%2C122093076%2C122097177%2C122134888%2C122147525%2C122275263%2C122275264"
+  },
+  "rooms": [
+    {
+      "id": "courtyard-double",
+      "name": "The Courtyard Double Room",
+      "occupancyTag": "Perfect for 2 people",
+      "description": "Designed for couples, solo travelers, or two friends looking for calm and privacy. Natural daylight, clean linen, comfortable bedding, and quiet surroundings make it easy to rest well after a day out in Santiniketan.",
+      "highlights": [
+        "Attached clean bath",
+        "Airy windows",
+        "Morning tea service",
+        "Peaceful garden access"
+      ],
+      "images": [
+        "images/kunja-10.jpeg",
+        "images/kunja-11.jpeg",
+        "images/kunja-13.jpeg",
+        "images/kunja-14.jpeg"
+      ],
+      "nightlyPrice": "₹50000 / night",
+      "seasonLabel": "Standard Tariff"
+    },
+    {
+      "id": "verandah-twin",
+      "name": "The Verandah Twin Room",
+      "occupancyTag": "Perfect for 2 people",
+      "description": "A bright, welcoming room with easy access to the sit-out area—ideal for reading a book, enjoying morning coffee, or listening to birdsong in the early hours of Bolpur.",
+      "highlights": [
+        "Attached clean bath",
+        "Cozy seating corner",
+        "Natural ventilation",
+        "Home-cooked meal options"
+      ],
+      "images": [
+        "images/kunja-20.jpeg",
+        "images/kunja-22.jpeg",
+        "images/kunja-23.jpeg",
+        "images/kunja-24.jpeg",
+        "images/kunja-26.jpeg",
+        "images/kunja-15.jpeg"
+      ],
+      "nightlyPrice": "₹2,800 / night",
+      "seasonLabel": "Standard Tariff"
+    },
+    {
+      "id": "spacious-family",
+      "name": "The Spacious Family Room",
+      "occupancyTag": "Perfect for family",
+      "description": "Generous floor space with comfortable sleeping arrangements so parents and children can stay together without feeling crowded. Opens out toward the open courtyard where kids have room to move freely.",
+      "highlights": [
+        "Spacious layout",
+        "Attached clean bath",
+        "Family-friendly comfort",
+        "Freshly cooked homely meals"
+      ],
+      "images": [
+        "images/kunja-30.jpeg",
+        "images/kunja-42.jpeg",
+        "images/kunja-51.jpeg",
+        "images/kunja-55.jpeg",
+        "images/kunja-43.jpeg",
+        "images/kunja-27.jpeg"
+      ],
+      "nightlyPrice": "₹3,800 / night",
+      "seasonLabel": "Standard Tariff"
+    },
+    {
+      "id": "garden-family-suite",
+      "name": "The Garden Wing Family Suite",
+      "occupancyTag": "Perfect for family",
+      "description": "Thoughtfully arranged for families traveling with children or elders who value ground-level ease, quiet nights, and relaxed common spaces for evening conversations. Dressed in handcrafted Santiniketan folk textiles.",
+      "highlights": [
+        "Extra room to unwind",
+        "Attached clean bath",
+        "Quiet surroundings",
+        "Easy access to dining & garden"
+      ],
+      "images": [
+        "images/kunja-37.jpeg",
+        "images/kunja-38.jpeg",
+        "images/kunja-41.jpeg",
+        "images/kunja-44.jpeg",
+        "images/kunja-48.jpeg",
+        "images/kunja-54.jpeg"
+      ],
+      "nightlyPrice": "₹4,500 / night",
+      "seasonLabel": "Standard Tariff"
+    }
+  ],
+  "gallery": [
+    {
+      "id": "gal-01",
+      "category": "ambiance",
+      "title": "Golden night ambiance in the open courtyard",
+      "caption": "Kunja Homestay glowing warmly under the evening sky with garden umbrellas and bonfire lawn.",
+      "image": "images/kunja-34.jpeg"
+    },
+    {
+      "id": "gal-02",
+      "category": "gatherings",
+      "title": "Weekend smiles and family gatherings",
+      "caption": "Guests gathered under our front entrance lodge sign, enjoying unhurried conversations.",
+      "image": "images/kunja-36.jpeg"
+    },
+    {
+      "id": "gal-03",
+      "category": "rooms",
+      "title": "Traditional Santiniketan Kantha folk art bedspread",
+      "caption": "Handcrafted tribal musician motifs adorning the comfortable beds in the Garden Wing.",
+      "image": "images/kunja-37.jpeg"
+    },
+    {
+      "id": "gal-04",
+      "category": "ambiance",
+      "title": "Courtyard stone path and blooming flower pots",
+      "caption": "Lush potted marigolds, petunias, and green foliage lining the pathway in the morning sun.",
+      "image": "images/kunja-56.jpeg"
+    },
+    {
+      "id": "gal-05",
+      "category": "gatherings",
+      "title": "Happy family moments on the garden lawn",
+      "caption": "Multigenerational travelers pausing for a cheerful photograph during morning tea.",
+      "image": "images/kunja-17.jpeg"
+    },
+    {
+      "id": "gal-06",
+      "category": "gatherings",
+      "title": "Warm smiles by the garden petunias",
+      "caption": "A joyful guest enjoying the peaceful floral courtyard in traditional attire.",
+      "image": "images/kunja-60.jpeg"
+    },
+    {
+      "id": "gal-07",
+      "category": "ambiance",
+      "title": "Authentic home-cooked Bengali thali feast",
+      "caption": "Freshly prepared rice, comforting dal, and seasonal vegetables served hot at our dining table.",
+      "image": "images/kunja-58.jpeg"
+    },
+    {
+      "id": "gal-08",
+      "category": "rooms",
+      "title": "Sunlit room with morning garden breeze",
+      "caption": "Natural daylight pouring into the Verandah suite, equipped with an electric kettle and tea station.",
+      "image": "images/kunja-20.jpeg"
+    },
+    {
+      "id": "gal-09",
+      "category": "gatherings",
+      "title": "Gentle courtyard visitors & pet companions",
+      "caption": "Guest relaxing peacefully in an outdoor garden chair holding friendly pet rabbits.",
+      "image": "images/kunja-64.jpeg"
+    },
+    {
+      "id": "gal-10",
+      "category": "ambiance",
+      "title": "Bright magenta Bougainvillea blossoms",
+      "caption": "Colorful flora blooming all year round along the courtyard garden borders.",
+      "image": "images/kunja-01.jpeg"
+    },
+    {
+      "id": "gal-11",
+      "category": "rooms",
+      "title": "Clean and spacious family room layout",
+      "caption": "Multi-bed sleeping arrangements ideal for families visiting Bolpur together.",
+      "image": "images/kunja-30.jpeg"
+    },
+    {
+      "id": "gal-12",
+      "category": "gatherings",
+      "title": "Group travelers arriving in Santiniketan",
+      "caption": "Happy guests pausing for a photo beside their traveler van before exploring Khoai.",
+      "image": "images/kunja-21.jpeg"
+    },
+    {
+      "id": "gal-1795385988239-39",
+      "category": "ambiance",
+      "title": "Kunja 02",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-02.jpeg"
+    },
+    {
+      "id": "gal-1795385988239-839",
+      "category": "ambiance",
+      "title": "Kunja 03",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-03.jpeg"
+    },
+    {
+      "id": "gal-1795385988239-827",
+      "category": "ambiance",
+      "title": "Kunja 04",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-04.jpeg"
+    },
+    {
+      "id": "gal-1795385988239-755",
+      "category": "ambiance",
+      "title": "Kunja 05",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-05.jpeg"
+    },
+    {
+      "id": "gal-1795385988239-458",
+      "category": "ambiance",
+      "title": "Kunja 06",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-06.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-17",
+      "category": "ambiance",
+      "title": "Kunja 07",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-07.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-479",
+      "category": "ambiance",
+      "title": "Kunja 08",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-08.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-960",
+      "category": "ambiance",
+      "title": "Kunja 09",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-09.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-983",
+      "category": "ambiance",
+      "title": "Kunja 12",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-12.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-301",
+      "category": "ambiance",
+      "title": "Kunja 16",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-16.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-358",
+      "category": "ambiance",
+      "title": "Kunja 18",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-18.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-864",
+      "category": "ambiance",
+      "title": "Kunja 19",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-19.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-929",
+      "category": "ambiance",
+      "title": "Kunja 25",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-25.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-934",
+      "category": "ambiance",
+      "title": "Kunja 28",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-28.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-672",
+      "category": "ambiance",
+      "title": "Kunja 29",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-29.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-152",
+      "category": "ambiance",
+      "title": "Kunja 31",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-31.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-983",
+      "category": "ambiance",
+      "title": "Kunja 32",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-32.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-718",
+      "category": "ambiance",
+      "title": "Kunja 33",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-33.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-404",
+      "category": "ambiance",
+      "title": "Kunja 35",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-35.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-662",
+      "category": "ambiance",
+      "title": "Kunja 39",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-39.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-747",
+      "category": "ambiance",
+      "title": "Kunja 40",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-40.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-398",
+      "category": "ambiance",
+      "title": "Kunja 45",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-45.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-792",
+      "category": "ambiance",
+      "title": "Kunja 46",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-46.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-223",
+      "category": "ambiance",
+      "title": "Kunja 47",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-47.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-96",
+      "category": "ambiance",
+      "title": "Kunja 49",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-49.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-55",
+      "category": "ambiance",
+      "title": "Kunja 50",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-50.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-712",
+      "category": "ambiance",
+      "title": "Kunja 52",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-52.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-900",
+      "category": "ambiance",
+      "title": "Kunja 53",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-53.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-909",
+      "category": "ambiance",
+      "title": "Kunja 57",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-57.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-126",
+      "category": "ambiance",
+      "title": "Kunja 59",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-59.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-924",
+      "category": "ambiance",
+      "title": "Kunja 61",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-61.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-6",
+      "category": "ambiance",
+      "title": "Kunja 62",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-62.jpeg"
+    },
+    {
+      "id": "gal-1795385988240-425",
+      "category": "ambiance",
+      "title": "Kunja 63",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja-63.jpeg"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "rev-1",
+      "guestName": "Ananya & Subhojit Sen",
+      "hometown": "Kolkata",
+      "quote": "Felt like visiting relatives in Santiniketan, not staying at a commercial property.",
+      "reviewText": "We came from Kolkata for a two-day break and loved every bit of our stay at Kunja Homestay. The rooms were spotless, the surroundings were super peaceful, and the morning tea in the open space was the highlight of our trip. Sonajhuri is just a short toto ride away."
+    },
+    {
+      "id": "rev-2",
+      "guestName": "Debashis Chatterjee & Family",
+      "hometown": "Durgapur",
+      "quote": "Wonderful for a family trip with elderly parents.",
+      "reviewText": "Traveling with senior citizens means you worry about food and comfort, and the hosts took care of everything with so much warmth. Simple, fresh home-cooked Bengali food, clean bathrooms, and zero noise at night. Our parents didn't want to leave!"
+    },
+    {
+      "id": "rev-3",
+      "guestName": "Rituparna Das",
+      "hometown": "Salt Lake, Kolkata",
+      "quote": "Warm hosts, clean rooms, and true Bolpur charm.",
+      "reviewText": "If you want to experience the real, quiet side of Shantiniketan away from crowded main-road hotels, this is the place. The hosts helped us arrange a local toto for sightseeing and guided us on the best time to visit Khoai. Looking forward to coming back during Poush Mela."
+    },
+    {
+      "id": "rev-4",
+      "guestName": "Sourav & Meghna Banerjee",
+      "hometown": "Howrah",
+      "quote": "Our kids had space to play while we finally got to relax.",
+      "reviewText": "We stayed here as a family of four and had such a joyful time. The open surroundings are safe and green, the rooms are airy, and the hospitality is genuinely heartfelt. Having a West Bengal Tourism recognized homestay also gave us complete peace of mind while planning."
+    }
+  ],
+  "noticeBanner": {
+    "enabled": false,
+    "title": "Seasonal Maintenance Notice",
+    "message": "Kunja Homestay is currently undergoing routine maintenance. We look forward to welcoming you soon.",
+    "fromDateTime": "2026-11-30T11:11",
+    "toDateTime": "2026-12-12T23:11"
+  },
+  "properties": [
+    {
+      "id": "building-1",
+      "name": "Kunja Homestay — Building 1 (Main Courtyard)",
+      "locationNote": "Main Courtyard, Bolpur Santiniketan",
+      "description": "Our traditional central residence nestled around the open red-soil courtyard, garden lawn, and outdoor tea sit-outs. Ideal for couples, families, and quiet Santiniketan retreats.",
+      "coverImage": "images/kunja-34.jpeg",
+      "rooms": [
+        {
+          "id": "courtyard-double",
+          "name": "The Courtyard Double Room",
+          "occupancyTag": "Perfect for 2 people",
+          "description": "Designed for couples, solo travelers, or two friends looking for calm and privacy. Natural daylight, clean linen, comfortable bedding, and quiet surroundings make it easy to rest well after a day out in Santiniketan.",
+          "highlights": [
+            "Attached clean bath",
+            "Airy windows",
+            "Morning tea service",
+            "Peaceful garden access"
+          ],
+          "images": [
+            "images/kunja-10.jpeg",
+            "images/kunja-11.jpeg",
+            "images/kunja-13.jpeg",
+            "images/kunja-14.jpeg"
+          ],
+          "nightlyPrice": "₹50000 / night",
+          "seasonLabel": "Standard Tariff"
+        },
+        {
+          "id": "verandah-twin",
+          "name": "The Verandah Twin Room",
+          "occupancyTag": "Perfect for 2 people",
+          "description": "A bright, welcoming room with easy access to the sit-out area—ideal for reading a book, enjoying morning coffee, or listening to birdsong in the early hours of Bolpur.",
+          "highlights": [
+            "Attached clean bath",
+            "Cozy seating corner",
+            "Natural ventilation",
+            "Home-cooked meal options"
+          ],
+          "images": [
+            "images/kunja-20.jpeg",
+            "images/kunja-22.jpeg",
+            "images/kunja-23.jpeg",
+            "images/kunja-24.jpeg",
+            "images/kunja-26.jpeg",
+            "images/kunja-15.jpeg"
+          ],
+          "nightlyPrice": "₹2,800 / night",
+          "seasonLabel": "Standard Tariff"
+        }
+      ]
+    },
+    {
+      "id": "building-2",
+      "name": "Kunja Homestay — Building 2 (Garden Retreat)",
+      "locationNote": "Garden Wing, Bolpur Santiniketan",
+      "description": "An airy, spacious property immersed in green flowering gardens, private verandahs, and generous family quarters dressed in handcrafted folk textiles.",
+      "coverImage": "images/kunja-56.jpeg",
+      "rooms": [
+        {
+          "id": "spacious-family",
+          "name": "The Spacious Family Room",
+          "occupancyTag": "Perfect for family",
+          "description": "Generous floor space with comfortable sleeping arrangements so parents and children can stay together without feeling crowded. Opens out toward the open courtyard where kids have room to move freely.",
+          "highlights": [
+            "Spacious layout",
+            "Attached clean bath",
+            "Family-friendly comfort",
+            "Freshly cooked homely meals"
+          ],
+          "images": [
+            "images/kunja-30.jpeg",
+            "images/kunja-42.jpeg",
+            "images/kunja-51.jpeg",
+            "images/kunja-55.jpeg",
+            "images/kunja-43.jpeg",
+            "images/kunja-27.jpeg"
+          ],
+          "nightlyPrice": "₹3,800 / night",
+          "seasonLabel": "Standard Tariff"
+        },
+        {
+          "id": "garden-family-suite",
+          "name": "The Garden Wing Family Suite",
+          "occupancyTag": "Perfect for family",
+          "description": "Thoughtfully arranged for families traveling with children or elders who value ground-level ease, quiet nights, and relaxed common spaces for evening conversations. Dressed in handcrafted Santiniketan folk textiles.",
+          "highlights": [
+            "Extra room to unwind",
+            "Attached clean bath",
+            "Quiet surroundings",
+            "Easy access to dining & garden"
+          ],
+          "images": [
+            "images/kunja-37.jpeg",
+            "images/kunja-38.jpeg",
+            "images/kunja-41.jpeg",
+            "images/kunja-44.jpeg",
+            "images/kunja-48.jpeg",
+            "images/kunja-54.jpeg"
+          ],
+          "nightlyPrice": "₹4,500 / night",
+          "seasonLabel": "Standard Tariff"
+        }
+      ]
+    }
+  ]
 }

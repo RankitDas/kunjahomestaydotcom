@@ -1,0 +1,16 @@
+# Options -Indexes
+Options -Indexes
+
+# Deny direct access to all JSON and PHP files directly except endpoints
+<Files "admin_credentials.json">
+    Require all denied
+</Files>
+
+<FilesMatch "\.json$">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header set X-Robots-Tag "noindex, nofollow"
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+</IfModule>

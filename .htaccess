@@ -1,0 +1,40 @@
+# Protect Sensitive Server Files and Directories
+<Files "admin_credentials.json">
+    Require all denied
+</Files>
+
+<FilesMatch "^admin_credentials\.json$">
+    Require all denied
+</FilesMatch>
+
+# Block access to backups
+RedirectMatch 403 ^/api/backups(/.*)?$
+RedirectMatch 403 ^/api/admin_credentials\.json$
+
+# Disable Directory Indexing
+Options -Indexes
+
+# Security & SEO Headers
+<IfModule mod_headers.c>
+    # Search Engine Exclusion for private dashboard and API
+    <Files "kunja-desk.html">
+        Header set X-Robots-Tag "noindex, nofollow"
+    </Files>
+
+    # Disable Caching for Data and dynamic JSON
+    <Files "kunjaData.json">
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
+    </Files>
+</IfModule>
+
+# Fallback MIME types
+<IfModule mod_mime.c>
+    AddType application/json .json
+    AddType image/jpeg .jpeg .jpg
+    AddType image/png .png
+    AddType image/webp .webp
+    AddType text/css .css
+    AddType application/javascript .js
+</IfModule>

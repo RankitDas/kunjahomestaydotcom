@@ -725,6 +725,416 @@ h1, h2, h3, h4, .font-serif {
   margin-bottom: 1.25rem;
 }
 
+/* Seasonal Pricing on Room Cards */
+.room-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px dashed var(--color-border-subtle);
+}
+.room-nightly-price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+  font-family: var(--font-sans);
+}
+.room-season-badge {
+  display: inline-block;
+  background: #EBF4EE;
+  color: var(--color-forest);
+  border: 1px solid rgba(44, 76, 56, 0.2);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Homestay Closure & Notice Banner */
+.homestay-notice-banner {
+  background: #FFF7ED;
+  border-bottom: 2px solid #FDBA74;
+  color: #7C2D12;
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 95;
+}
+.homestay-notice-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: flex-start;
+}
+@media (min-width: 768px) {
+  .homestay-notice-content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+}
+.notice-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: #9A3412;
+}
+.notice-message {
+  margin: 0;
+  flex: 1;
+  color: #7C2D12;
+  line-height: 1.45;
+}
+.notice-dates {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #FFEDD5;
+  border: 1px solid #FDBA74;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #9A3412;
+  white-space: nowrap;
+}
+
+/* Fooding & Lodging Highlight Badge */
+.fooding-lodging-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #FFF7ED;
+  border: 1px solid #FDBA74;
+  color: #9A3412;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  margin-top: 1rem;
+  line-height: 1.4;
+  box-shadow: 0 1px 3px rgba(184, 83, 53, 0.08);
+}
+.fooding-lodging-badge .badge-icon {
+  font-size: 1.1rem;
+}
+
+/* 1. Center-Screen Maintenance / Notice Popup Modal */
+.notice-center-modal {
+  background: rgba(31, 54, 41, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1050;
+}
+.notice-modal-box {
+  background: #FFFDF9;
+  border: 2px solid #FDBA74;
+  border-radius: var(--radius-md);
+  padding: 2.25rem 2rem;
+  max-width: 520px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(31, 54, 41, 0.25);
+  animation: modalPopupScale 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes modalPopupScale {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+.notice-modal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #FFEDD5;
+  color: #9A3412;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+.notice-modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.55rem;
+  color: var(--color-forest);
+  margin-bottom: 0.75rem;
+  line-height: 1.25;
+}
+.notice-modal-msg {
+  font-size: 0.95rem;
+  color: var(--color-text-main);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+.notice-modal-dates {
+  display: inline-block;
+  background: #FFF7ED;
+  border: 1px solid #FDBA74;
+  color: #9A3412;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.5rem;
+}
+.notice-modal-action {
+  display: flex;
+  justify-content: center;
+}
+
+/* 2 & 3. Top and Bottom Notice Banners */
+.homestay-notice-banner-bottom {
+  border-top: 2px solid #FDBA74;
+  border-bottom: none;
+}
+
+/* Government Recognition Certificate Modal Image */
+.govt-certificate-img {
+  max-height: 70vh;
+  width: auto;
+  margin: 0 auto;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+}
+
+/* Two Properties Showcase & Hover/Tap Overlay */
+.properties-showcase-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+@media (min-width: 768px) {
+  .properties-showcase-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.property-card {
+  position: relative;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+}
+.property-card:hover, .property-card.active {
+  border-color: var(--color-terracotta);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(31, 54, 41, 0.15);
+}
+.property-card-cover {
+  position: relative;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background: #E8DFD3;
+}
+.property-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.property-card:hover .property-card-cover img {
+  transform: scale(1.05);
+}
+.property-overlay-cta {
+  position: absolute;
+  inset: 0;
+  background: rgba(31, 54, 41, 0.72);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  color: #FFF;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(2px);
+  padding: 1rem;
+  text-align: center;
+}
+.property-card:hover .property-overlay-cta,
+.property-card:focus .property-overlay-cta {
+  opacity: 1;
+}
+.property-overlay-text {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #FAF5EE;
+}
+.property-overlay-sub {
+  font-size: 0.82rem;
+  color: var(--color-ochre);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+.property-card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+.property-location-tag {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-terracotta);
+  font-weight: 700;
+}
+.property-title {
+  font-size: 1.35rem;
+  color: var(--color-forest);
+  margin-bottom: 0.25rem;
+}
+.property-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+.property-active-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-terracotta);
+  border-top: 1px dashed var(--color-border-subtle);
+}
+
+/* Property Filter Tabs */
+.property-filter-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 2rem;
+}
+.property-filter-btn {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.6rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-forest);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.property-filter-btn:hover {
+  border-color: var(--color-forest);
+}
+.property-filter-btn.active {
+  background: var(--color-forest);
+  color: #FFF;
+  border-color: var(--color-forest);
+  box-shadow: 0 2px 8px rgba(31, 54, 41, 0.15);
+}
+
+/* Google Review Card with QR Code */
+.google-review-invite-card {
+  margin-top: 3rem;
+  background: #FFFDF9;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  box-shadow: var(--shadow-card);
+}
+@media (min-width: 768px) {
+  .google-review-invite-card {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2.25rem 2.5rem;
+  }
+}
+.google-review-info {
+  flex: 1;
+}
+.review-star-badge {
+  display: inline-block;
+  background: #FEF3C7;
+  color: #92400E;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+.google-review-title {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  color: var(--color-forest);
+  margin-bottom: 0.5rem;
+}
+.google-review-text {
+  font-size: 0.92rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+  max-width: 600px;
+}
+.btn-google-review {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 700;
+}
+.google-review-qr-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  background: #FFF;
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+.google-review-qr-box {
+  width: 96px;
+  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.google-review-qr-box img {
+  width: 96px !important;
+  height: 96px !important;
+}
+.qr-scan-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-forest);
+  font-weight: 700;
+}
+
 .room-highlights-list {
   list-style: none;
   display: flex;

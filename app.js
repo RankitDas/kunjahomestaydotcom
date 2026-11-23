@@ -251,23 +251,268 @@ const kunjaData = {
   ]
 };
 
+let activePropertyId = "all";
+
 // UI Controller on DOM Load
 document.addEventListener("DOMContentLoaded", () => {
+  // Fetch fresh kunjaData.json with cache busting to reflect real-time owner updates
+  fetchKunjaDataAndInit();
+});
+
+async function fetchKunjaDataAndInit() {
+  try {
+    const response = await fetch(`kunjaData.json?v=${Date.now()}`, { cache: "no-store" });
+    if (response.ok) {
+      const remoteData = await response.json();
+      if (remoteData && typeof remoteData === "object") {
+        Object.assign(kunjaData, remoteData);
+      }
+    }
+  } catch (err) {
+    console.warn("Using embedded fallback data for Kunja Homestay:", err);
+  }
+
+  // Sync certificate image in government modal
+  updateCertificateModalImage();
+
+  // Render Three-Stage Notices (Center Modal + Top Banner + Bottom Banner)
+  renderThreeStageNotices();
+
+  // Render Two Properties & Rooms
+  renderPropertiesShowcase();
   renderRooms();
+
   renderGallery("all");
   renderReviews();
+  renderGoogleReviewSection();
+
   setupObserver();
   initRoomSwipes();
   checkUrlParams();
   setupModalBackdropCloses();
-});
+}
 
-// Render Rooms & Spaces (No booking buttons, no room selector)
+// Government Recognition Plaque / Certificate Image Sync
+function updateCertificateModalImage() {
+  const certImg = document.getElementById("govtCertificateImg");
+  if (!certImg) return;
+  const imageSrc = kunjaData.siteConfig?.recognition?.certificateImage || 
+                   kunjaData.siteConfig?.recognition?.plaqueImage || 
+                   "images/certificates/kunja-57.jpeg";
+  certImg.src = imageSrc;
+}
+
+// Three-Stage Maintenance / Notice System
+function renderThreeStageNotices() {
+  if (!kunjaData.noticeBanner || !kunjaData.noticeBanner.enabled) {
+    hideAllNotices();
+    return;
+  }
+
+  const nb = kunjaData.noticeBanner;
+  const now = new Date();
+
+  // Check if notice has expired
+  if (nb.toDateTime) {
+    const to = new Date(nb.toDateTime);
+    if (now > to) {
+      hideAllNotices();
+      return;
+    }
+  }
+
+  const formatDate = (isoStr) => {
+    try {
+      const d = new Date(isoStr);
+      return d.toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    } catch (e) {
+      return isoStr;
+    }
+  };
+
+  let timeText = "";
+  if (nb.fromDateTime && nb.toDateTime) {
+    timeText = `📅 Scheduled: ${formatDate(nb.fromDateTime)} to ${formatDate(nb.toDateTime)}`;
+  } else if (nb.toDateTime) {
+    timeText = `📅 Reopening expected on ${formatDate(nb.toDateTime)}`;
+  } else if (nb.fromDateTime) {
+    timeText = `📅 Effective from ${formatDate(nb.fromDateTime)}`;
+  }
+
+  const title = nb.title || "Homestay Notice";
+  const message = nb.message || "";
+
+  // 1. Center-Screen Modal on Initial Load (Dismissible per session)
+  const centerModal = document.getElementById("noticeCenterModal");
+  const isDismissed = sessionStorage.getItem("kunja_notice_dismissed");
+
+  if (centerModal && !isDismissed) {
+    const centerTitle = document.getElementById("centerNoticeTitle");
+    const centerMsg = document.getElementById("centerNoticeMessage");
+    const centerDates = document.getElementById("centerNoticeDates");
+
+    if (centerTitle) centerTitle.textContent = title;
+    if (centerMsg) centerMsg.textContent = message;
+    if (centerDates) {
+      centerDates.textContent = timeText;
+      centerDates.style.display = timeText ? "inline-block" : "none";
+    }
+    centerModal.style.display = "flex";
+    centerModal.classList.add("active");
+  }
+
+  // 2. Top Notice Banner
+  const topBanner = document.getElementById("homestayNoticeBanner");
+  if (topBanner) {
+    const topTitle = document.getElementById("noticeBannerTitle");
+    const topMsg = document.getElementById("noticeBannerMessage");
+    const topDates = document.getElementById("noticeBannerDates");
+
+    if (topTitle) topTitle.textContent = title;
+    if (topMsg) topMsg.textContent = message;
+    if (topDates) {
+      topDates.textContent = timeText;
+      topDates.style.display = timeText ? "inline-flex" : "none";
+    }
+    topBanner.style.display = "block";
+  }
+
+  // 3. End-of-Website Notice Banner
+  const bottomBanner = document.getElementById("homestayNoticeBannerBottom");
+  if (bottomBanner) {
+    const bottomTitle = document.getElementById("noticeBannerBottomTitle");
+    const bottomMsg = document.getElementById("noticeBannerBottomMessage");
+    const bottomDates = document.getElementById("noticeBannerBottomDates");
+
+    if (bottomTitle) bottomTitle.textContent = title;
+    if (bottomMsg) bottomMsg.textContent = message;
+    if (bottomDates) {
+      bottomDates.textContent = timeText;
+      bottomDates.style.display = timeText ? "inline-flex" : "none";
+    }
+    bottomBanner.style.display = "block";
+  }
+}
+
+window.dismissCenterNotice = function() {
+  const modal = document.getElementById("noticeCenterModal");
+  if (modal) {
+    modal.style.display = "none";
+    modal.classList.remove("active");
+  }
+  sessionStorage.setItem("kunja_notice_dismissed", "true");
+};
+
+function hideAllNotices() {
+  const centerModal = document.getElementById("noticeCenterModal");
+  const topBanner = document.getElementById("homestayNoticeBanner");
+  const bottomBanner = document.getElementById("homestayNoticeBannerBottom");
+
+  if (centerModal) centerModal.style.display = "none";
+  if (topBanner) topBanner.style.display = "none";
+  if (bottomBanner) bottomBanner.style.display = "none";
+}
+
+// Two Properties Showcase Renderer
+function renderPropertiesShowcase() {
+  const container = document.getElementById("propertiesShowcase");
+  const navContainer = document.getElementById("propertyFilterNav");
+  if (!container) return;
+
+  const properties = kunjaData.properties || [];
+  if (properties.length === 0) {
+    container.style.display = "none";
+    if (navContainer) navContainer.style.display = "none";
+    return;
+  }
+
+  container.innerHTML = properties.map(prop => {
+    const roomCount = prop.rooms ? prop.rooms.length : 0;
+    const isActive = activePropertyId === prop.id;
+    return `
+      <article class="property-card ${isActive ? 'active' : ''}" onclick="selectProperty('${prop.id}')" tabindex="0" role="button" aria-label="Explore ${prop.name}">
+        <div class="property-card-cover">
+          <img src="${prop.coverImage || 'images/kunja-34.jpeg'}" alt="${prop.name} exterior at Kunja Homestay" loading="lazy">
+          <div class="property-overlay-cta">
+            <span class="property-overlay-text">Explore This →</span>
+            <span class="property-overlay-sub">${roomCount} Homestay Suite${roomCount !== 1 ? 's' : ''}</span>
+          </div>
+        </div>
+        <div class="property-card-body">
+          <span class="property-location-tag">${prop.locationNote || 'Bolpur, Santiniketan'}</span>
+          <h3 class="property-title">${prop.name}</h3>
+          <p class="property-desc">${prop.description || ''}</p>
+          <div class="property-active-badge">
+            <span>${isActive ? '✓ Currently Viewing Rooms' : 'Click to View Suites →'}</span>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  if (navContainer) {
+    navContainer.innerHTML = `
+      <button class="property-filter-btn ${activePropertyId === 'all' ? 'active' : ''}" onclick="selectProperty('all')">
+        All Rooms (${getAllRooms().length})
+      </button>
+      ${properties.map(p => `
+        <button class="property-filter-btn ${activePropertyId === p.id ? 'active' : ''}" onclick="selectProperty('${p.id}')">
+          ${p.name.split('—')[1]?.trim() || p.name} (${p.rooms ? p.rooms.length : 0})
+        </button>
+      `).join("")}
+    `;
+  }
+}
+
+window.selectProperty = function(propertyId) {
+  activePropertyId = propertyId;
+  renderPropertiesShowcase();
+  renderRooms();
+  initRoomSwipes();
+
+  // Smooth scroll down to rooms grid
+  const roomsEl = document.getElementById("roomsContainer");
+  if (roomsEl && propertyId !== "all") {
+    roomsEl.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+};
+
+function getAllRooms() {
+  if (kunjaData.properties && kunjaData.properties.length > 0) {
+    let all = [];
+    kunjaData.properties.forEach(p => {
+      if (p.rooms) all = all.concat(p.rooms);
+    });
+    return all;
+  }
+  return kunjaData.rooms || [];
+}
+
+// Render Rooms & Spaces Filtered by Active Property
 function renderRooms() {
   const container = document.getElementById("roomsContainer");
   if (!container) return;
 
-  container.innerHTML = kunjaData.rooms.map(room => `
+  let roomsToRender = [];
+  if (activePropertyId === "all") {
+    roomsToRender = getAllRooms();
+  } else {
+    const foundProp = (kunjaData.properties || []).find(p => p.id === activePropertyId);
+    roomsToRender = foundProp && foundProp.rooms ? foundProp.rooms : [];
+  }
+
+  if (roomsToRender.length === 0) {
+    container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; color: var(--color-text-muted);">No room suites currently listed in this section.</div>`;
+    return;
+  }
+
+  container.innerHTML = roomsToRender.map(room => `
     <article class="room-card" id="room-${room.id}">
       <div class="room-carousel" data-room-id="${room.id}">
         <span class="room-occupancy-badge">👥 ${room.occupancyTag}</span>
@@ -281,6 +526,12 @@ function renderRooms() {
       </div>
       <div class="room-body">
         <h3 class="room-title">${room.name}</h3>
+        ${room.nightlyPrice ? `
+          <div class="room-price-row">
+            <span class="room-nightly-price">${room.nightlyPrice}</span>
+            ${room.seasonLabel ? `<span class="room-season-badge">${room.seasonLabel}</span>` : ''}
+          </div>
+        ` : ''}
         <p class="room-desc">${room.description}</p>
         <ul class="room-highlights-list">
           ${room.highlights.map(h => `<li class="room-highlight-pill">✓ ${h}</li>`).join("")}
@@ -505,6 +756,36 @@ function renderReviews() {
       </div>
     </article>
   `).join("");
+}
+
+// Render Google Review Card & QR Code
+function renderGoogleReviewSection() {
+  const reviewLink = document.getElementById("googleReviewLink");
+  const qrBox = document.getElementById("googleReviewQr");
+
+  const targetUrl = kunjaData.contact?.googleReviewUrl || 
+                    "https://www.google.com/travel/search?gsas=1&ts=CAESABorCg0SCwoJL20vMDcxcmo5EhoSFAoHCOoPEAsYHBIHCOoPEAsYHRgBMgIIACoHCgU6A0lOUg&qs=MidDaGtJbktYTXJ2XzR5ZGdtR2cwdlp5OHhNV2hrZURFeFl6UXhFQUVIAA&ap=MAC6AQdyZXZpZXdz&sa=X&hl=en-IN&gl=in";
+
+  if (reviewLink) {
+    reviewLink.href = targetUrl;
+  }
+
+  if (qrBox) {
+    qrBox.innerHTML = "";
+    if (typeof QRCode !== "undefined") {
+      new QRCode(qrBox, {
+        text: targetUrl,
+        width: 96,
+        height: 96,
+        colorDark: "#1F3629",
+        colorLight: "#FFFFFF",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    } else {
+      // Fallback clean QR generator image if CDN is loading
+      qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=${encodeURIComponent(targetUrl)}" alt="Scan to rate on Google" width="96" height="96" style="display:block; width:96px; height:96px;">`;
+    }
+  }
 }
 
 // "Write a Review" Submission Handler

@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kunja Desk — Owner Dashboard</title>
+
+  <!-- Prevent Search Engine Indexing -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-canvas: #F9F5EE;
+      --color-surface: #FFFFFF;
+      --color-forest: #1F3629;
+      --color-forest-light: #2C4C38;
+      --color-terracotta: #B85335;
+      --color-terracotta-hover: #9E4329;
+      --color-text-main: #2D3748;
+      --color-text-muted: #5A6A60;
+      --color-border: #E2D9CC;
+      --color-border-subtle: #EDE5D8;
+      --color-warning: #C2410C;
+      --color-warning-bg: #FFF7ED;
+      --color-success: #15803D;
+      --color-success-bg: #F0FDF4;
+      --font-serif: 'Lora', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 1px 3px rgba(31, 54, 41, 0.08);
+      --shadow-md: 0 4px 12px rgba(31, 54, 41, 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--color-canvas);
+      color: var(--color-text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .admin-header {
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0.85rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+    .header-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .brand-logo-text {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      color: var(--color-forest);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .brand-tag {
+      background: var(--color-forest);
+      color: #FFF;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .user-pill {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-forest);
+      background: #EBF4EE;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.55rem 1.1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-forest {
+      background: var(--color-forest);
+      color: #FFF;
+    }
+    .btn-forest:hover {
+      background: var(--color-forest-light);
+    }
+    .btn-terracotta {
+      background: var(--color-terracotta);
+      color: #FFF;
+    }
+    .btn-terracotta:hover {
+      background: var(--color-terracotta-hover);
+    }
+    .btn-outline {
+      background: transparent;
+      border-color: var(--color-border);
+      color: var(--color-text-main);
+    }
+    .btn-outline:hover {
+      background: var(--color-surface);
+      border-color: var(--color-forest);
+    }
+    .btn-danger {
+      background: #DC2626;
+      color: #FFF;
+    }
+    .btn-danger:hover {
+      background: #B91C1C;
+    }
+
+    /* Alert Banners */
+    .banner-warning {
+      background: var(--color-warning-bg);
+      border-left: 4px solid var(--color-warning);
+      color: #7C2D12;
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    /* Login View */
+    .login-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .login-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
+    .login-title {
+      font-family: var(--font-serif);
+      font-size: 1.85rem;
+      color: var(--color-forest);
+      margin-bottom: 0.35rem;
+    }
+    .login-subtitle {
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+    .form-group {
+      margin-bottom: 1.25rem;
+      text-align: left;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--color-forest);
+      margin-bottom: 0.4rem;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.95rem;
+      background: #FFF;
+      color: var(--color-text-main);
+      transition: border-color 0.2s ease;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--color-forest);
+    }
+    .error-msg {
+      background: #FEF2F2;
+      border: 1px solid #FCA5A5;
+      color: #991B1B;
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      text-align: left;
+      display: none;
+    }
+
+    /* Main Dashboard Layout */
+    .dashboard-container {
+      flex: 1;
+      max-width: 1240px;
+      width: 100%;
+      margin: 1.5rem auto;
+      padding: 0 1.25rem;
+      display: none;
+    }
+
+    /* Navigation Tabs */
+    .admin-tabs {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.25rem;
+    }
+    .tab-btn {
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.65rem 1.15rem;
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      border: none;
+      background: none;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .tab-btn:hover {
+      color: var(--color-forest);
+    }
+    .tab-btn.active {
+      color: var(--color-forest);
+      border-bottom-color: var(--color-terracotta);
+      font-weight: 700;
+    }
+
+    /* Content Cards */
+    .dash-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      color: var(--color-forest);
+      margin-bottom: 0.35rem;
+    }
+    .card-desc {
+      color: var(--color-text-muted);
+      font-size: 0.88rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    @media (min-width: 768px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Switch Toggle */
+    .switch-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--color-forest);
+    }
+    .switch-input {
+      width: 44px;
+      height: 24px;
+      appearance: none;
+      background: #CBD5E1;
+      border-radius: 999px;
+      position: relative;
+      cursor: pointer;
+      outline: none;
+      transition: background 0.3s;
+    }
+    .switch-input:checked {
+      background: var(--color-forest);
+    }
+    .switch-input::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: #FFF;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    .switch-input:checked::after {
+      transform: translateX(20px);
+    }
+
+    /* Live Notice Preview Box */
+    .notice-preview-box {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      border: 1px dashed var(--color-terracotta);
+      background: #FFF7ED;
+    }
+
+    /* Item Cards in Lists */
+    .item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .item-row {
+      border: 1px solid var(--color-border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      background: var(--color-canvas);
+    }
+    @media (min-width: 768px) {
+      .item-row-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    /* Property Box */
+    .prop-admin-box {
+      background: #FFF;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .prop-admin-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    /* Room Photo Thumbnails Manager in Admin */
+    .room-thumbs-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: 0.5rem;
+      align-items: center;
+    }
+    .room-thumb-item {
+      position: relative;
+      width: 75px;
+      height: 60px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--color-border);
+    }
+    .room-thumb-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .room-thumb-del {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: rgba(220, 38, 38, 0.85);
+      color: #FFF;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Gallery Grid in Dashboard */
+    .gallery-admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+    .gallery-admin-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .gallery-admin-card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+    }
+    .gallery-admin-card-body {
+      padding: 0.85rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    /* Certificate Box */
+    .cert-admin-box {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+    @media (min-width: 768px) {
+      .cert-admin-box {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+    .cert-preview-img {
+      max-height: 220px;
+      width: auto;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Modal */
+    .desk-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .desk-modal.open {
+      display: flex;
+    }
+    .desk-modal-dialog {
+      background: #FFF;
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      width: 100%;
+      max-width: 580px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-md);
+    }
+    .desk-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--color-forest);
+      color: #FFF;
+      padding: 0.85rem 1.35rem;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-md);
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: none;
+      z-index: 2000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header class="admin-header">
+    <div class="header-inner">
+      <div class="brand-group">
+        <span class="brand-logo-text">Kunja Homestay</span>
+        <span class="brand-tag">Owner Desk</span>
+      </div>
+      <div class="header-user" id="headerUserGroup" style="display: none;">
+        <span class="user-pill" id="displayUsername">Owner</span>
+        <button class="btn btn-outline" style="padding: 0.35rem 0.85rem;" onclick="triggerFolderSync()" title="Scan and register photos from images/ subfolders">🔄 Sync Folders</button>
+        <button class="btn btn-outline" style="padding: 0.35rem 0.85rem;" onclick="handleLogout()">Sign Out</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Login View -->
+  <div class="login-container" id="loginView">
+    <div class="login-card">
+      <h1 class="login-title" id="authFormTitle">Owner Sign In</h1>
+      <p class="login-subtitle" id="authFormSubtitle">Kunja Homestay Management Portal</p>
+
+      <div class="error-msg" id="loginError"></div>
+
+      <!-- Standard Login Form -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" for="loginUsername">Username</label>
+          <input type="text" id="loginUsername" class="form-input" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" class="form-input" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-forest" style="width: 100%; justify-content: center; margin-top: 0.5rem;" id="loginSubmitBtn">
+          Access Kunja Desk →
+        </button>
+      </form>
+
+      <!-- First-Time Setup Form (Shown only on first install) -->
+      <form id="setupForm" onsubmit="handleInitialSetup(event)" style="display: none;">
+        <div style="background: #EBF4EE; border: 1px solid #C4DCCB; border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.85rem; color: var(--color-forest); margin-bottom: 1.25rem;">
+          👋 <strong>Welcome, Homestay Owner!</strong><br>
+          Please choose your private administrator username and master password to secure your Kunja Desk.
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="setupUsername">Create Owner Username</label>
+          <input type="text" id="setupUsername" class="form-input" placeholder="e.g. kunja_owner" required autocomplete="username" minlength="3">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="setupPassword">Create Master Password</label>
+          <input type="password" id="setupPassword" class="form-input" placeholder="At least 8 characters" required autocomplete="new-password" minlength="8">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="setupPasswordConfirm">Confirm Password</label>
+          <input type="password" id="setupPasswordConfirm" class="form-input" placeholder="Repeat master password" required autocomplete="new-password" minlength="8">
+        </div>
+        <button type="submit" class="btn btn-terracotta" style="width: 100%; justify-content: center; margin-top: 0.5rem;" id="setupSubmitBtn">
+          Create & Secure My Account →
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Authenticated Dashboard -->
+  <main class="dashboard-container" id="dashboardView">
+
+    <!-- Default Password Warning Banner -->
+    <div class="banner-warning" id="defaultPasswordBanner" style="display: none;">
+      <div>
+        <strong>⚠️ Security Recommendation:</strong> You are currently using the default system password. Please update your password under Account Security.
+      </div>
+      <button class="btn btn-terracotta" style="padding: 0.35rem 0.75rem;" onclick="switchTab('security')">Update Password</button>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="admin-tabs">
+      <button class="tab-btn active" onclick="switchTab('notice')">📢 Notice System</button>
+      <button class="tab-btn" onclick="switchTab('properties')">🏡 2 Properties & Rooms</button>
+      <button class="tab-btn" onclick="switchTab('certificate')">🏅 Govt. Certificate</button>
+      <button class="tab-btn" onclick="switchTab('reviews')">💬 Reviews & Google Rating</button>
+      <button class="tab-btn" onclick="switchTab('gallery')">🖼️ Photos & Gallery</button>
+      <button class="tab-btn" onclick="switchTab('security')">🔐 Account Security</button>
+    </nav>
+
+    <!-- TAB 1: Notice System (3-Stage) -->
+    <section class="tab-content" id="tab-notice">
+      <div class="dash-card">
+        <h2 class="card-title">Three-Stage Maintenance & Notice Display System</h2>
+        <p class="card-desc">Active notices are displayed in three strategic places: (1) Initial center popup modal, (2) Top notice banner below navbar, and (3) Bottom notice banner right above the footer.</p>
+
+        <form id="noticeBannerForm" onsubmit="saveNoticeBanner(event)">
+          <div class="form-group">
+            <label class="switch-label">
+              <input type="checkbox" id="noticeEnabled" class="switch-input" onchange="updateNoticePreview()">
+              <span>Enable Notice Across Public Website</span>
+            </label>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="noticeTitle">Notice Title</label>
+              <input type="text" id="noticeTitle" class="form-input" placeholder="e.g., Seasonal Renovation Notice" oninput="updateNoticePreview()">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="noticeMessage">Notice Message</label>
+              <input type="text" id="noticeMessage" class="form-input" placeholder="e.g., We are taking a short pause for garden care..." oninput="updateNoticePreview()">
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="noticeFromDate">Effective / Closed From (Date & Time)</label>
+              <input type="datetime-local" id="noticeFromDate" class="form-input" onchange="updateNoticePreview()">
+              <small style="color:var(--color-text-muted);">Leave empty to display immediately without start restriction.</small>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="noticeToDate">Reopening / Closed To (Date & Time)</label>
+              <input type="datetime-local" id="noticeToDate" class="form-input" onchange="updateNoticePreview()">
+              <small style="color:var(--color-text-muted);">Notice automatically disappears after this date/time.</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Live Visitor Preview</label>
+            <div class="notice-preview-box" id="noticePreviewBox">
+              <div style="font-weight:700; color:#9A3412;" id="prevTitle">Notice Title</div>
+              <div id="prevMessage" style="font-size:0.9rem; margin-top:0.25rem;">Notice message will appear here...</div>
+              <div id="prevDates" style="font-size:0.8rem; font-weight:600; color:#9A3412; margin-top:0.4rem;"></div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-forest">Save Notice Settings</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 2: Properties & Rooms Editor -->
+    <section class="tab-content" id="tab-properties" style="display: none;">
+      <div class="dash-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.5rem;">
+          <div>
+            <h2 class="card-title">Two Properties & Property-Based Rooms</h2>
+            <p class="card-desc" style="margin-bottom:0;">Manage Property 1 (Main Courtyard) and Property 2 (Garden Retreat), their exterior photos, and all suites under each property.</p>
+          </div>
+          <button class="btn btn-outline" onclick="triggerFolderSync()">🔄 Sync Folders</button>
+        </div>
+
+        <div id="propertiesManagerList"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3: Govt. Recognition Certificate -->
+    <section class="tab-content" id="tab-certificate" style="display: none;">
+      <div class="dash-card">
+        <h2 class="card-title">Govt. Recognition Certificate & Plaque</h2>
+        <p class="card-desc">Upload or update the official Department of Tourism, Government of West Bengal recognition certificate/plaque image displayed in the public modal.</p>
+
+        <div class="cert-admin-box">
+          <img id="certPreviewDisplay" src="images/certificates/kunja-57.jpeg" alt="Government Recognition Certificate" class="cert-preview-img">
+          <div>
+            <div class="form-group">
+              <label class="form-label" for="certUploadFile">Upload New Certificate Image (JPEG, PNG, WebP)</label>
+              <input type="file" id="certUploadFile" class="form-input" accept="image/jpeg,image/png,image/webp">
+              <small style="color:var(--color-text-muted);">Saves into <code>images/certificates/</code> with max-width optimization.</small>
+            </div>
+            <button class="btn btn-forest" onclick="uploadCertificateImage()" id="certUploadBtn">Save & Replace Certificate</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: Guest Reviews & Google Rating -->
+    <section class="tab-content" id="tab-reviews" style="display: none;">
+      <div class="dash-card">
+        <h2 class="card-title">Google Review Link & QR Code</h2>
+        <p class="card-desc">Configure the direct Google Review URL. The public site automatically renders a clickable button and a scannable QR code beside it.</p>
+
+        <form id="googleReviewForm" onsubmit="saveGoogleReviewUrl(event)">
+          <div class="form-group">
+            <label class="form-label" for="adminGoogleReviewUrl">Direct Google Review Search / Maps URL</label>
+            <input type="url" id="adminGoogleReviewUrl" class="form-input" required>
+          </div>
+          <button type="submit" class="btn btn-forest">Update Google Review Link</button>
+        </form>
+      </div>
+
+      <div class="dash-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.5rem;">
+          <div>
+            <h2 class="card-title">Guest Testimonials</h2>
+            <p class="card-desc" style="margin-bottom:0;">Manage the testimonials displayed in the guestbook on the public website.</p>
+          </div>
+          <button class="btn btn-forest" onclick="openReviewModal()">+ Add New Review</button>
+        </div>
+
+        <div class="item-list" id="reviewsList"></div>
+      </div>
+    </section>
+
+    <!-- TAB 5: Gallery & Photos Manager -->
+    <section class="tab-content" id="tab-gallery" style="display: none;">
+      <div class="dash-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.5rem;">
+          <div>
+            <h2 class="card-title">Gallery & Photos</h2>
+            <p class="card-desc" style="margin-bottom:0;">Upload new homestay photographs, organize categories, and manage captions.</p>
+          </div>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="btn btn-outline" onclick="triggerFolderSync()">🔄 Sync Folders</button>
+            <button class="btn btn-forest" onclick="openPhotoUploadModal()">+ Upload New Photo</button>
+          </div>
+        </div>
+
+        <div class="gallery-admin-grid" id="galleryGrid"></div>
+      </div>
+    </section>
+
+    <!-- TAB 6: Account Security -->
+    <section class="tab-content" id="tab-security" style="display: none;">
+      <div class="dash-card" style="max-width: 600px;">
+        <h2 class="card-title">Account Security</h2>
+        <p class="card-desc">Update your owner username or password. Current password verification is required.</p>
+
+        <form id="securityForm" onsubmit="handleSecurityUpdate(event)">
+          <div class="form-group">
+            <label class="form-label" for="secCurrentPassword">Current Password *</label>
+            <input type="password" id="secCurrentPassword" class="form-input" required autocomplete="current-password">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="secNewUsername">New Username</label>
+            <input type="text" id="secNewUsername" class="form-input" placeholder="Leave blank to keep current">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="secNewPassword">New Password</label>
+            <input type="password" id="secNewPassword" class="form-input" minlength="8" placeholder="At least 8 characters">
+          </div>
+          <button type="submit" class="btn btn-forest">Update Credentials</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Edit Property Modal -->
+  <div class="desk-modal" id="propertyModal">
+    <div class="desk-modal-dialog">
+      <div class="desk-modal-header">
+        <h3 class="card-title">Edit Property Details</h3>
+        <button class="btn btn-outline" style="padding:0.2rem 0.5rem;" onclick="closeModal('propertyModal')">✕</button>
+      </div>
+      <form id="propertyForm" onsubmit="savePropertyEdit(event)">
+        <input type="hidden" id="editPropIndex">
+        <div class="form-group">
+          <label class="form-label" for="editPropName">Property Title</label>
+          <input type="text" id="editPropName" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editPropLocation">Location Note</label>
+          <input type="text" id="editPropLocation" class="form-input" placeholder="e.g., Main Courtyard, Bolpur Santiniketan" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editPropDesc">Description</label>
+          <textarea id="editPropDesc" class="form-textarea" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editPropCoverFile">Change Cover Exterior Photo (Optional)</label>
+          <input type="file" id="editPropCoverFile" class="form-input" accept="image/jpeg,image/png,image/webp">
+          <input type="hidden" id="editPropExistingCover">
+        </div>
+        <button type="submit" class="btn btn-forest" id="propSubmitBtn">Save Property Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Room Modal -->
+  <div class="desk-modal" id="roomModal">
+    <div class="desk-modal-dialog">
+      <div class="desk-modal-header">
+        <h3 class="card-title" id="roomModalTitle">Edit Room Details</h3>
+        <button class="btn btn-outline" style="padding:0.2rem 0.5rem;" onclick="closeModal('roomModal')">✕</button>
+      </div>
+      <form id="editRoomForm" onsubmit="saveRoomEdit(event)">
+        <input type="hidden" id="editRoomPropIdx">
+        <input type="hidden" id="editRoomIdx">
+        <div class="form-group">
+          <label class="form-label" for="editRoomName">Room Name</label>
+          <input type="text" id="editRoomName" class="form-input" required>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="editRoomPrice">Nightly Price</label>
+            <input type="text" id="editRoomPrice" class="form-input" placeholder="e.g., ₹2,500 / night" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="editRoomSeason">Season Label</label>
+            <input type="text" id="editRoomSeason" class="form-input" placeholder="e.g., Standard Tariff, Poush Mela" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editRoomOccupancy">Occupancy Tag</label>
+          <select id="editRoomOccupancy" class="form-select">
+            <option value="Perfect for 2 people">Perfect for 2 people</option>
+            <option value="Perfect for family">Perfect for family</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editRoomDesc">Description</label>
+          <textarea id="editRoomDesc" class="form-textarea" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="editRoomHighlights">Highlights (Comma Separated)</label>
+          <input type="text" id="editRoomHighlights" class="form-input" placeholder="Attached bath, Morning tea, Airy windows">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Add a Photo to This Room (Optional)</label>
+          <input type="file" id="roomNewPhotoFile" class="form-input" accept="image/jpeg,image/png,image/webp">
+        </div>
+        <button type="submit" class="btn btn-forest" id="roomSubmitBtn">Save Room Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Review Modal (Add/Edit) -->
+  <div class="desk-modal" id="reviewModal">
+    <div class="desk-modal-dialog">
+      <div class="desk-modal-header">
+        <h3 class="card-title" id="reviewModalTitle">Add Guest Review</h3>
+        <button class="btn btn-outline" style="padding:0.2rem 0.5rem;" onclick="closeModal('reviewModal')">✕</button>
+      </div>
+      <form id="reviewForm" onsubmit="saveReview(event)">
+        <input type="hidden" id="editReviewId">
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="reviewGuestName">Guest Name(s) *</label>
+            <input type="text" id="reviewGuestName" class="form-input" placeholder="e.g., Ananya & Subhojit Sen" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reviewHometown">Hometown / City *</label>
+            <input type="text" id="reviewHometown" class="form-input" placeholder="e.g., Kolkata" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reviewQuote">Headline Quote *</label>
+          <input type="text" id="reviewQuote" class="form-input" placeholder="e.g., Felt like visiting relatives in Santiniketan..." required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reviewText">Full Review Text *</label>
+          <textarea id="reviewText" class="form-textarea" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-forest">Save Review</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Photo Upload & Edit Modal -->
+  <div class="desk-modal" id="photoModal">
+    <div class="desk-modal-dialog">
+      <div class="desk-modal-header">
+        <h3 class="card-title" id="photoModalTitle">Upload New Photo</h3>
+        <button class="btn btn-outline" style="padding:0.2rem 0.5rem;" onclick="closeModal('photoModal')">✕</button>
+      </div>
+      <form id="photoForm" onsubmit="savePhotoPost(event)">
+        <input type="hidden" id="editPhotoId">
+        <input type="hidden" id="existingPhotoPath">
+
+        <div class="form-group" id="photoUploadGroup">
+          <label class="form-label" for="photoFile">Select Photo File (JPEG, PNG, WebP) *</label>
+          <input type="file" id="photoFile" class="form-input" accept="image/jpeg,image/png,image/webp">
+          <small style="color:var(--color-text-muted);">Optimized and saved cleanly into images/gallery/.</small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="photoCategory">Gallery Category</label>
+          <select id="photoCategory" class="form-select">
+            <option value="ambiance">Santiniketan Ambiance</option>
+            <option value="rooms">Our Rooms</option>
+            <option value="gatherings">Joyful Guest Moments</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="photoTitle">Photo Title</label>
+          <input type="text" id="photoTitle" class="form-input" placeholder="e.g., Sunlit courtyard in morning" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="photoCaption">Caption</label>
+          <textarea id="photoCaption" class="form-textarea" rows="3" placeholder="Short description of the photo"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-forest" id="photoSubmitBtn">Save Photo Entry</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="adminToast">Action completed successfully</div>
+
+  <!-- Admin JavaScript -->
+  <script src="admin.js"></script>
+</body>
+</html>

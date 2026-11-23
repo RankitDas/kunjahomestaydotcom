@@ -25,3 +25,8 @@ __pycache__/
 
 # Logs
 *.log
+
+# Sensitive Admin Credentials & Automatic Backups
+api/admin_credentials.json
+api/backups/*.json
+
