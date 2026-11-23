@@ -28,6 +28,7 @@ const errors = [];
 if (files.length < 64) errors.push(`Expected at least 64 files in images/, found ${files.length}`);
 for (const name of files) {
   const base = path.basename(name);
+  if (base === '.gitkeep') continue;
   if (!allowedExtension.test(base) || base !== base.toLowerCase() || !/^kunja-[a-z0-9._-]+\.(?:jpg|jpeg|png|webp)$/.test(base)) {
     errors.push(`Invalid image filename: ${name}`);
   }

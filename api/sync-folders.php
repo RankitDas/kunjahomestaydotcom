@@ -103,38 +103,20 @@ foreach ($iterator as $item) {
             $existingPaths[$relPath] = true;
 
             // Route image according to folder name
-            if (strpos($relPath, 'images/gallery/') === 0) {
-                $data['gallery'][] = [
-                    'id' => 'gal-' . time() . '-' . rand(100, 999),
-                    'category' => 'ambiance',
-                    'title' => ucwords(str_replace(['-', '_', '.' . $ext], [' ', ' ', ''], basename($relPath))),
-                    'caption' => 'Added from gallery folder.',
-                    'image' => $relPath
-                ];
-                $addedToGallery++;
-            } elseif (strpos($relPath, 'images/building-1/') === 0) {
+            if (strpos($relPath, 'images/certificates/') === 0) {
+                $data['siteConfig']['recognition']['certificateImage'] = $relPath;
+            } elseif (strpos($relPath, 'images/kunja_bati_homestay/') === 0 || strpos($relPath, 'images/building-1/') === 0) {
                 if (!empty($data['properties'][0]['rooms'][0])) {
                     $data['properties'][0]['rooms'][0]['images'][] = $relPath;
                     $addedToRooms++;
                 }
-            } elseif (strpos($relPath, 'images/building-2/') === 0) {
+            } elseif (strpos($relPath, 'images/kunja_homestay/') === 0 || strpos($relPath, 'images/building-2/') === 0) {
                 if (!empty($data['properties'][1]['rooms'][0])) {
                     $data['properties'][1]['rooms'][0]['images'][] = $relPath;
                     $addedToRooms++;
                 }
-            } elseif (strpos($relPath, 'images/certificates/') === 0) {
-                $data['siteConfig']['recognition']['certificateImage'] = $relPath;
-            } else {
-                // Default to gallery
-                $data['gallery'][] = [
-                    'id' => 'gal-' . time() . '-' . rand(100, 999),
-                    'category' => 'ambiance',
-                    'title' => ucwords(str_replace(['-', '_', '.' . $ext], [' ', ' ', ''], basename($relPath))),
-                    'caption' => 'Discovered in images folder.',
-                    'image' => $relPath
-                ];
-                $addedToGallery++;
             }
+            // Note: Never auto-inject generic raw images into the public gallery to prevent unwanted duplicate clutter
         }
     }
 }

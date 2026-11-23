@@ -163,7 +163,7 @@ if ($action === 'register') {
         http_response_code(400);
         echo json_encode([
             'success' => false,
-            'error' => 'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character (e.g. @Rashi321).'
+            'error' => 'Password must be at least 8 characters long and include uppercase, lowercase, number, and special character. Example: Strong@Pass2026'
         ]);
         exit;
     }
@@ -399,17 +399,42 @@ if ($action === 'reset_password') {
     exit;
 }
 
-// 6. List Administrators (Requires Login)
+// Helper to mask email for privacy (e.g. ku********@gmail.com)
+function mask_email($email) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return '********';
+    $parts = explode('@', $email);
+    $name = $parts[0];
+    $domain = $parts[1] ?? '';
+    $visible = substr($name, 0, min(2, strlen($name)));
+    return $visible . '********@' . $domain;
+}
+
+// Helper to mask phone for privacy (e.g. +91 ******9141)
+function mask_phone($phone) {
+    $digits = preg_replace('/\D+/', '', $phone);
+    if (strlen($digits) < 4) return '******';
+    $last4 = substr($digits, -4);
+    return '+91 ******' . $last4;
+}
+
+// 6. List Administrators (Requires Login - Sensitive details masked)
 if ($action === 'list_admins') {
     require_auth();
     $creds = get_credentials();
-    $list = array_map(function($a) {
+    $currentId = $_SESSION['admin_id'] ?? '';
+
+    $list = array_map(function($a) use ($currentId) {
+        $isSelf = ($a['id'] === $currentId);
         return [
-            'id'         => $a['id'],
-            'name'       => $a['name'],
-            'email'      => $a['email'],
-            'phone'      => $a['phone'],
-            'created_at' => $a['created_at'] ?? null
+            'id'           => $a['id'],
+            'name'         => $a['name'],
+            'is_self'      => $isSelf,
+            // Reveal full contact info only to oneself; mask for other admins
+            'email'        => $isSelf ? $a['email'] : mask_email($a['email']),
+            'phone'        => $isSelf ? $a['phone'] : mask_phone($a['phone']),
+            'masked_email' => mask_email($a['email']),
+            'masked_phone' => mask_phone($a['phone']),
+            'created_at'   => $a['created_at'] ?? null
         ];
     }, $creds['admins'] ?? []);
 

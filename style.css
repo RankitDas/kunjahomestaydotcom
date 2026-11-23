@@ -1259,15 +1259,40 @@ h1, h2, h3, h4, .font-serif {
   flex: 1;
 }
 .review-star-badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   background: #FEF3C7;
   color: #92400E;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  padding: 0.25rem 0.65rem;
+  padding: 0.35rem 0.75rem;
   border-radius: var(--radius-sm);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   margin-bottom: 0.5rem;
+  border: 1px solid #FDE68A;
+}
+.rating-stars-visual {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: #D97706;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+.star-partial {
+  position: relative;
+  display: inline-block;
+  color: #D1D5DB; /* background empty star */
+}
+.star-partial::before {
+  content: "★";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 80%; /* 3.8 out of 5 -> 80% filled */
+  overflow: hidden;
+  color: #D97706;
 }
 .google-review-title {
   font-family: var(--font-serif);

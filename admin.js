@@ -38,7 +38,7 @@ window.togglePasswordVisibility = function(inputId) {
   input.type = input.type === "password" ? "text" : "password";
 };
 
-// Strong Password Live Validator (@Rashi321 format)
+// Strong Password Live Validator (Generic strong policy: 8+ chars, uppercase, lowercase, number, symbol)
 window.checkPasswordStrength = function(inputId, barContainerId, rulesListId) {
   const input = document.getElementById(inputId);
   const val = input ? input.value : "";
@@ -399,7 +399,7 @@ async function handleLogout() {
   showToast("Logged out successfully.");
 }
 
-// Switch Dashboard Tab
+// Switch Dashboard Tab (with localStorage persistence)
 window.switchTab = function(tabName) {
   const contents = document.querySelectorAll(".tab-content");
   contents.forEach(el => el.style.display = "none");
@@ -412,6 +412,10 @@ window.switchTab = function(tabName) {
 
   const clickedBtn = Array.from(buttons).find(b => b.getAttribute("onclick")?.includes(tabName));
   if (clickedBtn) clickedBtn.classList.add("active");
+
+  try {
+    localStorage.setItem("kunja_active_tab", tabName);
+  } catch (e) {}
 };
 
 // Modal helpers
@@ -436,6 +440,14 @@ async function loadHomestayData() {
     renderCertPreview();
     renderReviewsList();
     renderGalleryGrid();
+
+    // Restore preferred tab if previously saved
+    try {
+      const savedTab = localStorage.getItem("kunja_active_tab");
+      if (savedTab && document.getElementById(`tab-${savedTab}`)) {
+        window.switchTab(savedTab);
+      }
+    } catch (e) {}
   } catch (err) {
     showToast("Failed to load website configuration data.", true);
   }
@@ -756,16 +768,34 @@ window.handleRoomPhotosUpload = async function(e, pIdx, rIdx) {
   const files = Array.from(e.target.files);
   if (files.length === 0) return;
 
-  const room = state.data.properties[pIdx]?.rooms[rIdx];
+  const prop = state.data.properties[pIdx];
+  const room = prop?.rooms[rIdx];
   if (!room) return;
 
-  showToast(`Uploading ${files.length} room photos...`);
+  // Determine exact subfolder matching room
+  // e.g. building-1 (kunja_bati_homestay): Room A, Room C, Room B, Room D, Room E
+  // building-2 (kunja_homestay): Room A1, Room 5, Room 2, Room A3, Room 1
+  let targetFolder = "gallery";
+  const bldgFolder = (prop.id === "building-1" || (prop.name && prop.name.includes("BATI"))) 
+                     ? "kunja_bati_homestay" 
+                     : "kunja_homestay";
+
+  // Map room index or name to designated folder
+  const b1Rooms = ["Room A", "Room B", "Room C", "Room D", "Room E"];
+  const b2Rooms = ["Room A1", "Room 5", "Room 2", "Room A3", "Room 1"];
+  const subName = (bldgFolder === "kunja_bati_homestay") 
+                  ? (b1Rooms[rIdx] || "Room A") 
+                  : (b2Rooms[rIdx] || "Room A1");
+  targetFolder = `${bldgFolder}/${subName}`;
+
+  showToast(`Uploading ${files.length} room photos into ${targetFolder}...`);
   let uploaded = 0;
 
   for (const file of files) {
     const formData = new FormData();
     formData.append("image", file);
-    formData.append("target_folder", "gallery");
+    formData.append("target_folder", targetFolder);
+    formData.append("subfolder", targetFolder);
     formData.append("csrf_token", state.csrfToken);
 
     try {
@@ -1085,15 +1115,28 @@ window.deleteReviewItem = async function(idx) {
   if (ok) renderReviewsList();
 };
 
+// Multi-Select Gallery Manager
+let selectedGalleryIndices = new Set();
+
 function renderGalleryGrid() {
   const container = document.getElementById("galleryGrid");
+  const countDisplay = document.getElementById("galleryCountDisplay");
   if (!container) return;
   const list = state.data.gallery || [];
+
+  if (countDisplay) countDisplay.textContent = list.length;
+  selectedGalleryIndices.clear();
+  updateBulkDeleteButton();
+
   container.innerHTML = list.map((item, idx) => `
-    <div style="background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden;">
+    <div style="background: var(--color-canvas); border: 1px solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden; position: relative;">
+      <label style="position: absolute; top: 8px; left: 8px; z-index: 5; background: rgba(255,255,255,0.9); border-radius: 4px; padding: 2px 6px; cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 0.78rem; font-weight: 600; box-shadow: var(--shadow-sm);">
+        <input type="checkbox" class="gallery-select-cb" data-idx="${idx}" onchange="toggleGallerySelect(${idx}, this.checked)">
+        <span>Select</span>
+      </label>
       <img src="${item.image}" alt="${item.title}" style="width: 100%; height: 140px; object-fit: cover;">
       <div style="padding: 0.75rem;">
-        <div style="font-weight: 600; font-size: 0.9rem; color: var(--color-forest);">${item.title}</div>
+        <div style="font-weight: 600; font-size: 0.9rem; color: var(--color-forest); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.title}">${item.title}</div>
         <div style="font-size: 0.8rem; color: var(--color-text-muted); margin: 3px 0 6px;">Category: ${item.category}</div>
         <button class="btn btn-danger" style="width: 100%; padding: 0.3rem 0.5rem; font-size: 0.8rem; justify-content: center;" onclick="deleteGalleryItem(${idx})">Delete Photo</button>
       </div>
@@ -1101,11 +1144,95 @@ function renderGalleryGrid() {
   `).join("");
 }
 
+window.toggleGallerySelect = function(idx, isChecked) {
+  if (isChecked) {
+    selectedGalleryIndices.add(idx);
+  } else {
+    selectedGalleryIndices.delete(idx);
+  }
+  updateBulkDeleteButton();
+};
+
+window.toggleSelectAllGallery = function() {
+  const cbs = document.querySelectorAll(".gallery-select-cb");
+  const list = state.data.gallery || [];
+  if (selectedGalleryIndices.size === list.length) {
+    selectedGalleryIndices.clear();
+    cbs.forEach(cb => cb.checked = false);
+  } else {
+    list.forEach((_, idx) => selectedGalleryIndices.add(idx));
+    cbs.forEach(cb => cb.checked = true);
+  }
+  updateBulkDeleteButton();
+};
+
+function updateBulkDeleteButton() {
+  const btn = document.getElementById("bulkDeleteBtn");
+  const countEl = document.getElementById("selectedCountDisplay");
+  const count = selectedGalleryIndices.size;
+  if (countEl) countEl.textContent = count;
+  if (btn) btn.style.display = count > 0 ? "inline-flex" : "none";
+}
+
+window.deleteSelectedGalleryItems = async function() {
+  const count = selectedGalleryIndices.size;
+  if (count === 0) return;
+  if (!confirm(`Are you sure you want to delete ${count} selected photo(s) from the gallery?`)) return;
+
+  const sortedIndices = Array.from(selectedGalleryIndices).sort((a, b) => b - a);
+  sortedIndices.forEach(idx => {
+    state.data.gallery.splice(idx, 1);
+  });
+  selectedGalleryIndices.clear();
+
+  const ok = await saveAllDataToServer(`${count} photo(s) removed from gallery.`);
+  if (ok) renderGalleryGrid();
+};
+
 window.deleteGalleryItem = async function(idx) {
   if (!confirm("Remove this photo from the gallery?")) return;
   state.data.gallery.splice(idx, 1);
   const ok = await saveAllDataToServer("Photo removed from gallery.");
   if (ok) renderGalleryGrid();
+};
+
+// Check Admins Modal with Masked Contact Details
+window.openCheckAdminsModal = async function() {
+  const modalList = document.getElementById("modalAdminsList");
+  const countEl = document.getElementById("modalAdminsCount");
+  if (!modalList) return;
+
+  modalList.innerHTML = `<div style="text-align:center; padding:1.5rem; color:var(--color-text-muted);">Loading admin accounts...</div>`;
+  openModal("checkAdminsModal");
+
+  try {
+    const res = await fetch("api/auth.php?action=list_admins");
+    const json = await res.json();
+    if (!res.ok || !json.success) {
+      modalList.innerHTML = `<div style="color:#DC2626; padding:1rem;">Failed to load administrators.</div>`;
+      return;
+    }
+
+    const admins = json.admins || [];
+    if (countEl) countEl.textContent = admins.length;
+
+    modalList.innerHTML = admins.map(a => `
+      <div class="item-row" style="background:#FFF; padding:1rem; border:1px solid var(--color-border); border-radius:var(--radius-sm);">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong style="font-size:1.02rem; color:var(--color-forest);">
+            👤 ${a.name} ${a.is_self ? '<span class="user-pill" style="font-size:0.75rem; margin-left:6px;">You</span>' : ''}
+          </strong>
+          <span style="font-size:0.75rem; color:var(--color-text-muted);">${a.created_at ? new Date(a.created_at).toLocaleDateString() : ''}</span>
+        </div>
+        <div style="font-size:0.86rem; color:var(--color-text-muted); margin-top:4px; display:flex; flex-direction:column; gap:2px;">
+          <div>📧 <strong>Email:</strong> <code>${a.email}</code></div>
+          <div>📱 <strong>Phone:</strong> <code>${a.phone}</code></div>
+        </div>
+      </div>
+    `).join("");
+  } catch (err) {
+    modalList.innerHTML = `<div style="color:#DC2626; padding:1rem;">Network error fetching administrators.</div>`;
+  }
 };
 
 window.triggerFolderSync = async function() {

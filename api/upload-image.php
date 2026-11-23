@@ -53,9 +53,9 @@ if (!isset($allowedMimes[$mime])) {
 
 $extension = $allowedMimes[$mime];
 
-// Optional target subfolder: gallery, certificates, building-1, building-2
-$targetSubfolder = trim($_POST['subfolder'] ?? '');
-$targetSubfolder = preg_replace('/[^a-zA-Z0-9_\-\/]/', '', $targetSubfolder);
+// Optional target subfolder: gallery, certificates, kunja_homestay/Room X, kunja_bati_homestay/Room X
+$targetSubfolder = trim($_POST['subfolder'] ?? $_POST['target_folder'] ?? '');
+$targetSubfolder = preg_replace('/[^a-zA-Z0-9_\-\/ ]/', '', $targetSubfolder);
 $targetSubfolder = trim($targetSubfolder, '/');
 
 $targetDir = IMAGES_DIR;

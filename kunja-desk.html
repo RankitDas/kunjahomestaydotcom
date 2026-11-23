@@ -594,6 +594,8 @@
       </div>
       <div class="header-user" id="headerUserGroup" style="display: none;">
         <span class="user-pill" id="displayUsername">Owner</span>
+        <button class="btn btn-outline" style="padding: 0.35rem 0.85rem;" onclick="openCheckAdminsModal()" title="View registered administrators and privacy-masked details">👥 Check Admins</button>
+        <button class="btn btn-forest" style="padding: 0.35rem 0.85rem;" onclick="saveAllDataToServer('Choice Saved ✓')" title="Save current choices and settings to server">💾 Save My Choice</button>
         <button class="btn btn-outline" style="padding: 0.35rem 0.85rem;" onclick="triggerFolderSync()" title="Scan and register photos from images/ subfolders">🔄 Sync Folders</button>
         <button class="btn btn-outline" style="padding: 0.35rem 0.85rem;" onclick="handleLogout()">Sign Out</button>
       </div>
@@ -669,9 +671,10 @@
         <div class="form-group">
           <label class="form-label" for="regPassword">Strong Password</label>
           <div class="password-wrap">
-            <input type="password" id="regPassword" class="form-input" placeholder="e.g. @Rashi321" required minlength="8" oninput="checkPasswordStrength('regPassword', 'regPwBars', 'regPwRules')">
+            <input type="password" id="regPassword" class="form-input" placeholder="e.g. Strong@Pass2026" required minlength="8" oninput="checkPasswordStrength('regPassword', 'regPwBars', 'regPwRules')">
             <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('regPassword')" title="Show / Hide Password">👁️</button>
           </div>
+          <small style="color:var(--color-text-muted); font-size:0.75rem; display:block; margin-top:3px;">Example: Strong@Pass2026 (8+ chars with uppercase, lowercase, number & symbol)</small>
           <div class="pw-strength-meter" id="regPwBars">
             <div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div>
           </div>
@@ -718,9 +721,10 @@
         <div class="form-group">
           <label class="form-label" for="resetNewPassword">New Strong Password</label>
           <div class="password-wrap">
-            <input type="password" id="resetNewPassword" class="form-input" placeholder="e.g. @Rashi321" required minlength="8" oninput="checkPasswordStrength('resetNewPassword', 'resetPwBars', 'resetPwRules')">
+            <input type="password" id="resetNewPassword" class="form-input" placeholder="e.g. Strong@Pass2026" required minlength="8" oninput="checkPasswordStrength('resetNewPassword', 'resetPwBars', 'resetPwRules')">
             <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('resetNewPassword')" title="Show / Hide Password">👁️</button>
           </div>
+          <small style="color:var(--color-text-muted); font-size:0.75rem; display:block; margin-top:3px;">Example: Strong@Pass2026 (8+ chars with uppercase, lowercase, number & symbol)</small>
           <div class="pw-strength-meter" id="resetPwBars">
             <div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div>
           </div>
@@ -924,11 +928,13 @@
       <div class="dash-card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; flex-wrap:wrap; gap:0.5rem;">
           <div>
-            <h2 class="card-title">Gallery & Photos</h2>
-            <p class="card-desc" style="margin-bottom:0;">Upload new homestay photographs, organize categories, and manage captions.</p>
+            <h2 class="card-title">Gallery & Photos (<span id="galleryCountDisplay">12</span> Photos)</h2>
+            <p class="card-desc" style="margin-bottom:0;">Curate homestay photographs, organize categories, and use bulk selection to remove unwanted photos.</p>
           </div>
-          <div style="display:flex; gap:0.5rem;">
-            <button class="btn btn-outline" onclick="triggerFolderSync()">🔄 Sync Folders</button>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button class="btn btn-outline" onclick="toggleSelectAllGallery()">☑ Select All / Clear</button>
+            <button class="btn btn-danger" id="bulkDeleteBtn" style="display:none;" onclick="deleteSelectedGalleryItems()">🗑️ Delete Selected (<span id="selectedCountDisplay">0</span>)</button>
+            <button class="btn btn-forest" onclick="saveAllDataToServer('Choice Saved ✓')">💾 Save My Choice</button>
             <button class="btn btn-forest" onclick="openPhotoUploadModal()">+ Upload New Photo</button>
           </div>
         </div>
@@ -986,9 +992,10 @@
         <div class="form-group">
           <label class="form-label" for="modalAdminPassword">Strong Password</label>
           <div class="password-wrap">
-            <input type="password" id="modalAdminPassword" class="form-input" placeholder="e.g. @Rashi321" required minlength="8" oninput="checkPasswordStrength('modalAdminPassword', 'modalPwBars', 'modalPwRules')">
+            <input type="password" id="modalAdminPassword" class="form-input" placeholder="e.g. Strong@Pass2026" required minlength="8" oninput="checkPasswordStrength('modalAdminPassword', 'modalPwBars', 'modalPwRules')">
             <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('modalAdminPassword')" title="Show / Hide Password">👁️</button>
           </div>
+          <small style="color:var(--color-text-muted); font-size:0.75rem; display:block; margin-top:3px;">Example: Strong@Pass2026 (8+ chars with uppercase, lowercase, number & symbol)</small>
           <div class="pw-strength-meter" id="modalPwBars">
             <div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div>
           </div>
@@ -1002,6 +1009,26 @@
         </div>
         <button type="submit" class="btn btn-forest" style="width: 100%;">Verify & Register Administrator</button>
       </form>
+    </div>
+  </div>
+
+  <!-- Check Admins Privacy Modal -->
+  <div class="desk-modal" id="checkAdminsModal">
+    <div class="desk-modal-dialog" style="max-width: 540px;">
+      <div class="desk-modal-header">
+        <div>
+          <h3 class="card-title" style="margin-bottom:2px;">👥 Registered Administrators</h3>
+          <span style="font-size:0.82rem; color:var(--color-terracotta); font-weight:600;"><span id="modalAdminsCount">1</span> of 3 Admin Slots Used</span>
+        </div>
+        <button class="btn btn-outline" style="padding:0.2rem 0.5rem;" onclick="closeModal('checkAdminsModal')">✕</button>
+      </div>
+      <div style="font-size:0.85rem; color:var(--color-text-muted); margin-bottom:1.25rem;">
+        🔒 Contact details are star-masked for privacy. Each administrator manages notices, rooms, reviews, and gallery.
+      </div>
+      <div id="modalAdminsList" class="item-list"></div>
+      <div style="margin-top:1.25rem; display:flex; justify-content:flex-end;">
+        <button class="btn btn-forest" onclick="closeModal('checkAdminsModal')">Done</button>
+      </div>
     </div>
   </div>
 

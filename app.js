@@ -904,7 +904,7 @@ function renderGoogleReviewSection() {
   const qrBox = document.getElementById("googleReviewQr");
 
   const targetUrl = kunjaData.contact?.googleReviewUrl || 
-                    "https://www.google.com/travel/search?gsas=1&ts=CAESABorCg0SCwoJL20vMDcxcmo5EhoSFAoHCOoPEAsYHBIHCOoPEAsYHRgBMgIIACoHCgU6A0lOUg&qs=MidDaGtJbktYTXJ2XzR5ZGdtR2cwdlp5OHhNV2hrZURFeFl6UXhFQUVIAA&ap=MAC6AQdyZXZpZXdz&sa=X&hl=en-IN&gl=in";
+                    "https://www.google.com/travel/search?gsas=1&ts=CAESABorCg0SCwoJL20vMDcxcmo5EhoSFAoHCOoPEAsYHBIHCOoPEAsYHRgBMgIIACoHCgU6A0lOUg&qs=MidDaGtJbktYTXJ2XzR5ZGdtR2cwdlp5OHhNV2hrZURFeFl6UXhFQUVIAA&ap=KigKEgm2PWILgKw3QBFWFcaIUetVQBISCYjyg9WqrTdAEVYVRlKP61VAMAC6AQdyZXZpZXdz&sa=X&hl=en-IN&gl=in&g2lb=4965990%2C72471280%2C72573224%2C72686036%2C72803964%2C72882230%2C73064764%2C121529350%2C121608706%2C121921501%2C121951222%2C122035346%2C122078727%2C122093076%2C122097177%2C122134888%2C122147525%2C122275263%2C122275264&ved=0CAAQ5JsGahcKEwi407Xej5-YAxUAAAAAHQAAAAAQAw";
 
   if (reviewLink) {
     reviewLink.href = targetUrl;
@@ -923,7 +923,7 @@ function renderGoogleReviewSection() {
       });
     } else {
       // Fallback clean QR generator image if CDN is loading
-      qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=${encodeURIComponent(targetUrl)}" alt="Scan to rate on Google" width="96" height="96" style="display:block; width:96px; height:96px;">`;
+      qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=${encodeURIComponent(targetUrl)}" alt="Scan for Google reviews" width="96" height="96" style="display:block; width:96px; height:96px;">`;
     }
   }
 }
