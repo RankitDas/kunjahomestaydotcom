@@ -294,8 +294,6 @@ const server = http.createServer(async (req, res) => {
         is_default_password: false
       });
     }
-      });
-    }
 
     return sendJson(res, 400, { success: false, error: 'Invalid action or method' });
   }
