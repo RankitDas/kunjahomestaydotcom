@@ -31,23 +31,63 @@ define('CREDENTIALS_FILE', __DIR__ . '/admin_credentials.json');
 define('DATA_FILE', dirname(__DIR__) . '/kunjaData.json');
 define('BACKUP_DIR', __DIR__ . '/backups');
 define('IMAGES_DIR', dirname(__DIR__) . '/images');
+define('MAX_ADMINS', 3);
 
-// Check if admin credentials file exists
+// Check if any admin account is registered
 function has_admin_credentials() {
-    return file_exists(CREDENTIALS_FILE);
+    if (!file_exists(CREDENTIALS_FILE)) return false;
+    $creds = get_credentials();
+    return !empty($creds['admins']) && count($creds['admins']) > 0;
 }
 
+// Return raw admin credentials structure with multi-admin migration support
 function get_credentials() {
     if (!file_exists(CREDENTIALS_FILE)) {
-        return null;
+        return ['admins' => [], 'otps' => []];
     }
     $raw = file_get_contents(CREDENTIALS_FILE);
-    return json_decode($raw, true);
+    $data = json_decode($raw, true);
+    if (!is_array($data)) {
+        return ['admins' => [], 'otps' => []];
+    }
+    // Backward compatibility if single admin format was saved
+    if (isset($data['username']) && !isset($data['admins'])) {
+        $legacy = [
+            'id' => 'admin-1',
+            'name' => 'Owner',
+            'email' => $data['email'] ?? 'owner@kunjahomestay.com',
+            'phone' => $data['phone'] ?? '919064629141',
+            'username' => $data['username'],
+            'password_hash' => $data['password_hash'] ?? '',
+            'created_at' => $data['updated_at'] ?? date('c'),
+            'failed_attempts' => $data['failed_attempts'] ?? 0,
+            'lockout_until' => $data['lockout_until'] ?? 0
+        ];
+        $data = ['admins' => [$legacy], 'otps' => []];
+    }
+    if (!isset($data['admins'])) $data['admins'] = [];
+    if (!isset($data['otps'])) $data['otps'] = [];
+    return $data;
 }
 
 function save_credentials($data) {
     $data['updated_at'] = date('c');
     file_put_contents(CREDENTIALS_FILE, json_encode($data, JSON_PRETTY_PRINT), LOCK_EX);
+}
+
+// Strong Password Validator: >=8 chars, uppercase, lowercase, digit, special character
+function validate_strong_password($password) {
+    if (strlen($password) < 8) return false;
+    if (!preg_match('/[A-Z]/', $password)) return false;
+    if (!preg_match('/[a-z]/', $password)) return false;
+    if (!preg_match('/[0-9]/', $password)) return false;
+    if (!preg_match('/[^A-Za-z0-9]/', $password)) return false;
+    return true;
+}
+
+// Sanitize Phone (extract digits)
+function sanitize_phone($phone) {
+    return preg_replace('/\D+/', '', $phone);
 }
 
 function get_csrf_token() {

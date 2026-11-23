@@ -3,6 +3,32 @@
     "name": "Kunja Homestay Eco Resort",
     "tagline": "A Quiet Home in Bolpur, Santiniketan",
     "location": "Bolpur, Santiniketan, Birbhum, West Bengal",
+    "heroImages": [
+      {
+        "id": "hero-1",
+        "src": "images/kunja-34.jpeg",
+        "caption": "Kunja Homestay Courtyard • Evening ambiance under the quiet Bolpur sky",
+        "alt": "Kunja Homestay courtyard at night with warm lights and garden lawn"
+      },
+      {
+        "id": "hero-2",
+        "src": "images/kunja-56.jpeg",
+        "caption": "Garden Wing & Verandahs • Fresh air and green surroundings",
+        "alt": "Kunja Homestay Garden Wing and open lawn"
+      },
+      {
+        "id": "hero-3",
+        "src": "images/kunja-35.jpeg",
+        "caption": "Serene Morning Light • Peaceful garden pathways and seating",
+        "alt": "Morning atmosphere at Kunja Homestay"
+      },
+      {
+        "id": "hero-4",
+        "src": "images/kunja-58.jpeg",
+        "caption": "Santiniketan Hospitality • Authentic home-cooked meals and tranquil stays",
+        "alt": "Courtyard pathway and architecture at Kunja Homestay"
+      }
+    ],
     "recognition": {
       "isRecognized": true,
       "authority": "Department of Tourism, Government of West Bengal",
@@ -65,7 +91,7 @@
         "images/kunja-13.jpeg",
         "images/kunja-14.jpeg"
       ],
-      "nightlyPrice": "₹50000 / night",
+      "nightlyPrice": "₹2500/ night",
       "seasonLabel": "Standard Tariff"
     },
     {
@@ -450,6 +476,188 @@
       "title": "Kunja 63",
       "caption": "Discovered in images folder.",
       "image": "images/kunja-63.jpeg"
+    },
+    {
+      "id": "gal-1795464086984-633",
+      "category": "ambiance",
+      "title": "Kunja 63",
+      "caption": "Discovered in images folder.",
+      "image": "images/fooding/kunja-63.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-754",
+      "category": "ambiance",
+      "title": "Kunja 01",
+      "caption": "Discovered in images folder.",
+      "image": "images/gallery/kunja-01.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-437",
+      "category": "ambiance",
+      "title": "Kunja 02",
+      "caption": "Discovered in images folder.",
+      "image": "images/gallery/kunja-02.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-802",
+      "category": "ambiance",
+      "title": "Kunja 03",
+      "caption": "Discovered in images folder.",
+      "image": "images/gallery/kunja-03.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-891",
+      "category": "ambiance",
+      "title": "Kunja 04",
+      "caption": "Discovered in images folder.",
+      "image": "images/gallery/kunja-04.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-179",
+      "category": "ambiance",
+      "title": "Kunja 05",
+      "caption": "Discovered in images folder.",
+      "image": "images/gallery/kunja-05.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-457",
+      "category": "ambiance",
+      "title": "Kunja 06",
+      "caption": "Discovered in images folder.",
+      "image": "images/gallery/kunja-06.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-347",
+      "category": "ambiance",
+      "title": "Kunja 07",
+      "caption": "Discovered in images folder.",
+      "image": "images/gallery/kunja-07.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-584",
+      "category": "ambiance",
+      "title": "Kunja 08",
+      "caption": "Discovered in images folder.",
+      "image": "images/gallery/kunja-08.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-289",
+      "category": "ambiance",
+      "title": "Kunja 09",
+      "caption": "Discovered in images folder.",
+      "image": "images/gallery/kunja-09.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-792",
+      "category": "ambiance",
+      "title": "Kunja 33",
+      "caption": "Discovered in images folder.",
+      "image": "images/gallery/kunja-33.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-469",
+      "category": "ambiance",
+      "title": "Kunja 60",
+      "caption": "Discovered in images folder.",
+      "image": "images/gallery/kunja-60.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-161",
+      "category": "ambiance",
+      "title": "Kunja 64",
+      "caption": "Discovered in images folder.",
+      "image": "images/gallery/kunja-64.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-953",
+      "category": "ambiance",
+      "title": "Kunja 18",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja_bati_homestay/exterior/kunja-18.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-489",
+      "category": "ambiance",
+      "title": "Kunja 34",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja_bati_homestay/exterior/kunja-34.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-922",
+      "category": "ambiance",
+      "title": "Kunja 40",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja_homestay/exterior/kunja-40.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-353",
+      "category": "ambiance",
+      "title": "Kunja 56",
+      "caption": "Discovered in images folder.",
+      "image": "images/kunja_homestay/exterior/kunja-56.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-386",
+      "category": "ambiance",
+      "title": "Kunja 16",
+      "caption": "Discovered in images folder.",
+      "image": "images/public_post/kunja-16.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-577",
+      "category": "ambiance",
+      "title": "Kunja 17",
+      "caption": "Discovered in images folder.",
+      "image": "images/public_post/kunja-17.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-96",
+      "category": "ambiance",
+      "title": "Kunja 21",
+      "caption": "Discovered in images folder.",
+      "image": "images/public_post/kunja-21.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-373",
+      "category": "ambiance",
+      "title": "Kunja 29",
+      "caption": "Discovered in images folder.",
+      "image": "images/public_post/kunja-29.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-355",
+      "category": "ambiance",
+      "title": "Kunja 31",
+      "caption": "Discovered in images folder.",
+      "image": "images/public_post/kunja-31.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-102",
+      "category": "ambiance",
+      "title": "Kunja 32",
+      "caption": "Discovered in images folder.",
+      "image": "images/public_post/kunja-32.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-805",
+      "category": "ambiance",
+      "title": "Kunja 35",
+      "caption": "Discovered in images folder.",
+      "image": "images/public_post/kunja-35.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-215",
+      "category": "ambiance",
+      "title": "Kunja 36",
+      "caption": "Discovered in images folder.",
+      "image": "images/public_post/kunja-36.jpeg"
+    },
+    {
+      "id": "gal-1795464086985-372",
+      "category": "ambiance",
+      "title": "Kunja 52",
+      "caption": "Discovered in images folder.",
+      "image": "images/public_post/kunja-52.jpeg"
     }
   ],
   "reviews": [
@@ -492,10 +700,10 @@
   "properties": [
     {
       "id": "building-1",
-      "name": "Kunja Homestay — Building 1 (Main Courtyard)",
+      "name": "KUNJA BATI HOMESTAY",
       "locationNote": "Main Courtyard, Bolpur Santiniketan",
-      "description": "Our traditional central residence nestled around the open red-soil courtyard, garden lawn, and outdoor tea sit-outs. Ideal for couples, families, and quiet Santiniketan retreats.",
-      "coverImage": "images/kunja-34.jpeg",
+      "description": "Every room includes its own private veranda or balcony, giving you a quiet, sheltered outdoor space to enjoy your morning tea and the fresh Santiniketan breeze in complete privacy.",
+      "coverImage": "images/building-1/exterior/kunja-kunja-34-5bb323.jpeg",
       "rooms": [
         {
           "id": "courtyard-double",
@@ -514,7 +722,7 @@
             "images/kunja-13.jpeg",
             "images/kunja-14.jpeg"
           ],
-          "nightlyPrice": "₹50000 / night",
+          "nightlyPrice": "₹2500/ night",
           "seasonLabel": "Standard Tariff"
         },
         {
@@ -543,7 +751,7 @@
     },
     {
       "id": "building-2",
-      "name": "Kunja Homestay — Building 2 (Garden Retreat)",
+      "name": "KUNJA HOMESTAY",
       "locationNote": "Garden Wing, Bolpur Santiniketan",
       "description": "An airy, spacious property immersed in green flowering gardens, private verandahs, and generous family quarters dressed in handcrafted folk textiles.",
       "coverImage": "images/kunja-56.jpeg",

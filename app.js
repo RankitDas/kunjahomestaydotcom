@@ -278,9 +278,13 @@ async function fetchKunjaDataAndInit() {
   // Render Three-Stage Notices (Center Modal + Top Banner + Bottom Banner)
   renderThreeStageNotices();
 
+  // Initialize Hero Multi-Image Showcase Slideshow
+  initHeroSlideshow();
+
   // Render Two Properties & Rooms
   renderPropertiesShowcase();
   renderRooms();
+  initAutoRoomSlideshows();
 
   renderGallery("all");
   renderReviews();
@@ -302,7 +306,7 @@ function updateCertificateModalImage() {
   certImg.src = imageSrc;
 }
 
-// Three-Stage Maintenance / Notice System
+// Three-Stage Maintenance / Notice System with Running Marquee & Media Support
 function renderThreeStageNotices() {
   if (!kunjaData.noticeBanner || !kunjaData.noticeBanner.enabled) {
     hideAllNotices();
@@ -347,6 +351,7 @@ function renderThreeStageNotices() {
 
   const title = nb.title || "Homestay Notice";
   const message = nb.message || "";
+  const mediaSrc = nb.bannerMedia || nb.image || "";
 
   // 1. Center-Screen Modal on Initial Load (Dismissible per session)
   const centerModal = document.getElementById("noticeCenterModal");
@@ -356,6 +361,8 @@ function renderThreeStageNotices() {
     const centerTitle = document.getElementById("centerNoticeTitle");
     const centerMsg = document.getElementById("centerNoticeMessage");
     const centerDates = document.getElementById("centerNoticeDates");
+    const centerMediaWrap = document.getElementById("centerNoticeMediaWrap");
+    const centerMedia = document.getElementById("centerNoticeMedia");
 
     if (centerTitle) centerTitle.textContent = title;
     if (centerMsg) centerMsg.textContent = message;
@@ -363,39 +370,43 @@ function renderThreeStageNotices() {
       centerDates.textContent = timeText;
       centerDates.style.display = timeText ? "inline-block" : "none";
     }
+    if (centerMediaWrap && centerMedia) {
+      if (mediaSrc) {
+        centerMedia.src = mediaSrc;
+        centerMediaWrap.style.display = "flex";
+      } else {
+        centerMediaWrap.style.display = "none";
+      }
+    }
     centerModal.style.display = "flex";
     centerModal.classList.add("active");
   }
 
-  // 2. Top Notice Banner
-  const topBanner = document.getElementById("homestayNoticeBanner");
-  if (topBanner) {
-    const topTitle = document.getElementById("noticeBannerTitle");
-    const topMsg = document.getElementById("noticeBannerMessage");
-    const topDates = document.getElementById("noticeBannerDates");
+  // Helper to build marquee repeated content (duplicated 8 times for smooth infinite loop)
+  const buildMarqueeItem = () => `
+    <div class="marquee-item">
+      <span class="marquee-badge">📢 ${title}</span>
+      ${mediaSrc ? `<img src="${mediaSrc}" alt="Notice graphic" class="marquee-media-img">` : ''}
+      <span>${message}</span>
+      ${timeText ? `<span style="opacity: 0.85; font-size: 0.85em;">(${timeText})</span>` : ''}
+      <span class="marquee-separator">•</span>
+    </div>
+  `;
+  const marqueeHtml = Array(8).fill(buildMarqueeItem()).join("");
 
-    if (topTitle) topTitle.textContent = title;
-    if (topMsg) topMsg.textContent = message;
-    if (topDates) {
-      topDates.textContent = timeText;
-      topDates.style.display = timeText ? "inline-flex" : "none";
-    }
+  // 2. Top Notice Banner (Running Right to Left Marquee)
+  const topBanner = document.getElementById("homestayNoticeBanner");
+  const topTrack = document.getElementById("topMarqueeTrack");
+  if (topBanner && topTrack) {
+    topTrack.innerHTML = marqueeHtml;
     topBanner.style.display = "block";
   }
 
-  // 3. End-of-Website Notice Banner
+  // 3. End-of-Website Notice Banner (Running Right to Left Marquee)
   const bottomBanner = document.getElementById("homestayNoticeBannerBottom");
-  if (bottomBanner) {
-    const bottomTitle = document.getElementById("noticeBannerBottomTitle");
-    const bottomMsg = document.getElementById("noticeBannerBottomMessage");
-    const bottomDates = document.getElementById("noticeBannerBottomDates");
-
-    if (bottomTitle) bottomTitle.textContent = title;
-    if (bottomMsg) bottomMsg.textContent = message;
-    if (bottomDates) {
-      bottomDates.textContent = timeText;
-      bottomDates.style.display = timeText ? "inline-flex" : "none";
-    }
+  const bottomTrack = document.getElementById("bottomMarqueeTrack");
+  if (bottomBanner && bottomTrack) {
+    bottomTrack.innerHTML = marqueeHtml;
     bottomBanner.style.display = "block";
   }
 }
@@ -474,6 +485,7 @@ window.selectProperty = function(propertyId) {
   activePropertyId = propertyId;
   renderPropertiesShowcase();
   renderRooms();
+  initAutoRoomSlideshows();
   initRoomSwipes();
 
   // Smooth scroll down to rooms grid
@@ -547,12 +559,140 @@ window.cycleRoomPhoto = function(roomId, direction) {
   if (!carousel) return;
 
   const images = Array.from(carousel.querySelectorAll("img"));
+  if (images.length <= 1) return;
   const currentIndex = images.findIndex(img => img.classList.contains("active"));
   if (currentIndex === -1) return;
 
   images[currentIndex].classList.remove("active");
   const nextIndex = (currentIndex + direction + images.length) % images.length;
   images[nextIndex].classList.add("active");
+};
+
+// Automatic Room Image Slideshows for All Room Cards
+let roomAutoSlideTimers = [];
+function initAutoRoomSlideshows() {
+  // Clear any existing intervals
+  roomAutoSlideTimers.forEach(t => clearInterval(t));
+  roomAutoSlideTimers = [];
+
+  document.querySelectorAll(".room-carousel").forEach(carousel => {
+    const roomId = carousel.getAttribute("data-room-id");
+    const images = carousel.querySelectorAll("img");
+    if (!roomId || images.length <= 1) return;
+
+    let timer = setInterval(() => {
+      cycleRoomPhoto(roomId, 1);
+    }, 3500);
+
+    // Pause on hover or touch
+    carousel.addEventListener("mouseenter", () => clearInterval(timer));
+    carousel.addEventListener("mouseleave", () => {
+      clearInterval(timer);
+      timer = setInterval(() => cycleRoomPhoto(roomId, 1), 3500);
+    });
+    carousel.addEventListener("touchstart", () => clearInterval(timer), { passive: true });
+    carousel.addEventListener("touchend", () => {
+      clearInterval(timer);
+      timer = setInterval(() => cycleRoomPhoto(roomId, 1), 3500);
+    }, { passive: true });
+
+    roomAutoSlideTimers.push(timer);
+  });
+}
+
+// Hero Right-Side Multi-Image Slideshow with Smooth Crossfade & Ken Burns
+let heroSlideIndex = 0;
+let heroSlideTimer = null;
+let heroImagesList = [];
+
+function initHeroSlideshow() {
+  const wrapper = document.getElementById("heroSlidesWrapper");
+  const dotsContainer = document.getElementById("heroDots");
+  if (!wrapper) return;
+
+  heroImagesList = kunjaData.siteConfig?.heroImages || [
+    {
+      src: "images/kunja-34.jpeg",
+      caption: "Kunja Homestay Courtyard • Evening ambiance under the quiet Bolpur sky",
+      alt: "Kunja Homestay courtyard at night with warm lights and garden lawn"
+    },
+    {
+      src: "images/kunja-56.jpeg",
+      caption: "Garden Wing & Verandahs • Fresh air and green surroundings",
+      alt: "Kunja Homestay Garden Wing and open lawn"
+    },
+    {
+      src: "images/kunja-35.jpeg",
+      caption: "Serene Morning Light • Peaceful garden pathways and seating",
+      alt: "Morning atmosphere at Kunja Homestay"
+    },
+    {
+      src: "images/kunja-58.jpeg",
+      caption: "Santiniketan Hospitality • Authentic home-cooked meals and tranquil stays",
+      alt: "Courtyard pathway and architecture at Kunja Homestay"
+    }
+  ];
+
+  if (heroImagesList.length === 0) return;
+
+  // Render slides
+  wrapper.innerHTML = heroImagesList.map((item, idx) => `
+    <div class="hero-slide ${idx === 0 ? 'active' : ''}" data-index="${idx}">
+      <img src="${item.src}" alt="${item.alt || 'Kunja Homestay photograph'}" loading="${idx === 0 ? 'eager' : 'lazy'}">
+      <div class="hero-overlay-tag">
+        ${item.caption || '<strong>Kunja Homestay</strong> • Bolpur, Santiniketan'}
+      </div>
+    </div>
+  `).join("");
+
+  // Render dots
+  if (dotsContainer) {
+    dotsContainer.innerHTML = heroImagesList.map((_, idx) => `
+      <button class="hero-dot ${idx === 0 ? 'active' : ''}" onclick="goToHeroSlide(${idx})" aria-label="Go to hero slide ${idx + 1}"></button>
+    `).join("");
+  }
+
+  heroSlideIndex = 0;
+  startHeroTimer();
+
+  // Pause on hover
+  const container = document.getElementById("heroSlideshow");
+  if (container) {
+    container.addEventListener("mouseenter", () => clearInterval(heroSlideTimer));
+    container.addEventListener("mouseleave", () => startHeroTimer());
+    container.addEventListener("touchstart", () => clearInterval(heroSlideTimer), { passive: true });
+    container.addEventListener("touchend", () => startHeroTimer(), { passive: true });
+  }
+}
+
+function startHeroTimer() {
+  clearInterval(heroSlideTimer);
+  heroSlideTimer = setInterval(() => {
+    nextHeroSlide();
+  }, 4000);
+}
+
+window.nextHeroSlide = function() {
+  if (heroImagesList.length <= 1) return;
+  goToHeroSlide((heroSlideIndex + 1) % heroImagesList.length);
+};
+
+window.prevHeroSlide = function() {
+  if (heroImagesList.length <= 1) return;
+  goToHeroSlide((heroSlideIndex - 1 + heroImagesList.length) % heroImagesList.length);
+};
+
+window.goToHeroSlide = function(idx) {
+  heroSlideIndex = idx;
+  const slides = document.querySelectorAll(".hero-slide");
+  const dots = document.querySelectorAll(".hero-dot");
+
+  slides.forEach((s, i) => {
+    s.classList.toggle("active", i === idx);
+  });
+  dots.forEach((d, i) => {
+    d.classList.toggle("active", i === idx);
+  });
 };
 
 // Touch swipe handler for room carousels on Android mobile

@@ -324,24 +324,28 @@ h1, h2, h3, h4, .font-serif {
   flex-direction: column;
   white-space: nowrap;
   flex-shrink: 0;
+  text-decoration: none;
 }
 .brand-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.4rem, 2.5vw, 1.65rem);
+  font-size: clamp(1.35rem, 2.3vw, 1.7rem);
   color: var(--color-forest);
-  letter-spacing: -0.02em;
-  line-height: 1;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
   white-space: nowrap;
+  font-weight: 700;
 }
 .brand-subtitle {
-  font-size: clamp(0.58rem, 1.1vw, 0.7rem);
+  font-family: var(--font-sans);
+  font-size: clamp(0.52rem, 0.95vw, 0.65rem);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   color: var(--color-terracotta);
-  font-weight: 600;
+  font-weight: 700;
   margin-top: 3px;
   display: block;
   white-space: nowrap;
+  line-height: 1.2;
 }
 
 .main-nav {
@@ -556,7 +560,8 @@ h1, h2, h3, h4, .font-serif {
     font-size: 0.95rem;
   }
 }
-.hero-main-card {
+.hero-main-card,
+.hero-slideshow-container {
   position: relative;
   border-radius: 12px;
   overflow: hidden;
@@ -564,6 +569,91 @@ h1, h2, h3, h4, .font-serif {
   aspect-ratio: 4/3;
   background-color: #E8DFD3;
   width: 100%;
+}
+
+.hero-slides-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 6s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: scale(1.03);
+  z-index: 1;
+}
+
+.hero-slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(18, 38, 28, 0.55);
+  color: #FFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.hero-nav-btn:hover {
+  background: rgba(18, 38, 28, 0.85);
+  border-color: var(--color-ochre);
+}
+
+.hero-prev-btn { left: 12px; }
+.hero-next-btn { right: 12px; }
+
+.hero-dots {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  display: flex;
+  gap: 6px;
+  z-index: 10;
+}
+
+.hero-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.hero-dot.active {
+  background: var(--color-ochre);
+  width: 22px;
+  border-radius: 999px;
 }
 .hero-main-card img {
   width: 100%;
@@ -760,10 +850,104 @@ h1, h2, h3, h4, .font-serif {
   background: #FFF7ED;
   border-bottom: 2px solid #FDBA74;
   color: #7C2D12;
-  padding: 0.85rem 1rem;
+  padding: 0;
   font-size: 0.9rem;
   position: relative;
   z-index: 95;
+  overflow: hidden;
+}
+
+.homestay-notice-banner-bottom {
+  border-top: 2px solid #FDBA74;
+  border-bottom: none;
+}
+
+.marquee-track-container {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  padding: 0.75rem 0;
+  cursor: default;
+}
+
+.marquee-content-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 3rem;
+  animation: marqueeRightToLeft 28s linear infinite;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.marquee-track-container:hover .marquee-content-track,
+.marquee-track-container:active .marquee-content-track {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeRightToLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-weight: 500;
+  color: #7C2D12;
+}
+
+.marquee-media-img {
+  height: 32px;
+  width: auto;
+  max-width: 60px;
+  object-fit: contain;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.marquee-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #FFEDD5;
+  color: #9A3412;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.marquee-separator {
+  color: #FDBA74;
+  font-size: 1.1rem;
+  user-select: none;
+}
+
+.notice-modal-media-wrap {
+  width: 100%;
+  max-height: 220px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1.25rem;
+  display: flex;
+  justify-content: center;
+  background: #F3ECE1;
+  border: 1px solid var(--color-border);
+}
+
+.notice-modal-media-wrap img {
+  max-height: 220px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
 }
 .homestay-notice-content {
   display: flex;

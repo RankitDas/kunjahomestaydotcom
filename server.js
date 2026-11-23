@@ -36,17 +36,22 @@ function parseCookies(req) {
 
 // Helper: Credentials management
 function hasCredentials() {
-  return fs.existsSync(CREDENTIALS_FILE);
+  if (!fs.existsSync(CREDENTIALS_FILE)) return false;
+  const creds = getCredentials();
+  return !!(creds && creds.admins && creds.admins.length > 0);
 }
 
 function getCredentials() {
   if (!fs.existsSync(CREDENTIALS_FILE)) {
-    return null;
+    return { admins: [], otps: {} };
   }
   try {
-    return JSON.parse(fs.readFileSync(CREDENTIALS_FILE, 'utf8'));
+    const data = JSON.parse(fs.readFileSync(CREDENTIALS_FILE, 'utf8'));
+    if (!data.admins) data.admins = [];
+    if (!data.otps) data.otps = {};
+    return data;
   } catch (e) {
-    return null;
+    return { admins: [], otps: {} };
   }
 }
 
@@ -56,6 +61,19 @@ function saveCredentials(data) {
   }
   data.updated_at = new Date().toISOString();
   fs.writeFileSync(CREDENTIALS_FILE, JSON.stringify(data, null, 2), 'utf8');
+}
+
+function validateStrongPassword(pw) {
+  if (!pw || pw.length < 8) return false;
+  if (!/[A-Z]/.test(pw)) return false;
+  if (!/[a-z]/.test(pw)) return false;
+  if (!/[0-9]/.test(pw)) return false;
+  if (!/[^A-Za-z0-9]/.test(pw)) return false;
+  return true;
+}
+
+function sanitizePhone(p) {
+  return (p || '').replace(/\D+/g, '');
 }
 
 // Helper: Get or create session
@@ -133,166 +151,219 @@ const server = http.createServer(async (req, res) => {
 
     // 1. Status Check
     if (action === 'status') {
-      const hasCreds = hasCredentials();
-      const creds = hasCreds ? getCredentials() : null;
+      const creds = getCredentials();
+      const adminCount = creds.admins.length;
       return sendJson(res, 200, {
         authenticated: session.authenticated,
-        setup_required: !hasCreds,
-        username: session.authenticated ? session.username : null,
-        csrf_token: session.csrfToken,
-        is_default_password: session.authenticated ? !!(creds && creds.is_default_password) : false
+        setup_required: (adminCount === 0),
+        admin_count: adminCount,
+        max_admins: 3,
+        can_register: (adminCount < 3),
+        current_admin: session.authenticated ? session.admin : null,
+        csrf_token: session.csrfToken
       });
     }
 
-    // 1.5 Setup Admin (first-time initialization)
-    if (action === 'setup' && req.method === 'POST') {
-      if (hasCredentials()) {
-        return sendJson(res, 400, { success: false, error: 'Setup already completed. Please log in.' });
-      }
+    // 2. Request OTP (Registration or Reset)
+    if (action === 'request_otp' && req.method === 'POST') {
       const bodyBuffer = await readRequestBody(req);
       let payload = {};
-      try {
-        payload = JSON.parse(bodyBuffer.toString('utf8'));
-      } catch (e) {
-        return sendJson(res, 400, { success: false, error: 'Invalid JSON payload' });
-      }
-      const { username, password } = payload;
-      if (!username || username.trim().length < 3) {
-        return sendJson(res, 400, { success: false, error: 'Username must be at least 3 characters.' });
-      }
-      if (!password || password.length < 8) {
-        return sendJson(res, 400, { success: false, error: 'Password must be at least 8 characters.' });
+      try { payload = JSON.parse(bodyBuffer.toString('utf8')); } catch (e) {}
+      const email = (payload.email || '').trim().toLowerCase();
+      const purpose = payload.purpose || 'register';
+      const name = payload.name || 'Admin';
+
+      if (!email.includes('@')) {
+        return sendJson(res, 400, { success: false, error: 'Valid email required' });
       }
 
-      const creds = {
-        username: username.trim(),
-        plain_password: password,
-        is_default_password: false,
-        failed_attempts: 0,
-        lockout_until: 0,
-        updated_at: new Date().toISOString()
+      const creds = getCredentials();
+      if (purpose === 'register') {
+        if (creds.admins.length >= 3) {
+          return sendJson(res, 400, { success: false, error: 'Maximum 3 administrators reached.' });
+        }
+        if (creds.admins.some(a => a.email.toLowerCase() === email)) {
+          return sendJson(res, 400, { success: false, error: 'Admin with this email already exists.' });
+        }
+      }
+
+      const otp = String(Math.floor(100000 + Math.random() * 900000));
+      creds.otps[email] = {
+        code: otp,
+        expires: Date.now() + (10 * 60 * 1000),
+        purpose
       };
       saveCredentials(creds);
 
-      session.authenticated = true;
-      session.username = creds.username;
+      console.log(`\n📧 [DEV OTP DISPATCH] To: ${email} | Purpose: ${purpose} | Code: ${otp}\n`);
+
       return sendJson(res, 200, {
         success: true,
-        message: 'Admin account created successfully',
-        username: creds.username,
-        csrf_token: session.csrfToken,
-        is_default_password: false
+        message: 'A 6-digit verification code has been sent to your email.',
+        expires_in: 600,
+        dev_hint: `Code: ${otp}`
       });
     }
 
-    // 2. Login
+    // 3. Register Admin
+    if (action === 'register' && req.method === 'POST') {
+      const bodyBuffer = await readRequestBody(req);
+      let payload = {};
+      try { payload = JSON.parse(bodyBuffer.toString('utf8')); } catch (e) {}
+
+      const name = (payload.name || '').trim();
+      const email = (payload.email || '').trim().toLowerCase();
+      const phone = sanitizePhone(payload.phone);
+      const password = payload.password || '';
+      const otp = (payload.otp || '').trim();
+
+      if (!name || name.length < 2) return sendJson(res, 400, { success: false, error: 'Full Name required' });
+      if (!email.includes('@')) return sendJson(res, 400, { success: false, error: 'Valid email required' });
+      if (phone.length < 10) return sendJson(res, 400, { success: false, error: '10-digit phone required' });
+      if (!validateStrongPassword(password)) {
+        return sendJson(res, 400, { success: false, error: 'Password must have 8+ chars, uppercase, lowercase, number, special char.' });
+      }
+
+      const creds = getCredentials();
+      if (creds.admins.length >= 3) return sendJson(res, 400, { success: false, error: 'Max 3 admins reached' });
+      if (creds.admins.some(a => a.email.toLowerCase() === email)) {
+        return sendJson(res, 400, { success: false, error: 'Email already registered' });
+      }
+      if (creds.admins.some(a => sanitizePhone(a.phone) === phone)) {
+        return sendJson(res, 400, { success: false, error: 'Phone already registered' });
+      }
+
+      const rec = creds.otps[email];
+      if (!rec || Date.now() > rec.expires || rec.code !== otp) {
+        return sendJson(res, 400, { success: false, error: 'Invalid or expired OTP verification code.' });
+      }
+      delete creds.otps[email];
+
+      const newAdmin = {
+        id: 'admin-' + Date.now(),
+        name,
+        email,
+        phone,
+        plain_password: password,
+        created_at: new Date().toISOString()
+      };
+      creds.admins.push(newAdmin);
+      saveCredentials(creds);
+
+      session.authenticated = true;
+      session.admin = { id: newAdmin.id, name: newAdmin.name, email: newAdmin.email, phone: newAdmin.phone };
+
+      return sendJson(res, 200, {
+        success: true,
+        message: 'Admin registered successfully',
+        current_admin: session.admin,
+        csrf_token: session.csrfToken
+      });
+    }
+
+    // 4. Login (Email or Phone + Password, NO OTP)
     if (action === 'login' && req.method === 'POST') {
       const bodyBuffer = await readRequestBody(req);
       let payload = {};
-      try {
-        payload = JSON.parse(bodyBuffer.toString('utf8'));
-      } catch (e) {
-        return sendJson(res, 400, { success: false, error: 'Invalid JSON payload' });
-      }
+      try { payload = JSON.parse(bodyBuffer.toString('utf8')); } catch (e) {}
 
-      const { username, password } = payload;
+      const identifier = (payload.identifier || payload.username || '').trim();
+      const password = payload.password || '';
+      const cleanPhone = sanitizePhone(identifier);
+      const lowerId = identifier.toLowerCase();
+
       const creds = getCredentials();
-      if (!creds) {
-        return sendJson(res, 400, { success: false, error: 'Account setup required.' });
-      }
-      const now = Math.floor(Date.now() / 1000);
-
-      if (creds.lockout_until && creds.lockout_until > now) {
-        const remaining = Math.ceil((creds.lockout_until - now) / 60);
-        return sendJson(res, 429, {
-          success: false,
-          error: `Account is locked due to too many failed attempts. Try again in ${remaining} minute(s).`
-        });
-      }
-
-      // Check password
-      const isMatch = (username === creds.username) && (
-        (creds.plain_password && password === creds.plain_password)
+      const admin = creds.admins.find(a => 
+        a.email.toLowerCase() === lowerId || 
+        (cleanPhone && sanitizePhone(a.phone) === cleanPhone) ||
+        (a.username && a.username.toLowerCase() === lowerId)
       );
 
-      if (isMatch) {
-        creds.failed_attempts = 0;
-        creds.lockout_until = 0;
-        saveCredentials(creds);
-
-        session.authenticated = true;
-        session.username = username;
-        return sendJson(res, 200, {
-          success: true,
-          message: 'Login successful',
-          username: username,
-          csrf_token: session.csrfToken,
-          is_default_password: !!creds.is_default_password
-        });
-      } else {
-        const failed = (creds.failed_attempts || 0) + 1;
-        creds.failed_attempts = failed;
-        let msg = 'Invalid username or password.';
-        if (failed >= 5) {
-          creds.lockout_until = now + (15 * 60);
-          creds.failed_attempts = 0;
-          msg += ' Too many failed attempts. Account locked for 15 minutes.';
-        }
-        saveCredentials(creds);
-        return sendJson(res, 401, { success: false, error: msg });
+      if (!admin) {
+        return sendJson(res, 401, { success: false, error: 'No admin found matching that Email or Phone.' });
       }
+
+      if (admin.plain_password !== password) {
+        return sendJson(res, 401, { success: false, error: 'Invalid password.' });
+      }
+
+      session.authenticated = true;
+      session.admin = { id: admin.id, name: admin.name, email: admin.email, phone: admin.phone };
+
+      return sendJson(res, 200, {
+        success: true,
+        message: 'Login successful',
+        current_admin: session.admin,
+        csrf_token: session.csrfToken
+      });
     }
 
-    // 3. Logout
-    if (action === 'logout' && req.method === 'POST') {
-      session.authenticated = false;
-      session.username = null;
-      return sendJson(res, 200, { success: true, message: 'Logged out' });
-    }
-
-    // 4. Update Security
-    if (action === 'update_security' && req.method === 'POST') {
-      if (!session.authenticated) {
-        return sendJson(res, 401, { success: false, error: 'Unauthorized' });
-      }
+    // 5. Reset Password (with OTP)
+    if (action === 'reset_password' && req.method === 'POST') {
       const bodyBuffer = await readRequestBody(req);
       let payload = {};
-      try {
-        payload = JSON.parse(bodyBuffer.toString('utf8'));
-      } catch (e) {
-        return sendJson(res, 400, { success: false, error: 'Invalid JSON' });
+      try { payload = JSON.parse(bodyBuffer.toString('utf8')); } catch (e) {}
+
+      const email = (payload.email || '').trim().toLowerCase();
+      const otp = (payload.otp || '').trim();
+      const newPassword = payload.new_password || '';
+
+      if (!validateStrongPassword(newPassword)) {
+        return sendJson(res, 400, { success: false, error: 'Password must have 8+ chars, uppercase, lowercase, number, special char.' });
       }
 
       const creds = getCredentials();
-      if (!creds) {
-        return sendJson(res, 400, { success: false, error: 'Credentials not found.' });
-      }
-      const currentPw = payload.current_password || '';
-      const isCurValid = (creds.plain_password && currentPw === creds.plain_password);
-
-      if (!isCurValid) {
-        return sendJson(res, 400, { success: false, error: 'Current password verification failed.' });
+      const rec = creds.otps[email];
+      if (!rec || Date.now() > rec.expires || rec.code !== otp) {
+        return sendJson(res, 400, { success: false, error: 'Invalid or expired OTP code.' });
       }
 
-      if (payload.new_username && payload.new_username.trim()) {
-        creds.username = payload.new_username.trim();
-        session.username = creds.username;
-      }
-      if (payload.new_password) {
-        if (payload.new_password.length < 8) {
-          return sendJson(res, 400, { success: false, error: 'New password must be at least 8 characters.' });
-        }
-        creds.plain_password = payload.new_password;
-        creds.is_default_password = false;
-      }
+      const admin = creds.admins.find(a => a.email.toLowerCase() === email);
+      if (!admin) return sendJson(res, 404, { success: false, error: 'Admin not found.' });
 
+      admin.plain_password = newPassword;
+      delete creds.otps[email];
       saveCredentials(creds);
-      return sendJson(res, 200, {
-        success: true,
-        message: 'Security credentials updated.',
-        username: creds.username,
-        is_default_password: false
-      });
+
+      return sendJson(res, 200, { success: true, message: 'Password reset successfully.' });
+    }
+
+    // 6. List Admins
+    if (action === 'list_admins') {
+      if (!session.authenticated) return sendJson(res, 401, { success: false, error: 'Unauthorized' });
+      const creds = getCredentials();
+      const list = creds.admins.map(a => ({ id: a.id, name: a.name, email: a.email, phone: a.phone, created_at: a.created_at }));
+      return sendJson(res, 200, { success: true, admins: list, max: 3 });
+    }
+
+    // 7. Remove Admin
+    if (action === 'remove_admin' && req.method === 'POST') {
+      if (!session.authenticated) return sendJson(res, 401, { success: false, error: 'Unauthorized' });
+      const bodyBuffer = await readRequestBody(req);
+      let payload = {};
+      try { payload = JSON.parse(bodyBuffer.toString('utf8')); } catch (e) {}
+
+      const targetId = payload.admin_id;
+      const creds = getCredentials();
+      if (creds.admins.length <= 1) {
+        return sendJson(res, 400, { success: false, error: 'At least one admin must remain active.' });
+      }
+
+      creds.admins = creds.admins.filter(a => a.id !== targetId);
+      saveCredentials(creds);
+
+      if (session.admin && session.admin.id === targetId) {
+        session.authenticated = false;
+        session.admin = null;
+      }
+      return sendJson(res, 200, { success: true, message: 'Admin removed successfully.' });
+    }
+
+    // 8. Logout
+    if (action === 'logout' && req.method === 'POST') {
+      session.authenticated = false;
+      session.admin = null;
+      return sendJson(res, 200, { success: true, message: 'Logged out' });
     }
 
     return sendJson(res, 400, { success: false, error: 'Invalid action or method' });

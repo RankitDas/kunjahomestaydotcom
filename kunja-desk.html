@@ -223,6 +223,55 @@
       outline: none;
       border-color: var(--color-forest);
     }
+    .password-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .password-wrap .form-input {
+      padding-right: 2.75rem;
+    }
+    .password-toggle-btn {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.15rem;
+      padding: 0.25rem 0.45rem;
+      color: var(--color-text-muted);
+      line-height: 1;
+      user-select: none;
+    }
+    .password-toggle-btn:hover {
+      color: var(--color-forest);
+    }
+    .pw-strength-meter {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .pw-bar {
+      height: 4px;
+      background: #E2E8F0;
+      border-radius: 2px;
+      transition: background 0.2s ease;
+    }
+    .pw-rules-list {
+      font-size: 0.78rem;
+      color: var(--color-text-muted);
+      margin-top: 6px;
+      list-style: none;
+      padding-left: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .pw-rule-item.valid {
+      color: #059669;
+      font-weight: 600;
+    }
     .error-msg {
       background: #FEF2F2;
       border: 1px solid #FCA5A5;
@@ -551,50 +600,147 @@
     </div>
   </header>
 
-  <!-- Login View -->
+  <!-- Login & Multi-Admin Auth View -->
   <div class="login-container" id="loginView">
-    <div class="login-card">
-      <h1 class="login-title" id="authFormTitle">Owner Sign In</h1>
+    <div class="login-card" style="max-width: 440px;">
+      <h1 class="login-title" id="authFormTitle">Admin Sign In</h1>
       <p class="login-subtitle" id="authFormSubtitle">Kunja Homestay Management Portal</p>
 
       <div class="error-msg" id="loginError"></div>
+      <div id="loginSuccessMsg" style="display:none; background:#ECFDF5; border:1px solid #A7F3D0; color:#065F46; padding:0.65rem 0.85rem; border-radius:var(--radius-sm); font-size:0.85rem; margin-bottom:1rem; text-align:left;"></div>
 
-      <!-- Standard Login Form -->
+      <!-- 1. Standard Login Form (Email OR Phone + Password, NO OTP) -->
       <form id="loginForm" onsubmit="handleLogin(event)">
         <div class="form-group">
-          <label class="form-label" for="loginUsername">Username</label>
-          <input type="text" id="loginUsername" class="form-input" required autocomplete="username">
+          <label class="form-label" for="loginIdentifier">Email or Phone / WhatsApp Number</label>
+          <input type="text" id="loginIdentifier" class="form-input" placeholder="e.g. admin@kunjahomestay.com or 9064629141" required autocomplete="username">
         </div>
         <div class="form-group">
-          <label class="form-label" for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" class="form-input" required autocomplete="current-password">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+            <label class="form-label" for="loginPassword" style="margin-bottom:0;">Password</label>
+            <a href="javascript:void(0)" onclick="switchAuthMode('forgot')" style="font-size:0.8rem; color:var(--color-terracotta); text-decoration:none;">Forgot?</a>
+          </div>
+          <div class="password-wrap">
+            <input type="password" id="loginPassword" class="form-input" required autocomplete="current-password">
+            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('loginPassword')" title="Show / Hide Password">👁️</button>
+          </div>
         </div>
         <button type="submit" class="btn btn-forest" style="width: 100%; justify-content: center; margin-top: 0.5rem;" id="loginSubmitBtn">
           Access Kunja Desk →
         </button>
+
+        <div id="registerPromptSection" style="margin-top: 1.25rem; font-size: 0.85rem; border-top: 1px solid var(--color-border); padding-top: 1rem; color: var(--color-text-muted);">
+          <span>New administrator? </span>
+          <a href="javascript:void(0)" onclick="switchAuthMode('register')" style="color: var(--color-forest); font-weight: 600; text-decoration: none;">Register Admin Account (Max 3) →</a>
+        </div>
       </form>
 
-      <!-- First-Time Setup Form (Shown only on first install) -->
-      <form id="setupForm" onsubmit="handleInitialSetup(event)" style="display: none;">
+      <!-- 2. Registration Form (Requires Strong Password + 6-Digit Email OTP) -->
+      <form id="registerForm" onsubmit="handleAdminRegistration(event)" style="display: none;">
         <div style="background: #EBF4EE; border: 1px solid #C4DCCB; border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.85rem; color: var(--color-forest); margin-bottom: 1.25rem;">
-          👋 <strong>Welcome, Homestay Owner!</strong><br>
-          Please choose your private administrator username and master password to secure your Kunja Desk.
+          👋 <strong>Admin Registration</strong><br>
+          Up to 3 administrators can be registered. A 6-digit verification code will be sent to your email.
         </div>
+
         <div class="form-group">
-          <label class="form-label" for="setupUsername">Create Owner Username</label>
-          <input type="text" id="setupUsername" class="form-input" placeholder="e.g. kunja_owner" required autocomplete="username" minlength="3">
+          <label class="form-label" for="regName">Full Name</label>
+          <input type="text" id="regName" class="form-input" placeholder="e.g. Debashis Mondal" required>
         </div>
+
         <div class="form-group">
-          <label class="form-label" for="setupPassword">Create Master Password</label>
-          <input type="password" id="setupPassword" class="form-input" placeholder="At least 8 characters" required autocomplete="new-password" minlength="8">
+          <label class="form-label" for="regEmail">Email Address (Unique)</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="email" id="regEmail" class="form-input" placeholder="e.g. owner@kunjahomestay.com" required autocomplete="email">
+            <button type="button" class="btn btn-outline" style="white-space: nowrap; font-size: 0.82rem; padding: 0.4rem 0.75rem;" id="sendRegOtpBtn" onclick="requestOtpForRegistration()">Send OTP</button>
+          </div>
+          <small id="regOtpHint" style="font-size: 0.75rem; color: #059669; display: none; margin-top: 4px;"></small>
         </div>
+
+        <div class="form-group" id="regOtpGroup" style="display: none;">
+          <label class="form-label" for="regOtp">6-Digit Verification Code</label>
+          <input type="text" id="regOtp" class="form-input" placeholder="Enter 6-digit OTP from email" maxlength="6" inputmode="numeric">
+        </div>
+
         <div class="form-group">
-          <label class="form-label" for="setupPasswordConfirm">Confirm Password</label>
-          <input type="password" id="setupPasswordConfirm" class="form-input" placeholder="Repeat master password" required autocomplete="new-password" minlength="8">
+          <label class="form-label" for="regPhone">Phone / WhatsApp Number (Unique 10 Digits)</label>
+          <input type="tel" id="regPhone" class="form-input" placeholder="e.g. 9064629141" required pattern="[0-9]{10}" title="10-digit mobile number">
         </div>
-        <button type="submit" class="btn btn-terracotta" style="width: 100%; justify-content: center; margin-top: 0.5rem;" id="setupSubmitBtn">
-          Create & Secure My Account →
+
+        <div class="form-group">
+          <label class="form-label" for="regPassword">Strong Password</label>
+          <div class="password-wrap">
+            <input type="password" id="regPassword" class="form-input" placeholder="e.g. @Rashi321" required minlength="8" oninput="checkPasswordStrength('regPassword', 'regPwBars', 'regPwRules')">
+            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('regPassword')" title="Show / Hide Password">👁️</button>
+          </div>
+          <div class="pw-strength-meter" id="regPwBars">
+            <div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div>
+          </div>
+          <ul class="pw-rules-list" id="regPwRules">
+            <li id="rule-len">○ At least 8 characters</li>
+            <li id="rule-upper">○ At least 1 uppercase letter (A-Z)</li>
+            <li id="rule-lower">○ At least 1 lowercase letter (a-z)</li>
+            <li id="rule-num">○ At least 1 number (0-9)</li>
+            <li id="rule-spec">○ At least 1 special character (@ # $ % & * !)</li>
+          </ul>
+        </div>
+
+        <button type="submit" class="btn btn-terracotta" style="width: 100%; justify-content: center; margin-top: 0.5rem;" id="regSubmitBtn">
+          Verify & Complete Registration →
         </button>
+
+        <div style="margin-top: 1.25rem; font-size: 0.85rem; border-top: 1px solid var(--color-border); padding-top: 1rem; color: var(--color-text-muted);">
+          <span>Already registered? </span>
+          <a href="javascript:void(0)" onclick="switchAuthMode('login')" style="color: var(--color-forest); font-weight: 600; text-decoration: none;">Sign in here →</a>
+        </div>
+      </form>
+
+      <!-- 3. Forgot / Reset Password Form (Requires Email OTP) -->
+      <form id="forgotForm" onsubmit="handleResetPassword(event)" style="display: none;">
+        <div style="background: #FFF7ED; border: 1px solid #FFEDD5; border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.85rem; color: #9A3412; margin-bottom: 1.25rem;">
+          🔑 <strong>Reset Password</strong><br>
+          Enter your registered email address to receive a 6-digit reset code.
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="resetEmail">Registered Email Address</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="email" id="resetEmail" class="form-input" placeholder="e.g. admin@kunjahomestay.com" required>
+            <button type="button" class="btn btn-outline" style="white-space: nowrap; font-size: 0.82rem; padding: 0.4rem 0.75rem;" id="sendResetOtpBtn" onclick="requestOtpForReset()">Send OTP</button>
+          </div>
+          <small id="resetOtpHint" style="font-size: 0.75rem; color: #059669; display: none; margin-top: 4px;"></small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="resetOtp">6-Digit Verification Code</label>
+          <input type="text" id="resetOtp" class="form-input" placeholder="Enter 6-digit code from email" required maxlength="6" inputmode="numeric">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="resetNewPassword">New Strong Password</label>
+          <div class="password-wrap">
+            <input type="password" id="resetNewPassword" class="form-input" placeholder="e.g. @Rashi321" required minlength="8" oninput="checkPasswordStrength('resetNewPassword', 'resetPwBars', 'resetPwRules')">
+            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('resetNewPassword')" title="Show / Hide Password">👁️</button>
+          </div>
+          <div class="pw-strength-meter" id="resetPwBars">
+            <div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div>
+          </div>
+          <ul class="pw-rules-list" id="resetPwRules">
+            <li id="rrule-len">○ At least 8 characters</li>
+            <li id="rrule-upper">○ At least 1 uppercase letter (A-Z)</li>
+            <li id="rrule-lower">○ At least 1 lowercase letter (a-z)</li>
+            <li id="rrule-num">○ At least 1 number (0-9)</li>
+            <li id="rrule-spec">○ At least 1 special character (@ # $ % & * !)</li>
+          </ul>
+        </div>
+
+        <button type="submit" class="btn btn-terracotta" style="width: 100%; justify-content: center; margin-top: 0.5rem;" id="resetSubmitBtn">
+          Reset Password & Log In →
+        </button>
+
+        <div style="margin-top: 1.25rem; font-size: 0.85rem; border-top: 1px solid var(--color-border); padding-top: 1rem; color: var(--color-text-muted);">
+          <span>Remembered your password? </span>
+          <a href="javascript:void(0)" onclick="switchAuthMode('login')" style="color: var(--color-forest); font-weight: 600; text-decoration: none;">Back to Sign In →</a>
+        </div>
       </form>
     </div>
   </div>
@@ -613,11 +759,12 @@
     <!-- Navigation Tabs -->
     <nav class="admin-tabs">
       <button class="tab-btn active" onclick="switchTab('notice')">📢 Notice System</button>
+      <button class="tab-btn" onclick="switchTab('hero')">🌟 Hero Showcase</button>
       <button class="tab-btn" onclick="switchTab('properties')">🏡 2 Properties & Rooms</button>
       <button class="tab-btn" onclick="switchTab('certificate')">🏅 Govt. Certificate</button>
       <button class="tab-btn" onclick="switchTab('reviews')">💬 Reviews & Google Rating</button>
       <button class="tab-btn" onclick="switchTab('gallery')">🖼️ Photos & Gallery</button>
-      <button class="tab-btn" onclick="switchTab('security')">🔐 Account Security</button>
+      <button class="tab-btn" onclick="switchTab('security')">🔐 Multi-Admin Security</button>
     </nav>
 
     <!-- TAB 1: Notice System (3-Stage) -->
@@ -659,16 +806,53 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Live Visitor Preview</label>
+            <label class="form-label" for="noticeMediaUpload">Notice Graphic / Badge (Optional: .gif, .png, .jpg, .webp)</label>
+            <div style="display: flex; gap: 1rem; align-items: center; margin-top: 0.35rem;">
+              <input type="file" id="noticeMediaUpload" class="form-input" accept="image/gif,image/png,image/jpeg,image/webp" onchange="handleNoticeMediaUpload(event)">
+              <button type="button" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;" onclick="removeNoticeMedia()">Remove Media</button>
+            </div>
+            <div id="noticeMediaPreviewWrap" style="margin-top: 0.5rem; display: none; align-items: center; gap: 0.75rem;">
+              <img id="noticeMediaPreview" src="" alt="Notice Media Preview" style="max-height: 50px; border-radius: 4px; border: 1px solid var(--color-border);">
+              <span id="noticeMediaName" style="font-size: 0.82rem; color: var(--color-text-muted);"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Live Visitor Preview (Right-to-Left Marquee & Popup Graphic)</label>
             <div class="notice-preview-box" id="noticePreviewBox">
-              <div style="font-weight:700; color:#9A3412;" id="prevTitle">Notice Title</div>
-              <div id="prevMessage" style="font-size:0.9rem; margin-top:0.25rem;">Notice message will appear here...</div>
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <img id="prevMediaThumb" src="" alt="Graphic" style="height: 32px; display: none; object-fit: contain;">
+                <div>
+                  <div style="font-weight:700; color:#9A3412;" id="prevTitle">Notice Title</div>
+                  <div id="prevMessage" style="font-size:0.9rem; margin-top:0.25rem;">Notice message will appear here...</div>
+                </div>
+              </div>
               <div id="prevDates" style="font-size:0.8rem; font-weight:600; color:#9A3412; margin-top:0.4rem;"></div>
             </div>
           </div>
 
           <button type="submit" class="btn btn-forest">Save Notice Settings</button>
         </form>
+      </div>
+    </section>
+
+    <!-- TAB 1.5: Hero Showcase Multi-Image Manager -->
+    <section class="tab-content" id="tab-hero" style="display: none;">
+      <div class="dash-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <h2 class="card-title">Hero Showcase Images (Right-Side Multi-Image Slideshow)</h2>
+            <p class="card-desc" style="margin-bottom: 0;">Upload multiple images at once, edit captions, reorder, or replace photos. Transitions smoothly every 4s with Ken Burns crossfade on the live website.</p>
+          </div>
+          <div>
+            <label class="btn btn-forest" style="cursor: pointer; margin-bottom: 0;">
+              + Upload Multiple Hero Photos
+              <input type="file" id="heroMultiUpload" multiple accept="image/jpeg,image/png,image/webp" style="display: none;" onchange="handleHeroMultiUpload(event)">
+            </label>
+          </div>
+        </div>
+
+        <div id="heroImagesAdminGrid" class="item-list"></div>
       </div>
     </section>
 
@@ -753,31 +937,73 @@
       </div>
     </section>
 
-    <!-- TAB 6: Account Security -->
+    <!-- TAB 6: Multi-Admin Security (Max 3 Admins & OTP Management) -->
     <section class="tab-content" id="tab-security" style="display: none;">
-      <div class="dash-card" style="max-width: 600px;">
-        <h2 class="card-title">Account Security</h2>
-        <p class="card-desc">Update your owner username or password. Current password verification is required.</p>
+      <div class="dash-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div>
+            <h2 class="card-title">Registered Administrators (<span id="adminCountDisplay">1</span> / 3 Max)</h2>
+            <p class="card-desc" style="margin-bottom: 0;">Up to 3 individual administrators can be registered. Each administrator requires a unique Email and Phone / WhatsApp number.</p>
+          </div>
+          <button class="btn btn-forest" id="addNewAdminTabBtn" onclick="openAddAdminModal()">+ Register New Administrator</button>
+        </div>
 
-        <form id="securityForm" onsubmit="handleSecurityUpdate(event)">
-          <div class="form-group">
-            <label class="form-label" for="secCurrentPassword">Current Password *</label>
-            <input type="password" id="secCurrentPassword" class="form-input" required autocomplete="current-password">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="secNewUsername">New Username</label>
-            <input type="text" id="secNewUsername" class="form-input" placeholder="Leave blank to keep current">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="secNewPassword">New Password</label>
-            <input type="password" id="secNewPassword" class="form-input" minlength="8" placeholder="At least 8 characters">
-          </div>
-          <button type="submit" class="btn btn-forest">Update Credentials</button>
-        </form>
+        <div id="adminsListTable" class="item-list"></div>
       </div>
     </section>
 
   </main>
+
+  <!-- Add New Admin Modal (Inside Dashboard) -->
+  <div class="desk-modal" id="addAdminModal">
+    <div class="desk-modal-dialog" style="max-width: 480px;">
+      <div class="desk-modal-header">
+        <h3 class="card-title">Register Administrator (Max 3)</h3>
+        <button class="btn btn-outline" style="padding:0.2rem 0.5rem;" onclick="closeModal('addAdminModal')">✕</button>
+      </div>
+      <form id="modalAddAdminForm" onsubmit="handleModalAdminRegister(event)">
+        <div class="error-msg" id="modalAdminError"></div>
+        <div class="form-group">
+          <label class="form-label" for="modalAdminName">Full Name</label>
+          <input type="text" id="modalAdminName" class="form-input" placeholder="e.g. Rashi Mondal" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="modalAdminEmail">Email Address (Unique)</label>
+          <div style="display: flex; gap: 0.5rem;">
+            <input type="email" id="modalAdminEmail" class="form-input" placeholder="e.g. rashi@gmail.com" required>
+            <button type="button" class="btn btn-outline" style="white-space: nowrap; font-size: 0.82rem;" id="modalSendOtpBtn" onclick="requestOtpForModalAdmin()">Send OTP</button>
+          </div>
+          <small id="modalAdminOtpHint" style="font-size: 0.75rem; color: #059669; display: none; margin-top: 4px;"></small>
+        </div>
+        <div class="form-group" id="modalAdminOtpGroup" style="display: none;">
+          <label class="form-label" for="modalAdminOtp">6-Digit Verification Code</label>
+          <input type="text" id="modalAdminOtp" class="form-input" placeholder="Enter 6-digit OTP from email" maxlength="6" inputmode="numeric">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="modalAdminPhone">Phone / WhatsApp (Unique 10 Digits)</label>
+          <input type="tel" id="modalAdminPhone" class="form-input" placeholder="e.g. 9064629141" required pattern="[0-9]{10}">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="modalAdminPassword">Strong Password</label>
+          <div class="password-wrap">
+            <input type="password" id="modalAdminPassword" class="form-input" placeholder="e.g. @Rashi321" required minlength="8" oninput="checkPasswordStrength('modalAdminPassword', 'modalPwBars', 'modalPwRules')">
+            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('modalAdminPassword')" title="Show / Hide Password">👁️</button>
+          </div>
+          <div class="pw-strength-meter" id="modalPwBars">
+            <div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div><div class="pw-bar"></div>
+          </div>
+          <ul class="pw-rules-list" id="modalPwRules">
+            <li id="mrule-len">○ At least 8 characters</li>
+            <li id="mrule-upper">○ At least 1 uppercase letter (A-Z)</li>
+            <li id="mrule-lower">○ At least 1 lowercase letter (a-z)</li>
+            <li id="mrule-num">○ At least 1 number (0-9)</li>
+            <li id="mrule-spec">○ At least 1 special character (@ # $ % & * !)</li>
+          </ul>
+        </div>
+        <button type="submit" class="btn btn-forest" style="width: 100%;">Verify & Register Administrator</button>
+      </form>
+    </div>
+  </div>
 
   <!-- Edit Property Modal -->
   <div class="desk-modal" id="propertyModal">
