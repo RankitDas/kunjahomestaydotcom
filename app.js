@@ -551,9 +551,8 @@ function renderRooms() {
       <div class="room-carousel" data-room-id="${room.id}">
         <span class="room-occupancy-badge">👥 ${room.occupancyTag}</span>
         ${room.images.map((img, idx) => `
-          <div class="room-slide-frame ${idx === 0 ? 'active' : ''}" onclick="openImageInLightbox('${encodeURI(img)}', '${room.name}', '${room.name} — Kunja Homestay Bolpur')">
-            <div class="photo-blur-backdrop" style="background-image: url('${encodeURI(img)}');"></div>
-            <img src="${encodeURI(img)}" alt="${room.name} interior view ${idx + 1} at Kunja Homestay Bolpur Santiniketan" loading="lazy">
+          <div class="room-slide-frame ${idx === 0 ? 'active' : ''}" onclick="openImageInLightbox('${img}', '${room.name}', '${room.name} — Kunja Homestay Bolpur')">
+            <img src="${img}" alt="${room.name} interior view ${idx + 1} at Kunja Homestay Bolpur Santiniketan" loading="lazy">
           </div>
         `).join("")}
         <div class="room-carousel-nav">
