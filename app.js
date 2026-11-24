@@ -257,7 +257,29 @@ let activePropertyId = "all";
 document.addEventListener("DOMContentLoaded", () => {
   // Fetch fresh kunjaData.json with cache busting to reflect real-time owner updates
   fetchKunjaDataAndInit();
+  // Privacy-friendly visitor hit logging for owner analytics
+  recordVisitorHit();
 });
+
+// Privacy-Friendly Visitor Hit Counter
+function recordVisitorHit() {
+  try {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/i.test(navigator.userAgent);
+    const deviceType = isTablet ? "Tablet" : (isMobile ? "Mobile" : "Desktop");
+
+    fetch("api/analytics.php?action=track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        referrer: document.referrer || "Direct",
+        page: window.location.pathname || "/",
+        device: deviceType
+      }),
+      keepalive: true
+    }).catch(() => {});
+  } catch (e) {}
+}
 
 async function fetchKunjaDataAndInit() {
   try {

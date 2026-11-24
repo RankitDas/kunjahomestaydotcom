@@ -956,7 +956,8 @@
 
     <!-- Navigation Tabs -->
     <nav class="admin-tabs">
-      <button class="tab-btn active" onclick="switchTab('notice')">📢 Notice System</button>
+      <button class="tab-btn active" onclick="switchTab('analytics')">📊 Visitor Traffic</button>
+      <button class="tab-btn" onclick="switchTab('notice')">📢 Notice System</button>
       <button class="tab-btn" onclick="switchTab('hero')">🌟 Hero Showcase</button>
       <button class="tab-btn" onclick="switchTab('properties')">🏡 2 Properties & Rooms</button>
       <button class="tab-btn" onclick="switchTab('certificate')">🏅 Govt. Certificate</button>
@@ -966,8 +967,71 @@
       <button class="tab-btn" onclick="switchTab('changelog')">📅 Calendar & Change Log</button>
     </nav>
 
+    <!-- TAB 0: Visitor Traffic & Analytics -->
+    <section class="tab-content" id="tab-analytics">
+      <div class="dash-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <h2 class="card-title">📊 Live Website Visitor Traffic & Engagement</h2>
+            <p class="card-desc" style="margin-bottom: 0;">Real-time overview of guests browsing kunjahomestay.com (anonymized & privacy-compliant).</p>
+          </div>
+          <button class="btn btn-outline" onclick="loadVisitorAnalytics()">🔄 Refresh Analytics</button>
+        </div>
+
+        <!-- 4 Key Metric Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+          <div style="background: #FFF; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.25rem; border-left: 4px solid var(--color-forest);">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Today's Page Views</div>
+            <div style="font-size: 2rem; font-weight: 800; color: var(--color-forest); margin-top: 0.25rem;" id="statTodayViews">0</div>
+            <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 2px;">Total screen loads today</div>
+          </div>
+          <div style="background: #FFF; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.25rem; border-left: 4px solid var(--color-terracotta);">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Today's Unique Visitors</div>
+            <div style="font-size: 2rem; font-weight: 800; color: var(--color-terracotta); margin-top: 0.25rem;" id="statTodayUniques">0</div>
+            <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 2px;">Distinct individual people</div>
+          </div>
+          <div style="background: #FFF; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.25rem; border-left: 4px solid #3B82F6;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Yesterday's Visitors</div>
+            <div style="font-size: 2rem; font-weight: 800; color: #1D4ED8; margin-top: 0.25rem;" id="statYestUniques">0</div>
+            <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 2px;"><span id="statYestViews">0</span> page views</div>
+          </div>
+          <div style="background: #FFF; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.25rem; border-left: 4px solid #10B981;">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.05em;">All-Time Page Views</div>
+            <div style="font-size: 2rem; font-weight: 800; color: #047857; margin-top: 0.25rem;" id="statTotalViews">0</div>
+            <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 2px;"><span id="statTotalUniques">0</span> total visitors</div>
+          </div>
+        </div>
+
+        <!-- 7-Day Trend Chart & Traffic Sources -->
+        <div class="grid-2" style="margin-bottom: 1.5rem;">
+          <div style="background: #FFF; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.25rem;">
+            <h3 style="font-family: var(--font-serif); font-size: 1.1rem; color: var(--color-forest); margin-bottom: 1rem;">📅 Last 7 Days Daily Breakdown</h3>
+            <div id="analyticsWeeklyBars" style="display: flex; flex-direction: column; gap: 0.65rem;"></div>
+          </div>
+
+          <div style="background: #FFF; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.25rem;">
+            <h3 style="font-family: var(--font-serif); font-size: 1.1rem; color: var(--color-forest); margin-bottom: 1rem;">🌐 Traffic Sources & Devices</h3>
+            <div style="margin-bottom: 1rem;">
+              <strong style="font-size: 0.85rem; color: var(--color-text-main); display: block; margin-bottom: 0.4rem;">Where Guests Are Arriving From:</strong>
+              <div id="analyticsReferrersList" style="display: flex; flex-direction: column; gap: 0.4rem;"></div>
+            </div>
+            <div>
+              <strong style="font-size: 0.85rem; color: var(--color-text-main); display: block; margin-bottom: 0.4rem;">Guest Device Types:</strong>
+              <div id="analyticsDevicesList" style="display: flex; gap: 0.75rem; flex-wrap: wrap;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Visitor Feed -->
+        <div style="background: #FFF; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 1.25rem;">
+          <h3 style="font-family: var(--font-serif); font-size: 1.1rem; color: var(--color-forest); margin-bottom: 0.75rem;">⚡ Recent Visitor Activity</h3>
+          <div id="analyticsRecentHitsList" style="display: flex; flex-direction: column; gap: 0.45rem; max-height: 250px; overflow-y: auto;"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- TAB 1: Notice System (3-Stage) -->
-    <section class="tab-content" id="tab-notice">
+    <section class="tab-content" id="tab-notice" style="display: none;">
       <div class="dash-card">
         <h2 class="card-title">Three-Stage Maintenance & Notice Display System</h2>
         <p class="card-desc">Active notices are displayed in three strategic places: (1) Initial center popup modal, (2) Top notice banner below navbar, and (3) Bottom notice banner right above the footer.</p>

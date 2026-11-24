@@ -97,6 +97,7 @@ async function checkAuthStatus() {
       await loadHomestayData();
       renderAdminsList();
       loadChangeLog();
+      loadVisitorAnalytics();
       startPresenceHeartbeat();
     }
   } catch (err) {
@@ -1469,4 +1470,96 @@ window.triggerFolderSync = async function() {
   } catch (err) {
     showToast("Network error syncing folders.", true);
   }
+};
+
+// --- VISITOR TRAFFIC & ANALYTICS CONTROLLER ---
+window.loadVisitorAnalytics = async function() {
+  try {
+    const res = await fetch("api/analytics.php?action=stats");
+    const json = await res.json();
+    if (!res.ok || !json.success) return;
+
+    const sum = json.summary || {};
+    const elTodayViews = document.getElementById("statTodayViews");
+    const elTodayUniques = document.getElementById("statTodayUniques");
+    const elYestViews = document.getElementById("statYestViews");
+    const elYestUniques = document.getElementById("statYestUniques");
+    const elTotalViews = document.getElementById("statTotalViews");
+    const elTotalUniques = document.getElementById("statTotalUniques");
+
+    if (elTodayViews) elTodayViews.textContent = (sum.today_views || 0).toLocaleString();
+    if (elTodayUniques) elTodayUniques.textContent = (sum.today_uniques || 0).toLocaleString();
+    if (elYestViews) elYestViews.textContent = (sum.yesterday_views || 0).toLocaleString();
+    if (elYestUniques) elYestUniques.textContent = (sum.yesterday_uniques || 0).toLocaleString();
+    if (elTotalViews) elTotalViews.textContent = (sum.total_views || 0).toLocaleString();
+    if (elTotalUniques) elTotalUniques.textContent = (sum.total_uniques || 0).toLocaleString();
+
+    // Render 7-day progress bars
+    const weeklyBarsContainer = document.getElementById("analyticsWeeklyBars");
+    if (weeklyBarsContainer && Array.isArray(json.last7Days)) {
+      const maxViews = Math.max(...json.last7Days.map(d => d.views || 0), 10);
+      weeklyBarsContainer.innerHTML = json.last7Days.map(d => {
+        const pct = Math.min(100, Math.round((d.views / maxViews) * 100));
+        return `
+          <div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 2px;">
+              <span style="font-weight: 600; color: var(--color-forest);">${d.label}</span>
+              <span style="color: var(--color-text-muted);">${d.uniques} visitors (${d.views} views)</span>
+            </div>
+            <div style="background: #F3F4F6; height: 10px; border-radius: 999px; overflow: hidden;">
+              <div style="width: ${Math.max(pct, 4)}%; height: 100%; background: var(--color-terracotta); border-radius: 999px; transition: width 0.4s ease;"></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Render Referrer sources
+    const refContainer = document.getElementById("analyticsReferrersList");
+    if (refContainer && json.referrers) {
+      const refEntries = Object.entries(json.referrers).sort((a, b) => b[1] - a[1]);
+      const totalRefs = refEntries.reduce((acc, curr) => acc + curr[1], 0) || 1;
+      refContainer.innerHTML = refEntries.map(([source, count]) => {
+        const pct = Math.round((count / totalRefs) * 100);
+        return `
+          <div style="display: flex; justify-content: space-between; font-size: 0.82rem; padding: 0.35rem 0.5rem; background: #F9FAFB; border-radius: var(--radius-sm);">
+            <span>${source}</span>
+            <strong style="color: var(--color-forest);">${count} <span style="font-weight: 400; color: var(--color-text-muted); font-size: 0.75rem;">(${pct}%)</span></strong>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Render Devices breakdown
+    const devContainer = document.getElementById("analyticsDevicesList");
+    if (devContainer && json.devices) {
+      const devEntries = Object.entries(json.devices);
+      devContainer.innerHTML = devEntries.map(([device, count]) => `
+        <div style="flex: 1; min-width: 90px; text-align: center; background: #F9FAFB; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.65rem 0.5rem;">
+          <div style="font-size: 1.25rem;">${device === 'Mobile' ? '📱' : (device === 'Tablet' ? '📟' : '💻')}</div>
+          <div style="font-size: 0.75rem; color: var(--color-text-muted); margin-top: 2px;">${device}</div>
+          <strong style="font-size: 1rem; color: var(--color-forest);">${count}</strong>
+        </div>
+      `).join("");
+    }
+
+    // Render Recent Hits
+    const recentContainer = document.getElementById("analyticsRecentHitsList");
+    if (recentContainer && Array.isArray(json.recent_hits)) {
+      if (json.recent_hits.length === 0) {
+        recentContainer.innerHTML = `<div style="text-align: center; color: var(--color-text-muted); font-size: 0.85rem; padding: 1rem;">No recent visits recorded yet.</div>`;
+      } else {
+        recentContainer.innerHTML = json.recent_hits.map(h => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 0.6rem; border-bottom: 1px solid #F3F4F6; font-size: 0.82rem;">
+            <div style="display: flex; align-items: center; gap: 0.4rem;">
+              <span>${h.device === 'Mobile' ? '📱' : (h.device === 'Tablet' ? '📟' : '💻')}</span>
+              <span>${h.source}</span>
+              ${h.unique ? '<span style="font-size: 0.7rem; background: #DCFCE7; color: #166534; padding: 1px 5px; border-radius: 999px; font-weight: 600;">New</span>' : ''}
+            </div>
+            <span style="color: var(--color-text-muted); font-size: 0.75rem;">${h.time}</span>
+          </div>
+        `).join("");
+      }
+    }
+  } catch (e) {}
 };
