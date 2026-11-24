@@ -35,7 +35,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261124c">
 
   <!-- JSON-LD Structured Data: LodgingBusiness -->
   <script type="application/ld+json">
@@ -334,11 +334,24 @@
               When you return, a clean, airy room and freshly prepared home-style food are waiting. Recognized by the Department of Tourism, Government of West Bengal, Kunja Homestay is built on simple, honest hospitality—where guests arrive as travelers and leave with memories of laughter, evening adda, and genuine connection.
             </p>
 
-            <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+            <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
               <span class="room-highlight-pill" style="padding: 0.45rem 0.85rem; background:#FFF7ED; border-color:#FDBA74; font-weight:600; color:#9A3412;">🍲 Complete Fooding & Lodging</span>
               <span class="room-highlight-pill" style="padding: 0.45rem 0.85rem;">🌿 Red Laterite Khoai Walks</span>
               <span class="room-highlight-pill" style="padding: 0.45rem 0.85rem;">🍲 Fresh Home-Cooked Bengali Thali</span>
               <span class="room-highlight-pill" style="padding: 0.45rem 0.85rem;">🎨 Visva-Bharati & Sonajhuri Proximity</span>
+            </div>
+
+            <!-- Sacred Courtyard Mandir Highlight -->
+            <div id="mandirShowcaseContainer" class="mandir-showcase-box" style="background: #FAF7F2; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem; display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap;">
+              <div class="mandir-frame-wrapper" style="position: relative; width: 140px; height: 110px; flex-shrink: 0; border-radius: var(--radius-sm); overflow: hidden; background: #E8DFD3; box-shadow: var(--shadow-sm); cursor: pointer;" onclick="openImageInLightbox('images/kunja-mandir.jpeg', 'Sacred Courtyard Mandir', 'Courtyard Mandir at Kunja Homestay • Morning serenity and spiritual warmth')">
+                <div class="photo-blur-backdrop" style="position: absolute; inset: 0; background: url('images/kunja-mandir.jpeg') center/cover no-repeat; filter: blur(8px); opacity: 0.45;"></div>
+                <img src="images/kunja-mandir.jpeg" alt="Courtyard Mandir at Kunja Homestay" style="position: relative; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 1;">
+              </div>
+              <div style="flex: 1; min-width: 220px;">
+                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-terracotta); font-weight: 700; display: block; margin-bottom: 0.25rem;">🪔 Sacred Ambiance & Heritage</span>
+                <h4 style="font-family: var(--font-serif); font-size: 1.15rem; margin-bottom: 0.35rem; color: var(--color-forest);">Courtyard Mandir</h4>
+                <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">Consecrated with morning prayers and serene courtyard bells, offering a tranquil space for quiet devotion in Santiniketan.</p>
+              </div>
             </div>
           </div>
 
@@ -777,6 +790,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <!-- Client Script -->
-  <script src="app.js?v=20261123b"></script>
+  <script src="app.js?v=20261124c"></script>
 </body>
 </html>

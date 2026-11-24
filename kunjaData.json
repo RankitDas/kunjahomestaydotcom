@@ -295,46 +295,117 @@
       "coverImage": "images/building-1/exterior/kunja-kunja-34-5bb323.jpeg",
       "rooms": [
         {
-          "id": "courtyard-double",
-          "name": "The Courtyard Double Room",
+          "id": "kbh-room-a",
+          "name": "Room A",
           "occupancyTag": "Perfect for 2 people",
-          "description": "Designed for couples, solo travelers, or two friends looking for calm and privacy. Natural daylight, clean linen, comfortable bedding, and quiet surroundings make it easy to rest well after a day out in Santiniketan.",
+          "description": "Elegant heritage bedroom in Kunja Bati Homestay opening onto the breezy verandah, featuring handcrafted wooden furnishings, rich natural light, and quiet village greenery.",
           "highlights": [
-            "Attached clean bath",
-            "Airy windows",
-            "Morning tea service",
-            "Peaceful garden access"
+            "Verandah / balcony access",
+            "Attached private bath",
+            "High ceilings & cross ventilation",
+            "Traditional Santiniketan ambiance"
           ],
+          "nightlyPrice": "₹2500 / night",
+          "seasonLabel": "Standard Tariff",
           "images": [
-            "images/kunja-10.jpeg",
-            "images/kunja-11.jpeg",
-            "images/kunja-13.jpeg",
-            "images/kunja-14.jpeg"
-          ],
-          "nightlyPrice": "₹2500/ night",
-          "seasonLabel": "Standard Tariff"
+            "images/kunja_bati_homestay/Room A/WhatsApp Image 2026-11-22 at 11.23.05 PM (1).jpeg",
+            "images/kunja_bati_homestay/Room A/WhatsApp Image 2026-11-22 at 11.23.05 PM (2).jpeg",
+            "images/kunja_bati_homestay/Room A/WhatsApp Image 2026-11-22 at 11.23.05 PM.jpeg",
+            "images/kunja_bati_homestay/Room A/WhatsApp Image 2026-11-22 at 11.23.06 PM.jpeg",
+            "images/kunja_bati_homestay/Room A/WhatsApp Image 2026-11-22 at 11.23.07 PM.jpeg",
+            "images/kunja_bati_homestay/Room A/WhatsApp Image 2026-11-22 at 11.23.08 PM.jpeg"
+          ]
         },
         {
-          "id": "verandah-twin",
-          "name": "The Verandah Twin Room",
-          "occupancyTag": "Perfect for 2 people",
-          "description": "A bright, welcoming room with easy access to the sit-out area—ideal for reading a book, enjoying morning coffee, or listening to birdsong in the early hours of Bolpur.",
+          "id": "kbh-room-c",
+          "name": "Room C",
+          "occupancyTag": "Perfect for 2-3 guests",
+          "description": "Serene, light-filled accommodation overlooking the garden courtyard, complete with attached bath, clean crisp linens, and serene morning birdsong.",
           "highlights": [
+            "Courtyard & garden outlook",
             "Attached clean bath",
-            "Cozy seating corner",
-            "Natural ventilation",
-            "Home-cooked meal options"
+            "Relaxed seating area",
+            "Home-cooked food service"
           ],
+          "nightlyPrice": "₹2500 / night",
+          "seasonLabel": "Standard Tariff",
           "images": [
-            "images/kunja-20.jpeg",
-            "images/kunja-22.jpeg",
-            "images/kunja-23.jpeg",
-            "images/kunja-24.jpeg",
-            "images/kunja-26.jpeg",
-            "images/kunja-15.jpeg"
+            "images/kunja_bati_homestay/Room C/WhatsApp Image 2026-11-22 at 11.23.05 PM (1).jpeg",
+            "images/kunja_bati_homestay/Room C/WhatsApp Image 2026-11-22 at 11.23.05 PM (2).jpeg",
+            "images/kunja_bati_homestay/Room C/WhatsApp Image 2026-11-22 at 11.23.05 PM.jpeg",
+            "images/kunja_bati_homestay/Room C/WhatsApp Image 2026-11-22 at 11.23.06 PM.jpeg",
+            "images/kunja_bati_homestay/Room C/WhatsApp Image 2026-11-22 at 11.23.07 PM.jpeg",
+            "images/kunja_bati_homestay/Room C/WhatsApp Image 2026-11-22 at 11.23.08 PM.jpeg"
+          ]
+        },
+        {
+          "id": "kbh-room-b",
+          "name": "Room B",
+          "occupancyTag": "Perfect for family",
+          "description": "Charming and spacious room in Kunja Bati with generous space, comfortable bedding, wide windows catching the morning breeze, and shaded verandah sitting.",
+          "highlights": [
+            "Spacious family bed setup",
+            "Private bathroom",
+            "Shaded verandah sitting",
+            "Garden lawn view"
           ],
-          "nightlyPrice": "₹2,800 / night",
-          "seasonLabel": "Standard Tariff"
+          "nightlyPrice": "₹2800 / night",
+          "seasonLabel": "Standard Tariff",
+          "images": [
+            "images/kunja_bati_homestay/Room B/WhatsApp Image 2026-11-22 at 11.31.23 PM.jpeg",
+            "images/kunja_bati_homestay/Room B/WhatsApp Image 2026-11-22 at 11.31.24 PM (1).jpeg",
+            "images/kunja_bati_homestay/Room B/WhatsApp Image 2026-11-22 at 11.31.24 PM.jpeg",
+            "images/kunja_bati_homestay/Room B/WhatsApp Image 2026-11-22 at 11.31.25 PM (1).jpeg",
+            "images/kunja_bati_homestay/Room B/WhatsApp Image 2026-11-22 at 11.31.25 PM (2).jpeg",
+            "images/kunja_bati_homestay/Room B/WhatsApp Image 2026-11-22 at 11.31.25 PM.jpeg",
+            "images/kunja_bati_homestay/Room B/WhatsApp Image 2026-11-22 at 11.31.26 PM.jpeg"
+          ]
+        },
+        {
+          "id": "kbh-room-d",
+          "name": "Room D",
+          "occupancyTag": "Perfect for family",
+          "description": "Quiet, expansive room nestled in the heart of Kunja Bati with beautiful wooden touches, cool tiled floors, private bath, and garden patio proximity.",
+          "highlights": [
+            "Family-friendly layout",
+            "Attached bath with hot water",
+            "Cool verandah seating",
+            "Peaceful rural retreat"
+          ],
+          "nightlyPrice": "₹2800 / night",
+          "seasonLabel": "Standard Tariff",
+          "images": [
+            "images/kunja_bati_homestay/Room D/WhatsApp Image 2026-11-22 at 11.31.23 PM.jpeg",
+            "images/kunja_bati_homestay/Room D/WhatsApp Image 2026-11-22 at 11.31.24 PM (1).jpeg",
+            "images/kunja_bati_homestay/Room D/WhatsApp Image 2026-11-22 at 11.31.24 PM.jpeg",
+            "images/kunja_bati_homestay/Room D/WhatsApp Image 2026-11-22 at 11.31.25 PM (1).jpeg",
+            "images/kunja_bati_homestay/Room D/WhatsApp Image 2026-11-22 at 11.31.25 PM (2).jpeg",
+            "images/kunja_bati_homestay/Room D/WhatsApp Image 2026-11-22 at 11.31.25 PM.jpeg",
+            "images/kunja_bati_homestay/Room D/WhatsApp Image 2026-11-22 at 11.31.26 PM.jpeg"
+          ]
+        },
+        {
+          "id": "kbh-room-e",
+          "name": "Room E",
+          "occupancyTag": "Perfect for couples or small families",
+          "description": "Comfortable and private room with open windows, serene village views, spotless bathroom, and direct access to Kunja Bati’s relaxing outdoor spaces.",
+          "highlights": [
+            "Attached private bath",
+            "Verandah corridor access",
+            "Lush tree canopy view",
+            "Warm family hospitality"
+          ],
+          "nightlyPrice": "₹2500 / night",
+          "seasonLabel": "Standard Tariff",
+          "images": [
+            "images/kunja_bati_homestay/Room E/WhatsApp Image 2026-11-22 at 11.31.23 PM.jpeg",
+            "images/kunja_bati_homestay/Room E/WhatsApp Image 2026-11-22 at 11.31.24 PM (1).jpeg",
+            "images/kunja_bati_homestay/Room E/WhatsApp Image 2026-11-22 at 11.31.24 PM.jpeg",
+            "images/kunja_bati_homestay/Room E/WhatsApp Image 2026-11-22 at 11.31.25 PM (1).jpeg",
+            "images/kunja_bati_homestay/Room E/WhatsApp Image 2026-11-22 at 11.31.25 PM (2).jpeg",
+            "images/kunja_bati_homestay/Room E/WhatsApp Image 2026-11-22 at 11.31.25 PM.jpeg",
+            "images/kunja_bati_homestay/Room E/WhatsApp Image 2026-11-22 at 11.31.26 PM.jpeg"
+          ]
         }
       ]
     },
@@ -346,50 +417,112 @@
       "coverImage": "images/kunja-56.jpeg",
       "rooms": [
         {
-          "id": "spacious-family",
-          "name": "The Spacious Family Room",
+          "id": "kh-room-a1",
+          "name": "Room A1",
           "occupancyTag": "Perfect for family",
-          "description": "Generous floor space with comfortable sleeping arrangements so parents and children can stay together without feeling crowded. Opens out toward the open courtyard where kids have room to move freely.",
+          "description": "Spacious and sunlit family room in Kunja Homestay with plush bedding, traditional Santiniketan warmth, fresh cross-ventilation, and easy access to the central courtyard.",
           "highlights": [
-            "Spacious layout",
-            "Attached clean bath",
-            "Family-friendly comfort",
-            "Freshly cooked homely meals"
+            "King-size comfortable bed",
+            "Attached modern bath",
+            "Large garden-facing window",
+            "Authentic Santiniketan Kantha linen"
           ],
+          "nightlyPrice": "₹2800 / night",
+          "seasonLabel": "Standard Tariff",
           "images": [
-            "images/kunja-30.jpeg",
-            "images/kunja-42.jpeg",
-            "images/kunja-51.jpeg",
-            "images/kunja-55.jpeg",
-            "images/kunja-43.jpeg",
-            "images/kunja-27.jpeg"
-          ],
-          "nightlyPrice": "₹3,800 / night",
-          "seasonLabel": "Standard Tariff"
+            "images/kunja_homestay/Room A1/WhatsApp Image 2026-11-22 at 6.49.01 PM.jpeg",
+            "images/kunja_homestay/Room A1/WhatsApp Image 2026-11-22 at 6.49.02 PM (1).jpeg",
+            "images/kunja_homestay/Room A1/WhatsApp Image 2026-11-22 at 6.49.02 PM.jpeg",
+            "images/kunja_homestay/Room A1/WhatsApp Image 2026-11-22 at 6.49.06 PM.jpeg",
+            "images/kunja_homestay/Room A1/WhatsApp Image 2026-11-22 at 6.49.07 PM.jpeg"
+          ]
         },
         {
-          "id": "garden-family-suite",
-          "name": "The Garden Wing Family Suite",
-          "occupancyTag": "Perfect for family",
-          "description": "Thoughtfully arranged for families traveling with children or elders who value ground-level ease, quiet nights, and relaxed common spaces for evening conversations. Dressed in handcrafted Santiniketan folk textiles.",
+          "id": "kh-room-5",
+          "name": "Room 5",
+          "occupancyTag": "Perfect for 2-3 guests",
+          "description": "Airy and peaceful guest room featuring generous natural daylight, comfortable mattresses, clean private bathroom, and quiet garden breezes.",
           "highlights": [
-            "Extra room to unwind",
-            "Attached clean bath",
-            "Quiet surroundings",
-            "Easy access to dining & garden"
+            "Double bed setup",
+            "Attached private bathroom",
+            "Quiet garden view",
+            "Morning tea service"
           ],
+          "nightlyPrice": "₹2500 / night",
+          "seasonLabel": "Standard Tariff",
           "images": [
-            "images/kunja-37.jpeg",
-            "images/kunja-38.jpeg",
-            "images/kunja-41.jpeg",
-            "images/kunja-44.jpeg",
-            "images/kunja-48.jpeg",
-            "images/kunja-54.jpeg"
+            "images/kunja_homestay/Room 5/WhatsApp Image 2026-11-22 at 6.50.28 PM.jpeg",
+            "images/kunja_homestay/Room 5/WhatsApp Image 2026-11-22 at 6.50.29 PM.jpeg",
+            "images/kunja_homestay/Room 5/WhatsApp Image 2026-11-22 at 6.50.38 PM (1).jpeg",
+            "images/kunja_homestay/Room 5/WhatsApp Image 2026-11-22 at 6.50.38 PM.jpeg",
+            "images/kunja_homestay/Room 5/WhatsApp Image 2026-11-22 at 6.50.40 PM.jpeg"
+          ]
+        },
+        {
+          "id": "kh-room-2",
+          "name": "Room 2",
+          "occupancyTag": "Perfect for 2 people",
+          "description": "A calm, serene double bedroom designed for rest and privacy with clean linen, gentle morning light, and courtyard pathway views.",
+          "highlights": [
+            "Double bed",
+            "Attached clean bathroom",
+            "Courtyard pathway access",
+            "Quiet night ambiance"
           ],
-          "nightlyPrice": "₹4,500 / night",
-          "seasonLabel": "Standard Tariff"
+          "nightlyPrice": "₹2400 / night",
+          "seasonLabel": "Standard Tariff",
+          "images": [
+            "images/kunja_homestay/Room 2/WhatsApp Image 2026-11-22 at 6.52.32 PM.jpeg",
+            "images/kunja_homestay/Room 2/WhatsApp Image 2026-11-22 at 6.52.33 PM (1).jpeg",
+            "images/kunja_homestay/Room 2/WhatsApp Image 2026-11-22 at 6.52.33 PM.jpeg",
+            "images/kunja_homestay/Room 2/WhatsApp Image 2026-11-22 at 6.52.34 PM.jpeg",
+            "images/kunja_homestay/Room 2/WhatsApp Image 2026-11-22 at 6.52.40 PM.jpeg"
+          ]
+        },
+        {
+          "id": "kh-room-a3",
+          "name": "Room A3",
+          "occupancyTag": "Perfect for family or small group",
+          "description": "Comfortable and private room with inviting decor, ample walking space, attached bath, and quick access to the open dining and lawn areas.",
+          "highlights": [
+            "Spacious layout",
+            "Attached bath with hot water",
+            "Natural daylight",
+            "Lawn & courtyard access"
+          ],
+          "nightlyPrice": "₹2600 / night",
+          "seasonLabel": "Standard Tariff",
+          "images": [
+            "images/kunja_homestay/Room A3/WhatsApp Image 2026-11-22 at 6.57.08 PM.jpeg",
+            "images/kunja_homestay/Room A3/WhatsApp Image 2026-11-22 at 6.57.10 PM.jpeg"
+          ]
+        },
+        {
+          "id": "kh-room-1",
+          "name": "Room 1",
+          "occupancyTag": "Perfect for 2 people",
+          "description": "Cozy, clean, and restful ground-floor room welcoming travelers with warm homestay hospitality, breezy windows, and peaceful surroundings.",
+          "highlights": [
+            "Comfortable double bed",
+            "Attached bath",
+            "Easy ground-floor access",
+            "Tea & meal service on order"
+          ],
+          "nightlyPrice": "₹2400 / night",
+          "seasonLabel": "Standard Tariff",
+          "images": [
+            "images/kunja_homestay/Room 1/WhatsApp Image 2026-11-22 at 6.57.43 PM.jpeg",
+            "images/kunja_homestay/Room 1/WhatsApp Image 2026-11-22 at 6.57.44 PM.jpeg"
+          ]
         }
       ]
     }
-  ]
+  ],
+  "mandirFeature": {
+    "title": "Sacred Courtyard Mandir & Heritage Ambiance",
+    "subtitle": "A Place of Quiet Devotion & Peaceful Santiniketan Grace",
+    "description": "At the heart of Kunja Homestay stands our serene courtyard Mandir, consecrated with daily morning prayers, fresh flowers, and the tranquil chiming of temple bells. Guests are warmly invited to begin their mornings in quiet reflection, soaking in the gentle spiritual energy that makes Kunja feel like a true home in the sacred soil of Bolpur.",
+    "image": "images/kunja-mandir.jpeg",
+    "caption": "Courtyard Mandir at Kunja Homestay • Morning serenity and spiritual warmth"
+  }
 }

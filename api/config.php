@@ -31,7 +31,91 @@ define('CREDENTIALS_FILE', __DIR__ . '/admin_credentials.json');
 define('DATA_FILE', dirname(__DIR__) . '/kunjaData.json');
 define('BACKUP_DIR', __DIR__ . '/backups');
 define('IMAGES_DIR', dirname(__DIR__) . '/images');
+define('PRESENCE_FILE', __DIR__ . '/admin_presence.json');
+define('CHANGELOG_FILE', __DIR__ . '/changelog.json');
 define('MAX_ADMINS', 3);
+
+// Record admin activity into structured changelog (keeps max 500 entries)
+function log_change_action($actionType, $summary) {
+    $adminName = $_SESSION['admin_name'] ?? 'Admin';
+    $rawEmail = $_SESSION['admin_email'] ?? '';
+    $maskedId = function_exists('mask_email') ? mask_email($rawEmail) : (substr($rawEmail, 0, 2) . '***');
+    
+    $entry = [
+        'id'            => 'log-' . time() . '-' . mt_rand(100, 999),
+        'timestamp'     => date('d M Y, h:i A') . ' IST',
+        'iso'           => date('c'),
+        'dateKey'       => date('Y-m-d'),
+        'adminName'     => $adminName,
+        'adminMaskedId' => "{$adminName} ({$maskedId})",
+        'actionType'    => $actionType,
+        'summary'       => $summary
+    ];
+
+    $logs = [];
+    if (file_exists(CHANGELOG_FILE)) {
+        $raw = file_get_contents(CHANGELOG_FILE);
+        $decoded = json_decode($raw, true);
+        if (is_array($decoded)) $logs = $decoded;
+    }
+    array_unshift($logs, $entry);
+    if (count($logs) > 500) {
+        $logs = array_slice($logs, 0, 500);
+    }
+    file_put_contents(CHANGELOG_FILE, json_encode($logs, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES), LOCK_EX);
+    
+    // Also ping presence
+    update_admin_presence();
+}
+
+// Update admin presence timestamp
+function update_admin_presence() {
+    if (!is_authenticated()) return;
+    $curId = $_SESSION['admin_id'] ?? '';
+    if (!$curId) return;
+
+    $presence = [];
+    if (file_exists(PRESENCE_FILE)) {
+        $raw = file_get_contents(PRESENCE_FILE);
+        $decoded = json_decode($raw, true);
+        if (is_array($decoded)) $presence = $decoded;
+    }
+
+    $presence[$curId] = [
+        'id'        => $curId,
+        'name'      => $_SESSION['admin_name'] ?? 'Admin',
+        'last_seen' => time()
+    ];
+
+    // Clean entries older than 24 hours
+    $now = time();
+    foreach ($presence as $k => $v) {
+        if (($now - ($v['last_seen'] ?? 0)) > 86400) {
+            unset($presence[$k]);
+        }
+    }
+    file_put_contents(PRESENCE_FILE, json_encode($presence, JSON_PRETTY_PRINT), LOCK_EX);
+}
+
+// Get live online status for all admin IDs (active in last 3 minutes = 180s)
+function get_admins_presence_map() {
+    if (!file_exists(PRESENCE_FILE)) return [];
+    $raw = file_get_contents(PRESENCE_FILE);
+    $presence = json_decode($raw, true);
+    if (!is_array($presence)) return [];
+    
+    $now = time();
+    $result = [];
+    foreach ($presence as $id => $info) {
+        $lastSeen = $info['last_seen'] ?? 0;
+        $isOnline = ($now - $lastSeen) <= 180;
+        $result[$id] = [
+            'online'    => $isOnline,
+            'last_seen' => $lastSeen
+        ];
+    }
+    return $result;
+}
 
 // Check if any admin account is registered
 function has_admin_credentials() {

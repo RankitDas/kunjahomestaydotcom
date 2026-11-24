@@ -309,6 +309,10 @@ if ($action === 'login') {
         $_SESSION['admin_email']    = $admin['email'];
         $_SESSION['login_time']     = time();
 
+        // Update presence and changelog
+        update_admin_presence();
+        log_change_action('Admin Login', "{$admin['name']} signed into Owner Desk.");
+
         echo json_encode([
             'success'       => true,
             'message'       => 'Login successful',
@@ -417,28 +421,55 @@ function mask_phone($phone) {
     return '+91 ******' . $last4;
 }
 
-// 6. List Administrators (Requires Login - Sensitive details masked)
+// 6. List Administrators (Requires Login - Sensitive details strictly masked)
 if ($action === 'list_admins') {
     require_auth();
+    update_admin_presence();
     $creds = get_credentials();
     $currentId = $_SESSION['admin_id'] ?? '';
+    $presenceMap = get_admins_presence_map();
 
-    $list = array_map(function($a) use ($currentId) {
+    $list = array_map(function($a) use ($currentId, $presenceMap) {
         $isSelf = ($a['id'] === $currentId);
+        $pres = $presenceMap[$a['id']] ?? ['online' => false, 'last_seen' => 0];
         return [
             'id'           => $a['id'],
             'name'         => $a['name'],
             'is_self'      => $isSelf,
-            // Reveal full contact info only to oneself; mask for other admins
-            'email'        => $isSelf ? $a['email'] : mask_email($a['email']),
-            'phone'        => $isSelf ? $a['phone'] : mask_phone($a['phone']),
+            // Strict privacy: masked contact details everywhere
+            'email'        => mask_email($a['email']),
+            'phone'        => mask_phone($a['phone']),
             'masked_email' => mask_email($a['email']),
             'masked_phone' => mask_phone($a['phone']),
+            'online'       => $isSelf ? true : !empty($pres['online']),
+            'last_seen'    => $pres['last_seen'] ?? 0,
             'created_at'   => $a['created_at'] ?? null
         ];
     }, $creds['admins'] ?? []);
 
     echo json_encode(['success' => true, 'admins' => $list, 'max' => MAX_ADMINS]);
+    exit;
+}
+
+// 6b. Heartbeat Ping to update presence & check online admins
+if ($action === 'heartbeat') {
+    require_auth();
+    update_admin_presence();
+    $presenceMap = get_admins_presence_map();
+    echo json_encode(['success' => true, 'presence' => $presenceMap]);
+    exit;
+}
+
+// 6c. Get Change Log (Protected Audit Trail)
+if ($action === 'get_changelog') {
+    require_auth();
+    $logs = [];
+    if (file_exists(CHANGELOG_FILE)) {
+        $raw = file_get_contents(CHANGELOG_FILE);
+        $decoded = json_decode($raw, true);
+        if (is_array($decoded)) $logs = $decoded;
+    }
+    echo json_encode(['success' => true, 'changelog' => $logs]);
     exit;
 }
 

@@ -74,6 +74,11 @@ if ($writeResult === false) {
     exit;
 }
 
+// 3. Log Change Action into audit trail
+$logMsg = trim($input['log_summary'] ?? 'Updated website content and settings.');
+$logAction = trim($input['log_action'] ?? 'Content Updated');
+log_change_action($logAction, $logMsg);
+
 echo json_encode([
     'success' => true,
     'message' => 'Homestay data updated and backed up successfully.',

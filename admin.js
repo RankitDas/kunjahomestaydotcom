@@ -96,6 +96,8 @@ async function checkAuthStatus() {
     if (state.authenticated) {
       await loadHomestayData();
       renderAdminsList();
+      loadChangeLog();
+      startPresenceHeartbeat();
     }
   } catch (err) {
     console.error("Auth check failed:", err);
@@ -604,7 +606,7 @@ function renderHeroImagesAdmin() {
   container.innerHTML = list.map((item, idx) => `
     <div class="item-row" style="flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
       <div style="display: flex; align-items: center; gap: 1rem; flex: 1; min-width: 280px;">
-        <img src="${item.src}" alt="Hero Image" style="width: 100px; height: 75px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+        <img src="${resolveAdminImageUrl(item.src)}" alt="Hero Image" onerror="handleAdminImageError(this)" style="width: 100px; height: 75px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
         <div style="flex: 1;">
           <input type="text" class="form-input" style="font-size: 0.88rem; padding: 0.4rem 0.6rem;" value="${item.caption || ''}" placeholder="Enter caption for this hero slide..." onchange="updateHeroCaption(${idx}, this.value)">
           <div style="font-size: 0.78rem; color: var(--color-text-muted); margin-top: 4px;">File: ${item.src}</div>
@@ -708,7 +710,7 @@ function renderPropertiesManager() {
       </div>
 
       <div style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1.25rem; background: var(--color-canvas); padding: 1rem; border-radius: var(--radius-sm);">
-        <img src="${prop.coverImage}" alt="${prop.name} cover" style="width: 120px; height: 80px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+        <img src="${resolveAdminImageUrl(prop.coverImage)}" alt="${prop.name} cover" onerror="handleAdminImageError(this)" style="width: 120px; height: 80px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
         <div>
           <strong>Property Exterior Showcase Photo</strong>
           <div style="font-size: 0.82rem; color: var(--color-text-muted); margin-top: 3px;">${prop.coverImage}</div>
@@ -739,7 +741,7 @@ function renderPropertiesManager() {
               <div class="room-thumbs-strip">
                 ${(room.images || []).map((img, iIdx) => `
                   <div class="room-thumb-item">
-                    <img src="${img}" alt="Room photo">
+                    <img src="${resolveAdminImageUrl(img)}" alt="Room photo" onerror="handleAdminImageError(this)">
                     <button class="room-thumb-del" onclick="deleteRoomPhoto(${pIdx}, ${rIdx}, ${iIdx})" title="Delete photo">✕</button>
                   </div>
                 `).join("")}
@@ -911,21 +913,25 @@ async function renderAdminsList() {
     if (addBtn) addBtn.style.display = admins.length >= 3 ? "none" : "inline-flex";
 
     container.innerHTML = admins.map(admin => `
-      <div class="item-row" style="flex-direction: row; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+      <div class="item-row" style="flex-direction: row; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
         <div>
-          <div style="font-weight: 700; color: var(--color-forest); font-size: 1rem;">
-            👤 ${admin.name} ${admin.email === state.currentAdmin?.email ? '<span class="user-pill" style="font-size:0.75rem; margin-left:6px;">Current Account</span>' : ''}
+          <div style="display:flex; align-items:center; gap:0.5rem; font-weight: 700; color: var(--color-forest); font-size: 1rem;">
+            <span class="online-indicator-dot ${admin.online ? 'online' : 'offline'}" title="${admin.online ? 'Online now' : 'Offline'}"></span>
+            <span>👤 ${admin.name}</span>
+            ${admin.is_self ? '<span class="user-pill" style="font-size:0.75rem; margin-left:4px;">You (Current)</span>' : ''}
           </div>
-          <div style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: 2px;">
-            📧 <strong>Email:</strong> ${admin.email} &nbsp;|&nbsp; 📱 <strong>Phone:</strong> ${admin.phone}
+          <div style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: 4px;">
+            📧 <strong>Email:</strong> <code>${admin.masked_email || admin.email}</code> &nbsp;|&nbsp; 📱 <strong>Phone:</strong> <code>${admin.masked_phone || admin.phone}</code>
           </div>
         </div>
         <div>
-          ${admins.length > 1 ? `
+          ${admins.length > 1 && !admin.is_self ? `
             <button class="btn btn-danger" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;" onclick="removeAdminAccount('${admin.id}', '${admin.name}')">Remove Admin</button>
+          ` : (admin.is_self ? `
+            <span style="font-size: 0.8rem; color: #059669; font-weight:600;">Active Session</span>
           ` : `
             <span style="font-size: 0.8rem; color: var(--color-text-muted); font-style: italic;">Primary Admin</span>
-          `}
+          `)}
         </div>
       </div>
     `).join("");
@@ -1134,7 +1140,7 @@ function renderGalleryGrid() {
         <input type="checkbox" class="gallery-select-cb" data-idx="${idx}" onchange="toggleGallerySelect(${idx}, this.checked)">
         <span>Select</span>
       </label>
-      <img src="${item.image}" alt="${item.title}" style="width: 100%; height: 140px; object-fit: cover;">
+      <img src="${resolveAdminImageUrl(item.image)}" alt="${item.title}" onerror="handleAdminImageError(this)" style="width: 100%; height: 140px; object-fit: cover;">
       <div style="padding: 0.75rem;">
         <div style="font-weight: 600; font-size: 0.9rem; color: var(--color-forest); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${item.title}">${item.title}</div>
         <div style="font-size: 0.8rem; color: var(--color-text-muted); margin: 3px 0 6px;">Category: ${item.category}</div>
@@ -1196,7 +1202,26 @@ window.deleteGalleryItem = async function(idx) {
   if (ok) renderGalleryGrid();
 };
 
-// Check Admins Modal with Masked Contact Details
+// Helper to resolve admin image URLs safely across mobile, tablet, and desktop
+window.resolveAdminImageUrl = function(src) {
+  if (!src) return "images/kunja-34.jpeg";
+  let clean = src.replace(/^\.\//, "").trim();
+  // Ensure path spaces in folder names are URI encoded e.g. Room A1 -> Room%20A1
+  // Split path parts and encode segments
+  const parts = clean.split("/");
+  const encodedParts = parts.map(part => encodeURIComponent(decodeURIComponent(part)));
+  return encodedParts.join("/");
+};
+
+// Global fallback image error handler
+window.handleAdminImageError = function(imgEl) {
+  if (!imgEl) return;
+  imgEl.onerror = null;
+  imgEl.src = "images/kunja-34.jpeg";
+  imgEl.style.opacity = "0.75";
+};
+
+// Check Admins Modal with Masked Contact Details and Live Online Indicators
 window.openCheckAdminsModal = async function() {
   const modalList = document.getElementById("modalAdminsList");
   const countEl = document.getElementById("modalAdminsCount");
@@ -1218,21 +1243,209 @@ window.openCheckAdminsModal = async function() {
 
     modalList.innerHTML = admins.map(a => `
       <div class="item-row" style="background:#FFF; padding:1rem; border:1px solid var(--color-border); border-radius:var(--radius-sm);">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <strong style="font-size:1.02rem; color:var(--color-forest);">
-            👤 ${a.name} ${a.is_self ? '<span class="user-pill" style="font-size:0.75rem; margin-left:6px;">You</span>' : ''}
-          </strong>
-          <span style="font-size:0.75rem; color:var(--color-text-muted);">${a.created_at ? new Date(a.created_at).toLocaleDateString() : ''}</span>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <span class="online-indicator-dot ${a.online ? 'online' : 'offline'}" title="${a.online ? 'Online now' : 'Offline'}"></span>
+            <strong style="font-size:1.02rem; color:var(--color-forest);">
+              ${a.name} ${a.is_self ? '<span class="user-pill" style="font-size:0.75rem; margin-left:6px;">You</span>' : ''}
+            </strong>
+          </div>
+          <span style="font-size:0.75rem; color:var(--color-text-muted);">
+            ${a.online ? '<span style="color:#059669; font-weight:600;">● Active Now</span>' : (a.created_at ? 'Joined ' + new Date(a.created_at).toLocaleDateString() : '')}
+          </span>
         </div>
-        <div style="font-size:0.86rem; color:var(--color-text-muted); margin-top:4px; display:flex; flex-direction:column; gap:2px;">
-          <div>📧 <strong>Email:</strong> <code>${a.email}</code></div>
-          <div>📱 <strong>Phone:</strong> <code>${a.phone}</code></div>
+        <div style="font-size:0.86rem; color:var(--color-text-muted); margin-top:6px; display:flex; flex-direction:column; gap:3px;">
+          <div>📧 <strong>Email:</strong> <code>${a.masked_email || a.email}</code></div>
+          <div>📱 <strong>Phone:</strong> <code>${a.masked_phone || a.phone}</code></div>
         </div>
       </div>
     `).join("");
   } catch (err) {
     modalList.innerHTML = `<div style="color:#DC2626; padding:1rem;">Network error fetching administrators.</div>`;
   }
+};
+
+// Periodic 30s Heartbeat Ping for Live Online Presence
+let presenceHeartbeatInterval = null;
+function startPresenceHeartbeat() {
+  if (presenceHeartbeatInterval) clearInterval(presenceHeartbeatInterval);
+  presenceHeartbeatInterval = setInterval(async () => {
+    if (!state.authenticated) return;
+    try {
+      await fetch("api/auth.php?action=heartbeat");
+    } catch (e) {}
+  }, 30000);
+}
+
+// --- CALENDAR & CHANGE LOG SYSTEM ---
+let changeLogData = [];
+let activeLogDateFilter = "all";
+let activeLogAdminFilter = "all";
+
+window.loadChangeLog = async function() {
+  const container = document.getElementById("changeLogEntriesList");
+  if (!container) return;
+
+  container.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--color-text-muted);">Loading audit change log...</div>`;
+
+  try {
+    const res = await fetch("api/auth.php?action=get_changelog");
+    const json = await res.json();
+    if (res.ok && json.success) {
+      changeLogData = json.changelog || [];
+      renderChangeLogCalendar();
+      renderFilteredChangeLog();
+    } else {
+      container.innerHTML = `<div style="color:#DC2626; padding:1.5rem;">Failed to load audit change log.</div>`;
+    }
+  } catch (err) {
+    container.innerHTML = `<div style="color:#DC2626; padding:1.5rem;">Network error loading change log.</div>`;
+  }
+};
+
+function renderChangeLogCalendar() {
+  const calContainer = document.getElementById("changeLogCalendarGrid");
+  if (!calContainer) return;
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const titleEl = document.getElementById("calMonthTitle");
+  if (titleEl) titleEl.textContent = `${monthNames[month]} ${year}`;
+
+  // Map dates to log count
+  const dateCounts = {};
+  changeLogData.forEach(entry => {
+    if (entry.dateKey) {
+      dateCounts[entry.dateKey] = (dateCounts[entry.dateKey] || 0) + 1;
+    }
+  });
+
+  let daysHtml = "";
+  // Blank days before 1st of month
+  for (let i = 0; i < firstDay; i++) {
+    daysHtml += `<div class="cal-day empty"></div>`;
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const count = dateCounts[dStr] || 0;
+    const isSelected = activeLogDateFilter === dStr;
+    const isToday = (day === now.getDate());
+
+    daysHtml += `
+      <div class="cal-day ${count > 0 ? 'has-events' : ''} ${isSelected ? 'selected' : ''} ${isToday ? 'today' : ''}" onclick="filterLogByDate('${dStr}')" title="${count} change(s) recorded">
+        <span class="cal-day-num">${day}</span>
+        ${count > 0 ? `<span class="cal-day-badge">${count}</span>` : ''}
+      </div>
+    `;
+  }
+
+  calContainer.innerHTML = daysHtml;
+}
+
+window.filterLogByDate = function(dateKey) {
+  activeLogDateFilter = dateKey;
+  renderChangeLogCalendar();
+  renderFilteredChangeLog();
+};
+
+window.resetLogDateFilter = function() {
+  activeLogDateFilter = "all";
+  renderChangeLogCalendar();
+  renderFilteredChangeLog();
+};
+
+window.handleLogAdminFilterChange = function(adminVal) {
+  activeLogAdminFilter = adminVal;
+  renderFilteredChangeLog();
+};
+
+function renderFilteredChangeLog() {
+  const container = document.getElementById("changeLogEntriesList");
+  const filterBadge = document.getElementById("activeDateFilterBadge");
+  const countDisplay = document.getElementById("changeLogCountDisplay");
+  if (!container) return;
+
+  let filtered = changeLogData.slice();
+
+  if (activeLogDateFilter !== "all") {
+    filtered = filtered.filter(item => item.dateKey === activeLogDateFilter);
+    if (filterBadge) {
+      filterBadge.textContent = `📅 Filtered by: ${activeLogDateFilter}`;
+      filterBadge.style.display = "inline-flex";
+    }
+  } else {
+    if (filterBadge) filterBadge.style.display = "none";
+  }
+
+  if (activeLogAdminFilter !== "all") {
+    filtered = filtered.filter(item => (item.adminName || "").toLowerCase().includes(activeLogAdminFilter.toLowerCase()));
+  }
+
+  if (countDisplay) countDisplay.textContent = `${filtered.length} entries`;
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="padding: 2.5rem; text-align: center; color: var(--color-text-muted);">
+        No audit changes recorded for this filter selection.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map(item => `
+    <div class="changelog-item">
+      <div class="changelog-item-header">
+        <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+          <span class="changelog-action-tag">${item.actionType || 'Edit'}</span>
+          <strong style="color:var(--color-forest); font-size:0.95rem;">${item.adminMaskedId || item.adminName || 'Admin'}</strong>
+        </div>
+        <span class="changelog-time">${item.timestamp || ''}</span>
+      </div>
+      <div class="changelog-item-body">
+        ${item.summary || ''}
+      </div>
+    </div>
+  `).join("");
+}
+
+// Download Audit Log as .txt file
+window.downloadChangeLogTxt = function() {
+  if (changeLogData.length === 0) {
+    showToast("No change log entries available to download.", true);
+    return;
+  }
+
+  const dateNow = new Date().toISOString().split("T")[0];
+  let text = `==========================================================\n`;
+  text += `KUNJA HOMESTAY — OWNER AUDIT & ACTIVITY CHANGE LOG\n`;
+  text += `Exported on: ${new Date().toLocaleString()} (IST)\n`;
+  text += `Total Recorded Actions: ${changeLogData.length}\n`;
+  text += `==========================================================\n\n`;
+
+  changeLogData.forEach((item, idx) => {
+    text += `[${idx + 1}] DATE/TIME : ${item.timestamp || item.iso || 'N/A'}\n`;
+    text += `    ADMIN     : ${item.adminMaskedId || item.adminName || 'Admin'}\n`;
+    text += `    ACTION    : ${item.actionType || 'Update'}\n`;
+    text += `    SUMMARY   : ${item.summary || ''}\n`;
+    text += `----------------------------------------------------------\n`;
+  });
+
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `kunja-homestay-changelog-${dateNow}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast("Audit change log downloaded as .txt!");
 };
 
 window.triggerFolderSync = async function() {

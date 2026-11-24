@@ -529,11 +529,14 @@ function renderRooms() {
       <div class="room-carousel" data-room-id="${room.id}">
         <span class="room-occupancy-badge">👥 ${room.occupancyTag}</span>
         ${room.images.map((img, idx) => `
-          <img src="${img}" alt="${room.name} interior view ${idx + 1} at Kunja Homestay Bolpur Santiniketan" class="${idx === 0 ? 'active' : ''}" loading="lazy">
+          <div class="room-slide-frame ${idx === 0 ? 'active' : ''}" onclick="openImageInLightbox('${encodeURI(img)}', '${room.name}', '${room.name} — Kunja Homestay Bolpur')">
+            <div class="photo-blur-backdrop" style="background-image: url('${encodeURI(img)}');"></div>
+            <img src="${encodeURI(img)}" alt="${room.name} interior view ${idx + 1} at Kunja Homestay Bolpur Santiniketan" loading="lazy">
+          </div>
         `).join("")}
         <div class="room-carousel-nav">
-          <button class="room-carousel-btn" aria-label="Previous image" onclick="cycleRoomPhoto('${room.id}', -1)">❮</button>
-          <button class="room-carousel-btn" aria-label="Next image" onclick="cycleRoomPhoto('${room.id}', 1)">❯</button>
+          <button class="room-carousel-btn" aria-label="Previous image" onclick="cycleRoomPhoto('${room.id}', -1, event)">❮</button>
+          <button class="room-carousel-btn" aria-label="Next image" onclick="cycleRoomPhoto('${room.id}', 1, event)">❯</button>
         </div>
       </div>
       <div class="room-body">
@@ -554,18 +557,48 @@ function renderRooms() {
 }
 
 // Room Photo Cycler
-window.cycleRoomPhoto = function(roomId, direction) {
+window.cycleRoomPhoto = function(roomId, direction, e) {
+  if (e && e.stopPropagation) e.stopPropagation();
   const carousel = document.querySelector(`.room-carousel[data-room-id="${roomId}"]`);
   if (!carousel) return;
 
-  const images = Array.from(carousel.querySelectorAll("img"));
-  if (images.length <= 1) return;
-  const currentIndex = images.findIndex(img => img.classList.contains("active"));
-  if (currentIndex === -1) return;
+  const slides = Array.from(carousel.querySelectorAll(".room-slide-frame"));
+  if (slides.length <= 1) return;
+  let currentIndex = slides.findIndex(slide => slide.classList.contains("active"));
+  if (currentIndex === -1) currentIndex = 0;
 
-  images[currentIndex].classList.remove("active");
-  const nextIndex = (currentIndex + direction + images.length) % images.length;
-  images[nextIndex].classList.add("active");
+  slides[currentIndex].classList.remove("active");
+  const nextIndex = (currentIndex + direction + slides.length) % slides.length;
+  slides[nextIndex].classList.add("active");
+};
+
+// Open standalone image directly in Lightbox
+window.openImageInLightbox = function(src, title, caption) {
+  const modal = document.getElementById("lightboxModal");
+  const imgEl = document.getElementById("lightboxImage");
+  if (!modal || !imgEl) return;
+
+  currentLightboxPhoto = {
+    id: "custom-" + Date.now(),
+    title: title || "Kunja Homestay, Bolpur",
+    caption: caption || "Homestay experience in Santiniketan",
+    category: "homestay",
+    image: src
+  };
+
+  imgEl.src = src;
+  imgEl.alt = currentLightboxPhoto.title;
+  document.getElementById("lightboxCategory").textContent = "MOMENT";
+  document.getElementById("lightboxTitle").textContent = currentLightboxPhoto.title;
+  document.getElementById("lightboxCaption").textContent = currentLightboxPhoto.caption;
+
+  const nativeBtn = document.getElementById("nativeShareBtn");
+  if (nativeBtn) {
+    nativeBtn.style.display = navigator.share ? "inline-flex" : "none";
+  }
+
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
 };
 
 // Automatic Room Image Slideshows for All Room Cards
@@ -577,8 +610,8 @@ function initAutoRoomSlideshows() {
 
   document.querySelectorAll(".room-carousel").forEach(carousel => {
     const roomId = carousel.getAttribute("data-room-id");
-    const images = carousel.querySelectorAll("img");
-    if (!roomId || images.length <= 1) return;
+    const slides = carousel.querySelectorAll(".room-slide-frame");
+    if (!roomId || slides.length <= 1) return;
 
     let timer = setInterval(() => {
       cycleRoomPhoto(roomId, 1);

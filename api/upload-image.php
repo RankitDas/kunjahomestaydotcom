@@ -158,6 +158,10 @@ if (!$realDestPath || strpos($realDestPath, $realImagesDir) !== 0) {
 
 $relativePath = 'images/' . ltrim(str_replace('\\', '/', substr($realDestPath, strlen($realImagesDir))), '/');
 
+// Audit log
+$subMsg = !empty($targetSubfolder) ? "into {$targetSubfolder}" : "into gallery";
+log_change_action('Photo Uploaded', "Uploaded photo " . basename($destPath) . " {$subMsg}.");
+
 echo json_encode([
     'success' => true,
     'message' => 'Image uploaded and processed successfully.',

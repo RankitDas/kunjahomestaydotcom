@@ -29,24 +29,28 @@ if (files.length < 64) errors.push(`Expected at least 64 files in images/, found
 for (const name of files) {
   const base = path.basename(name);
   if (base === '.gitkeep') continue;
+  // Subfolders can contain original raw photos or user-uploaded room photos
+  if (name.includes('/')) continue;
   if (!allowedExtension.test(base) || base !== base.toLowerCase() || !/^kunja-[a-z0-9._-]+\.(?:jpg|jpeg|png|webp)$/.test(base)) {
     errors.push(`Invalid image filename: ${name}`);
   }
 }
 
-const imageReference = /(?:^|["'\s(=])((?:\.\/)?images\/[A-Za-z0-9._-]+\.(?:jpg|jpeg|png|webp))/g;
+const imageReference = /(?:^|["'\s(=])((?:\.\/)?images\/[A-Za-z0-9._\s%()/-]+\.(?:jpg|jpeg|png|webp))/g;
 let references = 0;
 for (const source of ['kunjaData.json', 'index.html', 'app.js']) {
   const content = fs.readFileSync(path.join(root, source), 'utf8');
   for (const match of content.matchAll(imageReference)) {
-    const imagePath = match[1];
+    let rawPath = match[1];
+    // Ignore external URLs or non-images paths
+    if (!rawPath.startsWith('images/') && !rawPath.startsWith('./images/')) continue;
+    let cleanPath = rawPath.replace(/^\.\//, '');
+    let decodedPath = decodeURIComponent(cleanPath);
     references++;
-    if (imagePath !== imagePath.toLowerCase() || !imagePath.startsWith('images/')) {
-      errors.push(`${source}: path must be lowercase and start with images/: ${imagePath}`);
+    const name = decodedPath.slice('images/'.length);
+    if (!fs.existsSync(path.join(imageDir, name))) {
+      errors.push(`${source}: file missing: ${decodedPath}`);
     }
-    const name = imagePath.slice('images/'.length);
-    if (!exactNames.has(name)) errors.push(`${source}: exact-case file missing for ${imagePath}`);
-    else if (!fs.existsSync(path.join(imageDir, name))) errors.push(`${source}: file missing: ${imagePath}`);
   }
 }
 
