@@ -2055,32 +2055,68 @@ h1, h2, h3, h4, .font-serif {
    PUBLIC REVIEW FORM & OWNER REPLY STYLING
    ========================================================================== */
 .public-review-form-card {
-  background: #FAF7F2;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 1.75rem;
-  margin-top: 2.5rem;
-  box-shadow: var(--shadow-sm);
+  background: #FFFFFF;
+  border: 1px solid rgba(198, 146, 73, 0.35);
+  border-radius: 20px;
+  padding: clamp(24px, 4vw, 44px);
+  max-width: 820px;
+  margin: 2.5rem auto 0;
+  box-shadow: 0 18px 45px rgba(31, 54, 41, 0.08);
 }
 .public-review-form-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: 20px;
 }
 @media (min-width: 640px) {
   .public-review-form-grid {
     grid-template-columns: 1fr 1fr;
   }
 }
+.public-review-form-card .form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1F3629;
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.02em;
+}
+.public-review-form-card .form-input {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #DDD3C3;
+  background: #FAF7F2;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  color: #1F3629;
+  transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+  outline: none;
+  box-sizing: border-box;
+}
+.public-review-form-card .form-input:focus {
+  border-color: #B85335;
+  box-shadow: 0 0 0 4px rgba(184, 83, 53, 0.12);
+  background: #FFFFFF;
+}
+.public-review-form-card textarea.form-input {
+  min-height: 120px;
+  resize: vertical;
+}
 .star-rating-selector {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.25rem;
+  background: #FAF7F2;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid #E5DCCB;
+  flex-wrap: wrap;
 }
 .star-select-btn {
   background: transparent;
   border: none;
-  font-size: 1.65rem;
+  font-size: 26px;
   color: #D1D5DB;
   cursor: pointer;
   padding: 0.1rem 0.2rem;
@@ -2090,7 +2126,26 @@ h1, h2, h3, h4, .font-serif {
 .star-select-btn.active,
 .star-select-btn:hover {
   color: #F59E0B;
-  transform: scale(1.12);
+  transform: scale(1.15);
+}
+#pubRevSubmitBtn {
+  background: #1F3629;
+  color: #F9F5EE;
+  padding: 14px 32px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(31, 54, 41, 0.2);
+  transition: transform 0.2s, background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+#pubRevSubmitBtn:hover {
+  background: #B85335;
+  transform: translateY(-2px);
 }
 .review-admin-reply {
   margin-top: 1rem;
@@ -2162,10 +2217,28 @@ h1, h2, h3, h4, .font-serif {
    ========================================================================== */
 .parallax-target {
   will-change: transform;
-  transition: transform 0.1s linear;
+  transition: transform 0.08s linear;
+}
+.mandir-hero-media.parallax-target img {
+  transform: translate3d(0, calc(var(--parallax-offset, 0) * 1px), 0) scale(1.08);
+  will-change: transform;
+}
+.reveal-up {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 @media (prefers-reduced-motion: reduce) {
-  .parallax-target {
+  .parallax-target,
+  .mandir-hero-media.parallax-target img {
+    transform: none !important;
+  }
+  .reveal-up {
+    opacity: 1 !important;
     transform: none !important;
   }
 }

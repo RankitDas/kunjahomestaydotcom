@@ -439,6 +439,7 @@ async function loadHomestayData() {
     state.data = await res.json();
     populateNoticeBanner();
     renderHeroImagesAdmin();
+    renderExperiencePhotosAdmin();
     renderPropertiesManager();
     renderCertPreview();
     renderReviewsList();
@@ -683,6 +684,65 @@ window.handleHeroMultiUpload = async function(e) {
     renderHeroImagesAdmin();
   } else {
     showToast("Failed to upload images.", true);
+  }
+  e.target.value = "";
+};
+
+// --- EXPERIENCE CARDS PHOTO MANAGER (DINING, PARKING, MANDIR) ---
+function renderExperiencePhotosAdmin() {
+  const container = document.getElementById("experiencePhotosAdminGrid");
+  if (!container) return;
+
+  const ess = state.data.essentials || {};
+  const cards = [
+    { key: "khabar", label: "🍲 Homely Dining (Khabar)", folder: "fooding", fallback: "images/kunja-58.jpeg" },
+    { key: "parking", label: "🚗 Effortless Parking", folder: "parking", fallback: "images/parking/kunja-parking.jpg" },
+    { key: "mandir", label: "🪔 Sacred Courtyard Mandir", folder: "gallery", fallback: "images/kunja-mandir.jpeg" }
+  ];
+
+  container.innerHTML = cards.map(c => {
+    const imgSrc = ess[c.key]?.image || c.fallback;
+    return `
+      <div class="item-row" style="padding: 1rem;">
+        <strong style="color: var(--color-forest); font-size: 0.95rem; margin-bottom: 0.5rem; display: block;">${c.label}</strong>
+        <img src="${resolveAdminImageUrl(imgSrc)}" alt="${c.label}" onerror="handleAdminImageError(this)" style="width: 100%; height: 140px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--color-border); margin-bottom: 0.75rem;">
+        <label class="btn btn-outline" style="width: 100%; justify-content: center; cursor: pointer; margin-bottom: 0; font-size: 0.82rem;">
+          📷 Change Photo
+          <input type="file" accept="image/jpeg,image/png,image/webp" style="display: none;" onchange="handleExperiencePhotoUpload(event, '${c.key}', '${c.folder}')">
+        </label>
+      </div>
+    `;
+  }).join("");
+}
+
+window.handleExperiencePhotoUpload = async function(e, key, folder) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("image", file);
+  formData.append("target_folder", folder);
+  formData.append("csrf_token", state.csrfToken);
+
+  showToast(`Uploading ${key} photo...`);
+  try {
+    const res = await fetch("api/upload-image.php", {
+      method: "POST",
+      headers: { "X-CSRF-Token": state.csrfToken },
+      body: formData
+    });
+    const json = await res.json();
+    if (res.ok && json.success) {
+      if (!state.data.essentials) state.data.essentials = {};
+      if (!state.data.essentials[key]) state.data.essentials[key] = {};
+      state.data.essentials[key].image = json.path || json.imagePath;
+      await saveAllDataToServer(`${key} photo updated!`);
+      renderExperiencePhotosAdmin();
+    } else {
+      showToast(json.error || "Upload failed.", true);
+    }
+  } catch (err) {
+    showToast("Network error uploading photo.", true);
   }
   e.target.value = "";
 };

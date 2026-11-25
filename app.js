@@ -1265,30 +1265,40 @@ function setupObserver() {
 }
 
 
-// Smooth GPU-Accelerated Parallax on Hero & Mandir Visuals (Disabled on Touch / Reduced Motion)
+// Smooth GPU-Accelerated Parallax on Hero & Mandir Visuals
 function initParallaxScroll() {
   const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  if (prefersReduced || isTouch) return;
+  if (prefersReduced) return;
+
+  // Safety fallback so no reveal-up element ever stays invisible
+  setTimeout(() => {
+    document.querySelectorAll(".reveal-up, .reveal-on-scroll").forEach(el => {
+      el.classList.add("is-visible");
+    });
+  }, 1500);
 
   const targets = document.querySelectorAll(".parallax-target");
   if (!targets.length) return;
 
   let ticking = false;
+  const updateParallax = () => {
+    targets.forEach(el => {
+      const speed = parseFloat(el.getAttribute("data-parallax-speed")) || 0.06;
+      const rect = el.getBoundingClientRect();
+      if (rect.bottom > -100 && rect.top < window.innerHeight + 100) {
+        const offset = (rect.top - window.innerHeight / 2) * speed;
+        el.style.setProperty("--parallax-offset", offset.toFixed(1));
+        if (!el.classList.contains("mandir-hero-media")) {
+          el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
+        }
+      }
+    });
+    ticking = false;
+  };
+
   window.addEventListener("scroll", () => {
     if (!ticking) {
-      window.requestAnimationFrame(() => {
-        const scrollY = window.scrollY || window.pageYOffset;
-        targets.forEach(el => {
-          const speed = parseFloat(el.getAttribute("data-parallax-speed")) || 0.05;
-          const rect = el.getBoundingClientRect();
-          if (rect.bottom > 0 && rect.top < window.innerHeight) {
-            const offset = (rect.top - window.innerHeight / 2) * speed;
-            el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
-          }
-        });
-        ticking = false;
-      });
+      window.requestAnimationFrame(updateParallax);
       ticking = true;
     }
   }, { passive: true });
