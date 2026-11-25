@@ -695,7 +695,7 @@ function renderExperiencePhotosAdmin() {
 
   const ess = state.data.essentials || {};
   const cards = [
-    { key: "khabar", label: "🍲 Homely Dining (Khabar)", folder: "fooding", fallback: "images/kunja-58.jpeg" },
+    { key: "khabar", label: "🍲 Homely Dining", folder: "fooding", fallback: "images/kunja-58.jpeg" },
     { key: "parking", label: "🚗 Effortless Parking", folder: "parking", fallback: "images/parking/kunja-parking.jpg" },
     { key: "mandir", label: "🪔 Sacred Courtyard Mandir", folder: "gallery", fallback: "images/kunja-mandir.jpeg" }
   ];
