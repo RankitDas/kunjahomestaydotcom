@@ -26,7 +26,14 @@ __pycache__/
 # Logs
 *.log
 
-# Sensitive Admin Credentials & Automatic Backups
+# Sensitive Admin Credentials, Live Data & Archives
 api/admin_credentials.json
+api/mail_config.php
+api/analytics.json
+api/changelog.json
+api/admin_presence.json
+api/review_ratelimit.json
+api.zip
+kunjahomestay-production.zip
 api/backups/*.json
 
