@@ -313,6 +313,7 @@ async function fetchKunjaDataAndInit() {
   renderGoogleReviewSection();
 
   setupObserver();
+  initParallaxScroll();
   initRoomSwipes();
   checkUrlParams();
   setupModalBackdropCloses();
@@ -932,53 +933,131 @@ function fallbackCopy(text, callback) {
   document.body.removeChild(ta);
 }
 
-// Render Reviews
+// Render Reviews (Only approved === true, sorted highest star rating first, with Owner Replies)
 function renderReviews() {
   const container = document.getElementById("reviewsGrid");
   if (!container) return;
 
-  container.innerHTML = kunjaData.reviews.map(rev => `
-    <article class="review-card">
-      <h3 class="review-quote-headline">“${rev.quote}”</h3>
-      <p class="review-text">${rev.reviewText}</p>
-      <div class="review-author-row">
-        <div class="review-avatar">${rev.guestName.charAt(0)}</div>
-        <div>
-          <div style="font-weight:600; font-size:0.92rem; color:var(--color-forest);">${rev.guestName}</div>
-          <div style="font-size:0.8rem; color:var(--color-text-muted);">${rev.hometown}</div>
+  const approvedReviews = (kunjaData.reviews || [])
+    .filter(r => r.approved === true)
+    .sort((a, b) => {
+      const rDiff = (Number(b.rating) || 5) - (Number(a.rating) || 5);
+      if (rDiff !== 0) return rDiff;
+      const tB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      const tA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      return tB - tA;
+    });
+
+  if (approvedReviews.length === 0) {
+    container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: var(--color-text-muted);">No guest reviews published yet. Be the first to share your stay experience below!</div>`;
+    return;
+  }
+
+  container.innerHTML = approvedReviews.map(rev => {
+    const starsCount = Math.min(5, Math.max(1, Number(rev.rating) || 5));
+    const starsHtml = "★".repeat(starsCount) + "☆".repeat(5 - starsCount);
+    const subLabel = rev.property || rev.hometown || "Kunja Homestay Guest";
+    return `
+      <article class="review-card reveal-on-scroll is-visible">
+        <div style="color: #F59E0B; font-size: 1.05rem; letter-spacing: 2px; margin-bottom: 0.5rem;" aria-label="${starsCount} out of 5 stars">${starsHtml}</div>
+        ${rev.quote ? `<h3 class="review-quote-headline">“${rev.quote}”</h3>` : ''}
+        <p class="review-text">${rev.reviewText}</p>
+        <div class="review-author-row">
+          <div class="review-avatar">${(rev.guestName || 'G').charAt(0).toUpperCase()}</div>
+          <div>
+            <div style="font-weight:600; font-size:0.92rem; color:var(--color-forest);">${rev.guestName}</div>
+            <div style="font-size:0.8rem; color:var(--color-text-muted);">${subLabel}</div>
+          </div>
         </div>
-      </div>
-    </article>
-  `).join("");
+        ${rev.adminReply && rev.adminReply.trim() ? `
+          <div class="review-admin-reply">
+            <span class="review-admin-reply-label">🏡 Response from Kunja Homestay</span>
+            <div>${rev.adminReply}</div>
+          </div>
+        ` : ''}
+      </article>
+    `;
+  }).join("");
 }
 
-// Render Google Review Card & QR Code
+// Public Review Form: Star Rating Selector
+window.setPublicReviewRating = function(val) {
+  const ratingInput = document.getElementById("pubRevRating");
+  const label = document.getElementById("pubRevRatingLabel");
+  if (ratingInput) ratingInput.value = val;
+  if (label) label.textContent = `${val} / 5 Star${val > 1 ? 's' : ''}`;
+
+  document.querySelectorAll("#pubRevStarSelector .star-select-btn").forEach(btn => {
+    const bVal = Number(btn.getAttribute("data-val"));
+    btn.classList.toggle("active", bVal <= val);
+  });
+};
+
+// Public Review Form: Submit to api/submit-review.php
+window.submitPublicReview = async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById("pubRevSubmitBtn");
+  const feedback = document.getElementById("pubRevFeedback");
+  const guestName = document.getElementById("pubRevName").value.trim();
+  const property = document.getElementById("pubRevProperty").value;
+  const rating = Number(document.getElementById("pubRevRating").value) || 5;
+  const reviewText = document.getElementById("pubRevText").value.trim();
+  const website = document.getElementById("revHoneypot").value;
+
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "Submitting...";
+  }
+  if (feedback) feedback.style.display = "none";
+
+  try {
+    const res = await fetch("api/submit-review.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ guestName, property, rating, reviewText, website })
+    });
+    const json = await res.json();
+    if (feedback) {
+      feedback.style.display = "block";
+      if (res.ok && json.success) {
+        feedback.style.background = "#ECFDF5";
+        feedback.style.border = "1px solid #A7F3D0";
+        feedback.style.color = "#065F46";
+        feedback.textContent = json.message || "Thank you! Your review has been submitted and will appear once approved by our team.";
+        document.getElementById("publicReviewForm").reset();
+        setPublicReviewRating(5);
+      } else {
+        feedback.style.background = "#FEF2F2";
+        feedback.style.border = "1px solid #FCA5A5";
+        feedback.style.color = "#991B1B";
+        feedback.textContent = json.error || "Could not submit review. Please check your details.";
+      }
+    }
+  } catch (err) {
+    if (feedback) {
+      feedback.style.display = "block";
+      feedback.style.background = "#FEF2F2";
+      feedback.style.border = "1px solid #FCA5A5";
+      feedback.style.color = "#991B1B";
+      feedback.textContent = "Network error submitting review. Please try again.";
+    }
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = "Submit Review";
+    }
+  }
+};
+
+// Render Google Review Card Link (QR Removed)
 function renderGoogleReviewSection() {
   const reviewLink = document.getElementById("googleReviewLink");
-  const qrBox = document.getElementById("googleReviewQr");
 
   const targetUrl = kunjaData.contact?.googleReviewUrl || 
                     "https://www.google.com/travel/search?gsas=1&ts=CAESABorCg0SCwoJL20vMDcxcmo5EhoSFAoHCOoPEAsYHBIHCOoPEAsYHRgBMgIIACoHCgU6A0lOUg&qs=MidDaGtJbktYTXJ2XzR5ZGdtR2cwdlp5OHhNV2hrZURFeFl6UXhFQUVIAA&ap=KigKEgm2PWILgKw3QBFWFcaIUetVQBISCYjyg9WqrTdAEVYVRlKP61VAMAC6AQdyZXZpZXdz&sa=X&hl=en-IN&gl=in&g2lb=4965990%2C72471280%2C72573224%2C72686036%2C72803964%2C72882230%2C73064764%2C121529350%2C121608706%2C121921501%2C121951222%2C122035346%2C122078727%2C122093076%2C122097177%2C122134888%2C122147525%2C122275263%2C122275264&ved=0CAAQ5JsGahcKEwi407Xej5-YAxUAAAAAHQAAAAAQAw";
 
   if (reviewLink) {
     reviewLink.href = targetUrl;
-  }
-
-  if (qrBox) {
-    qrBox.innerHTML = "";
-    if (typeof QRCode !== "undefined") {
-      new QRCode(qrBox, {
-        text: targetUrl,
-        width: 96,
-        height: 96,
-        colorDark: "#1F3629",
-        colorLight: "#FFFFFF",
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    } else {
-      // Fallback clean QR generator image if CDN is loading
-      qrBox.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=96x96&data=${encodeURIComponent(targetUrl)}" alt="Scan for Google reviews" width="96" height="96" style="display:block; width:96px; height:96px;">`;
-    }
   }
 }
 
@@ -1183,4 +1262,34 @@ function setupObserver() {
   }, { threshold: 0.1 });
 
   document.querySelectorAll(".reveal-on-scroll").forEach(el => observer.observe(el));
+}
+
+
+// Smooth GPU-Accelerated Parallax on Hero & Mandir Visuals (Disabled on Touch / Reduced Motion)
+function initParallaxScroll() {
+  const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  if (prefersReduced || isTouch) return;
+
+  const targets = document.querySelectorAll(".parallax-target");
+  if (!targets.length) return;
+
+  let ticking = false;
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const scrollY = window.scrollY || window.pageYOffset;
+        targets.forEach(el => {
+          const speed = parseFloat(el.getAttribute("data-parallax-speed")) || 0.05;
+          const rect = el.getBoundingClientRect();
+          if (rect.bottom > 0 && rect.top < window.innerHeight) {
+            const offset = (rect.top - window.innerHeight / 2) * speed;
+            el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
+          }
+        });
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
 }

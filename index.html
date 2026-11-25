@@ -35,7 +35,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=20261124f">
+  <link rel="stylesheet" href="style.css?v=20261126a">
 
   <!-- JSON-LD Structured Data: LodgingBusiness -->
   <script type="application/ld+json">
@@ -237,6 +237,8 @@
       </div>
     </section>
 
+
+
     <!-- Alpona divider -->
     <div class="container">
       <div class="alpona-divider">
@@ -340,18 +342,6 @@
               <span class="room-highlight-pill" style="padding: 0.45rem 0.85rem;">🍲 Fresh Home-Cooked Bengali Thali</span>
               <span class="room-highlight-pill" style="padding: 0.45rem 0.85rem;">🎨 Visva-Bharati & Sonajhuri Proximity</span>
             </div>
-
-            <!-- Sacred Courtyard Mandir Highlight -->
-            <div id="mandirShowcaseContainer" class="mandir-showcase-box" style="background: #FAF7F2; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem; display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap;">
-              <div class="mandir-frame-wrapper" style="position: relative; width: 140px; height: 110px; flex-shrink: 0; border-radius: var(--radius-sm); overflow: hidden; background: #EFE9DD; box-shadow: var(--shadow-sm); cursor: pointer;" onclick="openImageInLightbox('images/kunja-mandir.jpeg', 'Sacred Courtyard Mandir', 'Courtyard Mandir at Kunja Homestay • Morning serenity and spiritual warmth')">
-                <img src="images/kunja-mandir.jpeg" alt="Courtyard Mandir at Kunja Homestay" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; opacity: 1 !important; filter: none !important;">
-              </div>
-              <div style="flex: 1; min-width: 220px;">
-                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-terracotta); font-weight: 700; display: block; margin-bottom: 0.25rem;">🪔 Sacred Ambiance & Heritage</span>
-                <h4 style="font-family: var(--font-serif); font-size: 1.15rem; margin-bottom: 0.35rem; color: var(--color-forest);">Courtyard Mandir</h4>
-                <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">Consecrated with morning prayers and serene courtyard bells, offering a tranquil space for quiet devotion in Santiniketan.</p>
-              </div>
-            </div>
           </div>
 
           <!-- Editorial Photo Mosaic -->
@@ -369,6 +359,73 @@
             </div>
           </div>
 
+        </div>
+      </div>
+    </section>
+
+    <!-- 4b. Prominent Sacred Courtyard Mandir & Homestay Essentials (Khabar, Parking, Mandir) -->
+    <section id="essentials" class="section-pad" style="padding-top: 2rem;">
+      <div class="container">
+        <!-- Prominent Large Mandir Showcase -->
+        <div class="mandir-hero-feature reveal-on-scroll" id="mandirShowcaseContainer">
+          <div class="mandir-hero-media parallax-target" data-parallax-speed="0.06" onclick="openImageInLightbox('images/kunja-mandir.jpeg', 'Sacred Courtyard Mandir', 'Courtyard Mandir at Kunja Homestay • Morning serenity and spiritual warmth')">
+            <img src="images/kunja-mandir.jpeg" alt="Sacred Courtyard Mandir at Kunja Homestay, Bolpur" loading="lazy">
+            <span class="mandir-zoom-pill">🔍 Click to Enlarge</span>
+          </div>
+          <div class="mandir-hero-content">
+            <span class="eyebrow">🪔 Sacred Heritage & Quiet Devotion</span>
+            <h2 class="headline-section" style="margin-bottom: 0.75rem;">Sacred Courtyard Mandir</h2>
+            <p style="color: var(--color-text-muted); line-height: 1.75; margin-bottom: 1rem;">
+              At the heart of Kunja Homestay stands our serene courtyard Mandir, consecrated with daily morning prayers, fresh seasonal flowers, and the tranquil chiming of temple bells.
+            </p>
+            <p style="color: var(--color-text-muted); line-height: 1.75; margin-bottom: 1.25rem;">
+              Guests are warmly invited to begin their mornings in quiet reflection, soaking in the gentle spiritual energy that makes Kunja feel like a true home in the sacred soil of Bolpur, Santiniketan.
+            </p>
+            <span class="room-highlight-pill" style="background:#FFF7ED; border-color:#FDBA74; color:#9A3412; font-weight:600;">🙏 Open Daily for Quiet Morning & Evening Prayers</span>
+          </div>
+        </div>
+
+        <!-- Dedicated Khabar, Parking & Mandir Experience Cards -->
+        <div style="text-align: center; max-width: 680px; margin: 3.5rem auto 2rem;" class="reveal-on-scroll">
+          <span class="eyebrow">Homestay Essentials & Experiences</span>
+          <h2 class="headline-section">Khabar, Parking &amp; Mandir</h2>
+          <p style="color: var(--color-text-muted);">Thoughtful comforts that make your stay in Bolpur effortless, nourishing, and peaceful.</p>
+        </div>
+
+        <div class="essentials-grid reveal-on-scroll" id="essentialsGrid">
+          <!-- Rendered dynamically via app.js (with static fallback) -->
+          <article class="essential-card">
+            <div class="essential-card-media" onclick="openImageInLightbox('images/kunja-58.jpeg', 'Khabar — Authentic Home-Cooked Food', 'Freshly prepared Bengali thali & morning tea')">
+              <img src="images/kunja-58.jpeg" alt="Authentic home-cooked Bengali thali at Kunja Homestay" loading="lazy">
+            </div>
+            <div class="essential-card-body">
+              <span class="essential-tag">🍲 Khabar</span>
+              <h3 class="essential-title">Authentic Home-Cooked Food</h3>
+              <p class="essential-desc">Freshly prepared Bengali thali, comforting dal, seasonal local vegetables, and steaming morning tea served in our shaded courtyard (uthon).</p>
+            </div>
+          </article>
+
+          <article class="essential-card">
+            <div class="essential-card-media" onclick="openImageInLightbox('images/parking/WhatsApp Image 2026-11-22 at 11.14.35 PM.jpeg', 'Parking — Safe On-Premise Guest Parking', 'Dedicated parking for cars and two-wheelers')">
+              <img src="images/parking/WhatsApp Image 2026-11-22 at 11.14.35 PM.jpeg" alt="Safe on-premise guest parking at Kunja Homestay" loading="lazy">
+            </div>
+            <div class="essential-card-body">
+              <span class="essential-tag">🚗 Parking</span>
+              <h3 class="essential-title">Safe On-Premise Guest Parking</h3>
+              <p class="essential-desc">Travel worry-free with dedicated, secure parking space within and beside the property for guests arriving by private car or two-wheeler.</p>
+            </div>
+          </article>
+
+          <article class="essential-card">
+            <div class="essential-card-media" onclick="openImageInLightbox('images/kunja-mandir.jpeg', 'Mandir — Peaceful On-Site Temple', 'Tranquil courtyard Mandir at Kunja Homestay')">
+              <img src="images/kunja-mandir.jpeg" alt="Peaceful on-site courtyard Mandir at Kunja Homestay" loading="lazy">
+            </div>
+            <div class="essential-card-body">
+              <span class="essential-tag">🪔 Mandir</span>
+              <h3 class="essential-title">Peaceful On-Site Temple</h3>
+              <p class="essential-desc">A tranquil courtyard Mandir for quiet morning prayers and spiritual calm during your Santiniketan retreat.</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -425,10 +482,57 @@
               Read & Rate Us on Google ★
             </a>
           </div>
-          <div class="google-review-qr-col">
-            <div id="googleReviewQr" class="google-review-qr-box" title="Scan to Rate Kunja Homestay on Google"></div>
-            <span class="qr-scan-label">Scan for Google Reviews</span>
+        </div>
+
+        <!-- Public Guest Review Submission Form -->
+        <div class="public-review-form-card reveal-on-scroll" id="publicReviewFormCard">
+          <div style="margin-bottom: 1.25rem;">
+            <span class="eyebrow">Share Your Stay Experience</span>
+            <h3 style="font-family: var(--font-serif); font-size: 1.45rem; color: var(--color-forest); margin-bottom: 0.25rem;">Stayed at Kunja Homestay? Leave a Review</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin: 0;">Your feedback helps fellow travelers discover Santiniketan's quiet hospitality.</p>
           </div>
+
+          <form id="publicReviewForm" onsubmit="submitPublicReview(event)">
+            <!-- Honeypot anti-spam field -->
+            <input type="text" name="website" id="revHoneypot" style="display:none !important;" tabindex="-1" autocomplete="off">
+
+            <div class="public-review-form-grid">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" for="pubRevName">Your Name *</label>
+                <input type="text" id="pubRevName" class="form-input" placeholder="e.g. Ananya Sen" required minlength="2" maxlength="80">
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label" for="pubRevProperty">Property Stayed At *</label>
+                <select id="pubRevProperty" class="form-input" required>
+                  <option value="Kunja Bati Homestay">Kunja Bati Homestay</option>
+                  <option value="Kunja Homestay">Kunja Homestay</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 1rem;">
+              <label class="form-label">Your Rating *</label>
+              <div class="star-rating-selector" id="pubRevStarSelector" role="radiogroup" aria-label="Star rating">
+                <button type="button" class="star-select-btn active" data-val="1" onclick="setPublicReviewRating(1)" aria-label="1 star">★</button>
+                <button type="button" class="star-select-btn active" data-val="2" onclick="setPublicReviewRating(2)" aria-label="2 stars">★</button>
+                <button type="button" class="star-select-btn active" data-val="3" onclick="setPublicReviewRating(3)" aria-label="3 stars">★</button>
+                <button type="button" class="star-select-btn active" data-val="4" onclick="setPublicReviewRating(4)" aria-label="4 stars">★</button>
+                <button type="button" class="star-select-btn active" data-val="5" onclick="setPublicReviewRating(5)" aria-label="5 stars">★</button>
+                <span id="pubRevRatingLabel" style="margin-left: 0.5rem; font-size: 0.85rem; font-weight: 600; color: var(--color-forest);">5 / 5 Stars</span>
+              </div>
+              <input type="hidden" id="pubRevRating" value="5">
+            </div>
+
+            <div class="form-group" style="margin-top: 1rem;">
+              <label class="form-label" for="pubRevText">Your Experience *</label>
+              <textarea id="pubRevText" class="form-input" rows="3" placeholder="Tell us about your room, the courtyard, home-cooked food, or Bolpur memories..." required minlength="5" maxlength="1000"></textarea>
+            </div>
+
+            <div id="pubRevFeedback" style="display: none; padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: 0.9rem; margin-bottom: 1rem;"></div>
+
+            <button type="submit" class="btn btn-primary" id="pubRevSubmitBtn">Submit Review</button>
+          </form>
         </div>
 
       </div>
@@ -612,9 +716,19 @@
           <p style="font-size: 0.88rem; margin-bottom: 0.5rem; color: #BBB1A3;">
             <strong>Address:</strong> Kunja Homestay, Bolpur, Santiniketan, Birbhum, West Bengal.
           </p>
-          <p style="font-size: 0.88rem; color: #BBB1A3;">
+          <p style="font-size: 0.88rem; color: #BBB1A3; margin-bottom: 1rem;">
             <strong>Google Maps:</strong> <a href="https://www.google.com/maps/place/Kunja+Homestay+Eco+Resort/@23.6760972,87.678792,17z" target="_blank" style="color: var(--color-ochre); text-decoration: underline;">View Map Pin</a>
           </p>
+          <div class="social-links-row" id="footerSocialLinks" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <a href="https://www.facebook.com/kunjajayanta" target="_blank" rel="noopener noreferrer" class="social-pill-btn social-fb" aria-label="Kunja Homestay on Facebook">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <span>Facebook</span>
+            </a>
+            <a href="https://www.instagram.com/jayantakunja/" target="_blank" rel="noopener noreferrer" class="social-pill-btn social-ig" aria-label="Kunja Homestay on Instagram">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              <span>Instagram</span>
+            </a>
+          </div>
         </div>
 
       </div>
@@ -785,10 +899,7 @@
     </div>
   </div>
 
-  <!-- QRCode.js library for high-clarity client-side QR generation -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
   <!-- Client Script -->
-  <script src="app.js?v=20261124f"></script>
+  <script src="app.js?v=20261126a"></script>
 </body>
 </html>

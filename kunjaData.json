@@ -255,28 +255,48 @@
       "guestName": "Ananya & Subhojit Sen",
       "hometown": "Kolkata",
       "quote": "Felt like visiting relatives in Santiniketan, not staying at a commercial property.",
-      "reviewText": "We came from Kolkata for a two-day break and loved every bit of our stay at Kunja Homestay. The rooms were spotless, the surroundings were super peaceful, and the morning tea in the open space was the highlight of our trip. Sonajhuri is just a short toto ride away."
+      "reviewText": "We came from Kolkata for a two-day break and loved every bit of our stay at Kunja Homestay. The rooms were spotless, the surroundings were super peaceful, and the morning tea in the open space was the highlight of our trip. Sonajhuri is just a short toto ride away.",
+      "approved": true,
+      "rating": 5,
+      "createdAt": "2026-11-20T10:00:00+05:30",
+      "adminReply": "",
+      "property": "Kunja Homestay"
     },
     {
       "id": "rev-2",
       "guestName": "Debashis Chatterjee & Family",
       "hometown": "Durgapur",
       "quote": "Wonderful for a family trip with elderly parents.",
-      "reviewText": "Traveling with senior citizens means you worry about food and comfort, and the hosts took care of everything with so much warmth. Simple, fresh home-cooked Bengali food, clean bathrooms, and zero noise at night. Our parents didn't want to leave!"
+      "reviewText": "Traveling with senior citizens means you worry about food and comfort, and the hosts took care of everything with so much warmth. Simple, fresh home-cooked Bengali food, clean bathrooms, and zero noise at night. Our parents didn't want to leave!",
+      "approved": true,
+      "rating": 5,
+      "createdAt": "2026-11-20T10:00:00+05:30",
+      "adminReply": "",
+      "property": "Kunja Homestay"
     },
     {
       "id": "rev-3",
       "guestName": "Rituparna Das",
       "hometown": "Salt Lake, Kolkata",
       "quote": "Warm hosts, clean rooms, and true Bolpur charm.",
-      "reviewText": "If you want to experience the real, quiet side of Shantiniketan away from crowded main-road hotels, this is the place. The hosts helped us arrange a local toto for sightseeing and guided us on the best time to visit Khoai. Looking forward to coming back during Poush Mela."
+      "reviewText": "If you want to experience the real, quiet side of Shantiniketan away from crowded main-road hotels, this is the place. The hosts helped us arrange a local toto for sightseeing and guided us on the best time to visit Khoai. Looking forward to coming back during Poush Mela.",
+      "approved": true,
+      "rating": 5,
+      "createdAt": "2026-11-20T10:00:00+05:30",
+      "adminReply": "",
+      "property": "Kunja Homestay"
     },
     {
       "id": "rev-4",
       "guestName": "Sourav & Meghna Banerjee",
       "hometown": "Howrah",
       "quote": "Our kids had space to play while we finally got to relax.",
-      "reviewText": "We stayed here as a family of four and had such a joyful time. The open surroundings are safe and green, the rooms are airy, and the hospitality is genuinely heartfelt. Having a West Bengal Tourism recognized homestay also gave us complete peace of mind while planning."
+      "reviewText": "We stayed here as a family of four and had such a joyful time. The open surroundings are safe and green, the rooms are airy, and the hospitality is genuinely heartfelt. Having a West Bengal Tourism recognized homestay also gave us complete peace of mind while planning.",
+      "approved": true,
+      "rating": 5,
+      "createdAt": "2026-11-20T10:00:00+05:30",
+      "adminReply": "",
+      "property": "Kunja Homestay"
     }
   ],
   "noticeBanner": {
@@ -524,5 +544,29 @@
     "description": "At the heart of Kunja Homestay stands our serene courtyard Mandir, consecrated with daily morning prayers, fresh flowers, and the tranquil chiming of temple bells. Guests are warmly invited to begin their mornings in quiet reflection, soaking in the gentle spiritual energy that makes Kunja feel like a true home in the sacred soil of Bolpur.",
     "image": "images/kunja-mandir.jpeg",
     "caption": "Courtyard Mandir at Kunja Homestay • Morning serenity and spiritual warmth"
+  },
+  "socialLinks": {
+    "facebook": "https://www.facebook.com/kunjajayanta",
+    "instagram": "https://www.instagram.com/jayantakunja/"
+  },
+  "essentials": {
+    "khabar": {
+      "title": "Khabar (Authentic Home-Cooked Food)",
+      "subtitle": "Fresh Bengali Thali & Courtyard Morning Tea",
+      "description": "Savor freshly prepared home-style Bengali meals, comforting dal, seasonal local vegetables, and steaming morning tea served in our shaded courtyard (uthon).",
+      "image": "images/kunja-58.jpeg"
+    },
+    "parking": {
+      "title": "Parking (Safe On-Premise Guest Parking)",
+      "subtitle": "Dedicated Space for Cars & Two-Wheelers",
+      "description": "Travel worry-free with dedicated, secure on-premise parking space right within and beside the property for guests arriving by private car or two-wheeler.",
+      "image": "images/parking/WhatsApp Image 2026-11-22 at 11.14.35 PM.jpeg"
+    },
+    "mandir": {
+      "title": "Mandir (Peaceful On-Site Temple)",
+      "subtitle": "Tranquil Courtyard Prayers & Spiritual Calm",
+      "description": "Begin your mornings in quiet reflection at our serene courtyard Mandir, consecrated with daily prayers, fresh flowers, and gentle temple bells.",
+      "image": "images/kunja-mandir.jpeg"
+    }
   }
 }

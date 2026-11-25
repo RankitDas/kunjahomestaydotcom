@@ -23,15 +23,16 @@ if (!verify_csrf_token($csrf)) {
     exit;
 }
 
-if (!isset($_FILES['photo']) || $_FILES['photo']['error'] !== UPLOAD_ERR_OK) {
-    $code = $_FILES['photo']['error'] ?? 'missing';
+$fileKey = isset($_FILES['photo']) ? 'photo' : (isset($_FILES['image']) ? 'image' : null);
+if (!$fileKey || $_FILES[$fileKey]['error'] !== UPLOAD_ERR_OK) {
+    $code = $fileKey ? ($_FILES[$fileKey]['error'] ?? 'missing') : 'missing';
     http_response_code(400);
     echo json_encode(['success' => false, 'error' => "Image upload failed with error code: {$code}"]);
     exit;
 }
 
-$tmpPath = $_FILES['photo']['tmp_name'];
-$originalName = $_FILES['photo']['name'];
+$tmpPath = $_FILES[$fileKey]['tmp_name'];
+$originalName = $_FILES[$fileKey]['name'];
 
 // 1. Server-side MIME validation with finfo_file
 $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -42,12 +43,13 @@ $allowedMimes = [
     'image/jpeg' => 'jpeg',
     'image/jpg'  => 'jpeg',
     'image/png'  => 'png',
-    'image/webp' => 'webp'
+    'image/webp' => 'webp',
+    'image/gif'  => 'gif'
 ];
 
 if (!isset($allowedMimes[$mime])) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'error' => "Unsupported file type: {$mime}. Please upload a JPEG, PNG, or WebP photo."]);
+    echo json_encode(['success' => false, 'error' => "Unsupported file type: {$mime}. Please upload a JPEG, PNG, WebP, or GIF file."]);
     exit;
 }
 
@@ -90,7 +92,7 @@ if (!$realImagesDir) {
 // 3. Process image with GD: resize if > 1600px width and save
 $processed = false;
 
-if (extension_loaded('gd')) {
+if ($extension !== 'gif' && extension_loaded('gd')) {
     $srcImg = null;
     switch ($mime) {
         case 'image/jpeg':
@@ -166,5 +168,6 @@ echo json_encode([
     'success' => true,
     'message' => 'Image uploaded and processed successfully.',
     'imagePath' => $relativePath,
+    'path' => $relativePath,
     'filename' => basename($destPath)
 ]);

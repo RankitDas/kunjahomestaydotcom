@@ -1921,3 +1921,251 @@ h1, h2, h3, h4, .font-serif {
   opacity: 1;
   transform: translateY(0);
 }
+
+
+/* ==========================================================================
+   PROMINENT MANDIR SHOWCASE & ESSENTIALS (KHABAR, PARKING, MANDIR)
+   ========================================================================== */
+.mandir-hero-feature {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+  background: #FAF7F2;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+@media (min-width: 900px) {
+  .mandir-hero-feature {
+    grid-template-columns: 1.15fr 1fr;
+    padding: 2rem;
+    gap: 2.5rem;
+  }
+}
+.mandir-hero-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #EFE9DD;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+}
+@media (min-width: 900px) {
+  .mandir-hero-media {
+    min-height: 380px;
+  }
+}
+.mandir-hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.5s ease;
+}
+.mandir-hero-media:hover img {
+  transform: scale(1.03);
+}
+.mandir-zoom-pill {
+  position: absolute;
+  bottom: 0.85rem;
+  right: 0.85rem;
+  background: rgba(31, 54, 41, 0.85);
+  color: #FFF;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.essentials-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+@media (min-width: 768px) {
+  .essentials-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.essential-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+.essential-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+.essential-card-media {
+  position: relative;
+  aspect-ratio: 4/3;
+  background: #EFE9DD;
+  overflow: hidden;
+  cursor: pointer;
+}
+.essential-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.essential-card:hover .essential-card-media img {
+  transform: scale(1.04);
+}
+.essential-card-body {
+  padding: 1.25rem;
+  flex: 1;
+}
+.essential-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-terracotta);
+  margin-bottom: 0.4rem;
+}
+.essential-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-forest);
+  margin-bottom: 0.5rem;
+}
+.essential-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ==========================================================================
+   PUBLIC REVIEW FORM & OWNER REPLY STYLING
+   ========================================================================== */
+.public-review-form-card {
+  background: #FAF7F2;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  margin-top: 2.5rem;
+  box-shadow: var(--shadow-sm);
+}
+.public-review-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 640px) {
+  .public-review-form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.star-rating-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.star-select-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.65rem;
+  color: #D1D5DB;
+  cursor: pointer;
+  padding: 0.1rem 0.2rem;
+  line-height: 1;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+.star-select-btn.active,
+.star-select-btn:hover {
+  color: #F59E0B;
+  transform: scale(1.12);
+}
+.review-admin-reply {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  background: #F9F5EE;
+  border-left: 3px solid var(--color-forest);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.88rem;
+  color: var(--color-text-main);
+}
+.review-admin-reply-label {
+  font-weight: 700;
+  color: var(--color-forest);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+/* ==========================================================================
+   SOCIAL MEDIA PILL BUTTONS
+   ========================================================================== */
+.social-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  color: #FAF5EE;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.social-pill-btn:hover {
+  background: var(--color-terracotta);
+  border-color: var(--color-terracotta);
+  color: #FFF;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   NOTICE GRAPHIC / BADGE STYLING (.gif, .png, .jpg, .webp)
+   ========================================================================== */
+.notice-modal-media {
+  max-height: 96px;
+  max-width: 140px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  margin: 0 auto 0.75rem;
+  display: block;
+}
+.marquee-media-img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+  vertical-align: middle;
+  border-radius: 4px;
+}
+
+/* ==========================================================================
+   PARALLAX & SMOOTH SCROLL-REVEAL MOTION
+   ========================================================================== */
+.parallax-target {
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .parallax-target {
+    transform: none !important;
+  }
+}

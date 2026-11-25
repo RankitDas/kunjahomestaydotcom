@@ -554,9 +554,9 @@ window.handleNoticeMediaUpload = async function(e) {
       showToast(json.error || "Upload failed.", true);
     } else {
       if (!state.data.noticeBanner) state.data.noticeBanner = {};
-      state.data.noticeBanner.bannerMedia = json.path;
+      state.data.noticeBanner.bannerMedia = json.path || json.imagePath || "";
       populateNoticeBanner();
-      showToast("Notice graphic uploaded successfully!");
+      showToast("Notice graphic uploaded! Click Save Notice Settings to persist.");
     }
   } catch (err) {
     showToast("Network error uploading graphic.", true);
@@ -1097,27 +1097,126 @@ window.uploadGovtCertificate = async function() {
   }
 };
 
+// --- REVIEWS, MODERATION, REPLIES & SOCIAL LINKS ---
 function renderReviewsList() {
+  // Populate Google Review URL & Social Links
+  const gInput = document.getElementById("adminGoogleReviewUrl");
+  const fbInput = document.getElementById("adminFacebookUrl");
+  const igInput = document.getElementById("adminInstagramUrl");
+  if (gInput) gInput.value = state.data.contact?.googleReviewUrl || "";
+  if (fbInput) fbInput.value = state.data.socialLinks?.facebook || "https://www.facebook.com/kunjajayanta";
+  if (igInput) igInput.value = state.data.socialLinks?.instagram || "https://www.instagram.com/jayantakunja/";
+
+  const allReviews = state.data.reviews || [];
+  const pending = allReviews.filter(r => r.approved !== true);
+  const published = allReviews
+    .filter(r => r.approved === true)
+    .sort((a, b) => (Number(b.rating) || 5) - (Number(a.rating) || 5));
+
+  const pendingCountEl = document.getElementById("pendingReviewsCount");
+  if (pendingCountEl) pendingCountEl.textContent = pending.length;
+
+  const pendingContainer = document.getElementById("pendingReviewsList");
+  if (pendingContainer) {
+    if (pending.length === 0) {
+      pendingContainer.innerHTML = `<div style="padding: 1rem; text-align: center; color: var(--color-text-muted); font-size: 0.88rem;">No pending guest reviews waiting for approval.</div>`;
+    } else {
+      pendingContainer.innerHTML = pending.map(rev => {
+        const stars = "★".repeat(Number(rev.rating) || 5) + "☆".repeat(5 - (Number(rev.rating) || 5));
+        return `
+          <div class="item-row" style="background: #FFFBEB; border-color: #FDE68A;">
+            <div class="item-row-header">
+              <div>
+                <strong>${rev.guestName}</strong> <span style="font-size:0.82rem; color:var(--color-text-muted);">(${rev.property || rev.hometown || 'Guest'})</span>
+                <div style="color: #F59E0B; font-size: 0.95rem; margin-top: 2px;">${stars}</div>
+              </div>
+              <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                <button class="btn btn-forest" style="padding: 0.35rem 0.7rem; font-size: 0.82rem;" onclick="approveReview('${rev.id}')">✓ Approve & Show</button>
+                <button class="btn btn-danger" style="padding: 0.35rem 0.7rem; font-size: 0.82rem;" onclick="deleteReviewById('${rev.id}')">✕ Reject / Delete</button>
+              </div>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--color-text-main); margin: 0.5rem 0 0;">${rev.reviewText}</p>
+          </div>
+        `;
+      }).join("");
+    }
+  }
+
   const container = document.getElementById("reviewsList");
   if (!container) return;
-  const list = state.data.reviews || [];
-  container.innerHTML = list.map((rev, idx) => `
-    <div class="item-row">
-      <div class="item-row-header">
-        <div>
-          <strong>${rev.guestName}</strong> (${rev.hometown})
-          <div style="font-weight: 600; color: var(--color-forest); margin-top: 3px;">"${rev.quote}"</div>
+  if (published.length === 0) {
+    container.innerHTML = `<div style="padding: 1rem; text-align: center; color: var(--color-text-muted);">No published reviews yet.</div>`;
+    return;
+  }
+
+  container.innerHTML = published.map(rev => {
+    const stars = "★".repeat(Number(rev.rating) || 5) + "☆".repeat(5 - (Number(rev.rating) || 5));
+    return `
+      <div class="item-row">
+        <div class="item-row-header">
+          <div>
+            <strong>${rev.guestName}</strong> <span style="font-size:0.82rem; color:var(--color-text-muted);">(${rev.property || rev.hometown || 'Guest'})</span>
+            <div style="color: #F59E0B; font-size: 0.95rem; margin-top: 2px;">${stars}</div>
+            ${rev.quote ? `<div style="font-weight: 600; color: var(--color-forest); margin-top: 3px;">"${rev.quote}"</div>` : ''}
+          </div>
+          <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+            <button class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;" onclick="toggleReviewVisibility('${rev.id}')">👁️ Hide / Unpublish</button>
+            <button class="btn btn-danger" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;" onclick="deleteReviewById('${rev.id}')">🗑️ Delete</button>
+          </div>
         </div>
-        <button class="btn btn-danger" style="padding: 0.35rem 0.65rem;" onclick="deleteReviewItem(${idx})">🗑️ Delete</button>
+        <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0.5rem 0;">${rev.reviewText}</p>
+        <div style="background: var(--color-canvas); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border); margin-top: 0.5rem;">
+          <label style="font-size: 0.78rem; font-weight: 700; color: var(--color-forest); display: block; margin-bottom: 0.35rem;">💬 Official Owner Reply:</label>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <input type="text" class="form-input" id="replyInput-${rev.id}" value="${(rev.adminReply || '').replace(/"/g, '&quot;')}" placeholder="Write a warm thank-you or response..." style="flex: 1; min-width: 200px; font-size: 0.85rem; padding: 0.4rem 0.65rem;">
+            <button class="btn btn-forest" style="padding: 0.4rem 0.85rem; font-size: 0.82rem;" onclick="saveAdminReply('${rev.id}')">Save Reply</button>
+          </div>
+        </div>
       </div>
-      <p style="font-size: 0.88rem; color: var(--color-text-muted); margin: 0.5rem 0 0;">${rev.reviewText}</p>
-    </div>
-  `).join("");
+    `;
+  }).join("");
 }
 
-window.deleteReviewItem = async function(idx) {
+window.saveGoogleReviewUrl = async function(e) {
+  e.preventDefault();
+  if (!state.data.contact) state.data.contact = {};
+  if (!state.data.socialLinks) state.data.socialLinks = {};
+  state.data.contact.googleReviewUrl = document.getElementById("adminGoogleReviewUrl").value.trim();
+  const fb = document.getElementById("adminFacebookUrl")?.value.trim();
+  const ig = document.getElementById("adminInstagramUrl")?.value.trim();
+  if (fb) state.data.socialLinks.facebook = fb;
+  if (ig) state.data.socialLinks.instagram = ig;
+  await saveAllDataToServer("Google Review & Social Links updated!");
+};
+
+window.approveReview = async function(id) {
+  const rev = (state.data.reviews || []).find(r => r.id === id);
+  if (!rev) return;
+  rev.approved = true;
+  const ok = await saveAllDataToServer("Review approved and published!");
+  if (ok) renderReviewsList();
+};
+
+window.toggleReviewVisibility = async function(id) {
+  const rev = (state.data.reviews || []).find(r => r.id === id);
+  if (!rev) return;
+  rev.approved = !rev.approved;
+  const ok = await saveAllDataToServer(rev.approved ? "Review published!" : "Review hidden from public site.");
+  if (ok) renderReviewsList();
+};
+
+window.saveAdminReply = async function(id) {
+  const rev = (state.data.reviews || []).find(r => r.id === id);
+  const input = document.getElementById(`replyInput-${id}`);
+  if (!rev || !input) return;
+  rev.adminReply = input.value.trim();
+  const ok = await saveAllDataToServer("Owner reply saved!");
+  if (ok) renderReviewsList();
+};
+
+window.deleteReviewById = async function(id) {
   if (!confirm("Are you sure you want to delete this guest review?")) return;
-  state.data.reviews.splice(idx, 1);
+  state.data.reviews = (state.data.reviews || []).filter(r => r.id !== id);
   const ok = await saveAllDataToServer("Review removed.");
   if (ok) renderReviewsList();
 };
